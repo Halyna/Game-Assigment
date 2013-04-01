@@ -19,7 +19,8 @@ namespace Assignment
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
-        Earth earth;
+        public Earth earth;
+        public Player player;
 
         public int screenWidth;
         public int screenHeight;
@@ -34,10 +35,12 @@ namespace Assignment
 
         protected override void Initialize()
         {
+            InputManager.Initialize();
             graphics.PreferredBackBufferWidth = screenWidth;
             graphics.PreferredBackBufferHeight = screenHeight;
             graphics.ApplyChanges();
             this.earth = new Earth(this);
+            this.player = new Player(this);
             base.Initialize();
         }
 
@@ -77,6 +80,8 @@ namespace Assignment
 
             base.Update(gameTime);
             earth.Update(gameTime);
+            player.Update(gameTime);
+            InputManager.Update(gameTime);
         }
 
         /// <summary>
@@ -90,6 +95,7 @@ namespace Assignment
             // TODO: Add your drawing code here
             spriteBatch.Begin();
             earth.Draw(spriteBatch);
+            player.Draw(spriteBatch);
             spriteBatch.End();
             base.Draw(gameTime);
             

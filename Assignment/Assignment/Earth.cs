@@ -22,6 +22,8 @@ namespace Assignment
         Vector2 position;
         Vector2 origin;
         float rotationAngle;
+        float scale = 3.0f;
+        public float radius;
 
         public Earth(Game1 game)
             : base(game)
@@ -31,6 +33,7 @@ namespace Assignment
             texture = game.Content.Load<Texture2D>(@"Earth");
             origin.X = texture.Width / 2;
             origin.Y = texture.Height / 2;
+            radius = texture.Bounds.Height * 0.5f * scale;
         }
 
         /// <summary>
@@ -62,7 +65,7 @@ namespace Assignment
 
         public virtual void Draw(SpriteBatch batch) 
         {
-            batch.Draw(texture, position, null, Color.White, rotationAngle, origin, 3.0f, SpriteEffects.None, 0f);
+            batch.Draw(texture, position, null, Color.White, rotationAngle, origin, scale, SpriteEffects.None, 0f);
 
         }
     }

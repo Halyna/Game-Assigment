@@ -35,8 +35,10 @@
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
-    <Compile Include="lizard_png_by_evelivesey-d5ikppo.png">
-      <Name>lizard_png_by_evelivesey-d5ikppo</Name>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="lizard.png">
+      <Name>lizard</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>
