@@ -18,12 +18,14 @@ namespace Assignment
     public class Earth : Microsoft.Xna.Framework.GameComponent
     {
         Texture2D texture;
-        Game game;
+        Game1 game;
         Vector2 position;
-        Vector2 origin;
+        public Vector2 origin;
         float rotationAngle;
-        float scale = 3.0f;
+        public float scale = 2.7f;
         public float radius;
+
+        public List<Terrain> terrains;
 
         public Earth(Game1 game)
             : base(game)
@@ -34,6 +36,8 @@ namespace Assignment
             origin.X = texture.Width / 2;
             origin.Y = texture.Height / 2;
             radius = texture.Bounds.Height * 0.5f * scale;
+
+            Initialize();
         }
 
         /// <summary>
@@ -42,8 +46,7 @@ namespace Assignment
         /// </summary>
         public override void Initialize()
         {
-            // TODO: Add your initialization code here
-            
+           
             base.Initialize();
         }
 
@@ -60,13 +63,30 @@ namespace Assignment
             float circle = MathHelper.Pi * 2;
             rotationAngle = rotationAngle % circle;
 
+
+
+            //if (terrains != null)
+            //{
+            //    foreach (var terrain in terrains)
+            //    {
+            //        terrain.Update(gameTime);
+            //    }
+            //}
+           
+
             base.Update(gameTime);
         }
 
         public virtual void Draw(SpriteBatch batch) 
         {
-            batch.Draw(texture, position, null, Color.White, rotationAngle, origin, scale, SpriteEffects.None, 0f);
-
+           batch.Draw(texture, position, null, Color.White, rotationAngle, origin, scale, SpriteEffects.None, 0f);
+           //if (terrains != null)
+           //{
+           //    foreach (var terrain in terrains)
+           //    {
+           //        terrain.Draw(batch);
+           //    }
+           //}
         }
     }
 }

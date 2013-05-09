@@ -40,6 +40,17 @@ namespace Assignment
             graphics.PreferredBackBufferHeight = screenHeight;
             graphics.ApplyChanges();
             this.earth = new Earth(this);
+            // TODO: Add your initialization code here
+            if (this.earth.terrains == null)
+            {
+                this.earth.terrains = new List<Terrain>();
+                float angle = 4.6f;
+                for (int i = 0; i < 20; i++)
+                {
+                    this.earth.terrains.Add(new Terrain(this, angle));
+                    angle += 0.0535f;
+                }
+            }
             this.player = new Player(this);
             base.Initialize();
         }
@@ -81,6 +92,11 @@ namespace Assignment
             base.Update(gameTime);
             earth.Update(gameTime);
             player.Update(gameTime);
+
+            foreach (var terrain in earth.terrains)
+                {
+                    terrain.Update(gameTime);
+                }
             InputManager.Update(gameTime);
         }
 
@@ -90,12 +106,16 @@ namespace Assignment
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.Black);
+            GraphicsDevice.Clear(Color.SkyBlue);
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();
             earth.Draw(spriteBatch);
             player.Draw(spriteBatch);
+            foreach (var terrain in earth.terrains)
+            {
+                terrain.Draw(spriteBatch);
+            }
             spriteBatch.End();
             base.Draw(gameTime);
             

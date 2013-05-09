@@ -63,7 +63,7 @@ namespace Assignment
                 angle +=0.005f;
                 if (angle > MAX_ANGLE)
                     angle = MAX_ANGLE;
-                Console.Out.WriteLine("Angle " + angle);
+                //Console.Out.WriteLine("Angle " + angle);
                 adjustPosition();
                
             }
@@ -72,7 +72,7 @@ namespace Assignment
                 angle -= 0.005f;
                 if (angle < MIN_ANGLE)
                     angle = MIN_ANGLE;
-                Console.Out.WriteLine("Angle " + angle);
+               // Console.Out.WriteLine("Angle " + angle);
                 adjustPosition();
             }
             else
@@ -99,8 +99,7 @@ namespace Assignment
         { 
             position.X = game.earth.radius * (float)Math.Cos(angle) + game.screenWidth * 0.4f;
             position.Y = game.earth.radius * (float)Math.Sin(angle) + (game.screenHeight * 0.35f + game.earth.radius);
-            Console.Out.WriteLine("X " + position.X);
-            Console.Out.WriteLine("Y " + position.Y);
+            //Console.Out.WriteLine("Player Position: X " + position.X + " Y " + position.Y);
         }
 
     }
