@@ -80,14 +80,14 @@ namespace Assignment
             return false;
         }
 
-        public static bool PressedBoost() {
+        public static bool PressedJump() {
             if (Input.KeyJustPressed(Keys.Space)) return true;
             
             return false;
         }
 
         public static bool PressedAnything() {
-            return (PressedBoost() || PressedBack() || PressedStart());
+            return (PressedJump() || PressedBack() || PressedStart());
         }
 
         public static void Update(GameTime gameTime) {

@@ -27,6 +27,10 @@ namespace Assignment
         const float MIN_ANGLE = 4.51f;
         const float MAX_ANGLE = 4.9f;
 
+        public Rectangle boxCollider;
+        public bool isJumping;
+        public TimeSpan jumpingTime;
+
         public Player(Game1 game)
             : base(game)
         {
@@ -34,11 +38,12 @@ namespace Assignment
             angle = MIN_ANGLE;
             this.position = new Vector2();
             position.X = game.earth.radius * (float)Math.Cos(angle) +game.screenWidth * 0.4f;
-            position.Y = game.earth.radius * (float)Math.Sin(angle) + (game.screenHeight * 0.35f + game.earth.radius);
+            position.Y = 0;
             texture = game.Content.Load<Texture2D>(@"lizard");
             origin.X = texture.Width / 2 * scale;
             origin.Y = texture.Height / 2 * scale;
-           
+            boxCollider = new Rectangle(0, 0, (int)(texture.Bounds.Width * scale), (int)(texture.Bounds.Height * scale));
+            jumpingTime = new TimeSpan();
         }
 
         /// <summary>
@@ -58,34 +63,46 @@ namespace Assignment
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         public override void Update(GameTime gameTime)
         {
+            if (isJumping)
+                jumpingTime += gameTime.ElapsedGameTime;
+
+            if (jumpingTime.TotalMilliseconds > GameSettings.JUMP_TIME)
+            {
+                jumpingTime = new TimeSpan();
+                isJumping = false;
+            }
             if (InputManager.IsMovingRight())
             {
-                angle +=0.005f;
+                angle += GameSettings.PLAYER_SPEED_X;
                 if (angle > MAX_ANGLE)
                     angle = MAX_ANGLE;
                 //Console.Out.WriteLine("Angle " + angle);
-                adjustPosition();
+                adjustPosition(Rectangle.Empty);
                
             }
             else if (InputManager.IsMovingLeft())
             {
-                angle -= 0.005f;
+                angle -= GameSettings.PLAYER_SPEED_X;
                 if (angle < MIN_ANGLE)
                     angle = MIN_ANGLE;
                // Console.Out.WriteLine("Angle " + angle);
-                adjustPosition();
+                adjustPosition(Rectangle.Empty);
             }
             else
             { 
                 // drifting back with earth movement
-                angle -= 0.0003f;
+                angle -= 0.0002f;
                 if (angle < MIN_ANGLE)
                     angle = MIN_ANGLE;
                 Console.Out.WriteLine("Angle " + angle);
-                adjustPosition();
+                adjustPosition(Rectangle.Empty);
             }
 
-            
+            // jump
+            if (InputManager.PressedJump())
+            {
+                isJumping = true;
+            }
 
             base.Update(gameTime);
         }
@@ -93,12 +110,35 @@ namespace Assignment
         public virtual void Draw(SpriteBatch batch)
         {
             batch.Draw(texture, position, null, Color.White, 0, origin, scale, SpriteEffects.None, 0f);
+            var t = new Texture2D(game.GraphicsDevice, 1, 1);
+            t.SetData(new[] { Color.White });
+           // batch.Draw(t, boxCollider, Color.Black);
         }
 
-        private void adjustPosition()
-        { 
+        public void adjustPosition(Rectangle boxCollider)
+        {
             position.X = game.earth.radius * (float)Math.Cos(angle) + game.screenWidth * 0.4f;
-            position.Y = game.earth.radius * (float)Math.Sin(angle) + (game.screenHeight * 0.35f + game.earth.radius);
+            if (boxCollider == Rectangle.Empty)
+            {
+
+                if (isJumping)
+                {
+                    position.Y -= GameSettings.PLAYER_SPEED_Y;
+                }
+                else
+                {
+                    // freefall
+                    position.Y += GameSettings.PLAYER_SPEED_Y;
+                }
+            }
+            else
+            {
+                
+                    position.Y = boxCollider.Top - this.boxCollider.Height;
+                
+            }
+            this.boxCollider.X = (int)position.X;
+            this.boxCollider.Y = (int)position.Y;
             //Console.Out.WriteLine("Player Position: X " + position.X + " Y " + position.Y);
         }
 
