@@ -72,6 +72,8 @@
     <Reference Include="System.Net" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Animation\Animation.cs" />
+    <Compile Include="Animation\AnimationPlayer.cs" />
     <Compile Include="Earth.cs" />
     <Compile Include="GameSettings.cs" />
     <Compile Include="InputManager.cs" />
@@ -80,6 +82,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="Terrain.cs" />
+    <Compile Include="Textures.cs" />
     <Compile Include="UserInput.cs" />
   </ItemGroup>
   <ItemGroup>

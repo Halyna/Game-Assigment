@@ -35,24 +35,17 @@ namespace Assignment
 
         protected override void Initialize()
         {
+            base.Initialize();
+
             InputManager.Initialize();
             graphics.PreferredBackBufferWidth = screenWidth;
             graphics.PreferredBackBufferHeight = screenHeight;
             graphics.ApplyChanges();
             this.earth = new Earth(this);
             // TODO: Add your initialization code here
-            if (this.earth.terrains == null)
-            {
-                this.earth.terrains = new List<Terrain>();
-                float angle = 4.6f;
-                for (int i = 0; i < 20; i++)
-                {
-                    this.earth.terrains.Add(new Terrain(this, angle));
-                    angle += 0.0535f;
-                }
-            }
+           
             this.player = new Player(this);
-            base.Initialize();
+            
         }
 
         /// <summary>
@@ -63,7 +56,8 @@ namespace Assignment
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-
+            Textures.Initialize(Content);
+            Textures.LoadTextures();
             // TODO: use this.Content to load your game content here
         }
 
@@ -111,10 +105,16 @@ namespace Assignment
             // TODO: Add your drawing code here
             spriteBatch.Begin();
             earth.Draw(spriteBatch);
-            player.Draw(spriteBatch);
+            player.Draw(gameTime, spriteBatch);
+            int visibleTerrains = 0;
             foreach (var terrain in earth.terrains)
             {
-                terrain.Draw(spriteBatch);
+               
+                if (terrain.isOnScreen)
+                {
+                    visibleTerrains++;
+                    terrain.Draw(spriteBatch);
+                }
             }
             spriteBatch.End();
             base.Draw(gameTime);

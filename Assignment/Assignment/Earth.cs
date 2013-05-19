@@ -22,7 +22,7 @@ namespace Assignment
         Vector2 position;
         public Vector2 origin;
         float rotationAngle;
-        public float scale = 2.7f;
+        public float scale = 6f;
         public float radius;
 
         public List<Terrain> terrains;
@@ -31,7 +31,7 @@ namespace Assignment
             : base(game)
         {
             this.game = game;
-            this.position = new Vector2(game.screenWidth * 0.5f, game.screenHeight * 3.5f);
+            this.position = new Vector2(game.screenWidth * 0.5f, game.screenHeight * 6.9f);
             texture = game.Content.Load<Texture2D>(@"Earth");
             origin.X = texture.Width / 2;
             origin.Y = texture.Height / 2;
@@ -48,6 +48,17 @@ namespace Assignment
         {
            
             base.Initialize();
+
+            if (this.terrains == null)
+            {
+                  this.terrains = new List<Terrain>();
+                float angle = 4.4f;
+                for (int i = 0; i < 100; i++)
+                {
+                    this.terrains.Add(new Terrain(game, angle));
+                    angle += 0.027f;
+                }
+            }
         }
 
         /// <summary>

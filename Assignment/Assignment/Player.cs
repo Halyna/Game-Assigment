@@ -22,14 +22,23 @@ namespace Assignment
         Vector2 position;
         Vector2 origin;
         float angle; // radians
-        float scale = 0.2f;
+        float scale = 0.3f;
 
-        const float MIN_ANGLE = 4.51f;
-        const float MAX_ANGLE = 4.9f;
+        const float MIN_ANGLE = 4.635f;
+        const float MAX_ANGLE = 4.82f;
 
         public Rectangle boxCollider;
         public bool isJumping;
+        public bool isIdle;
+        public bool isCrouching;
         public TimeSpan jumpingTime;
+        public TimeSpan crouchingTime;
+
+        private Animation IdleAnimation;
+        private Animation MovingAnimation;
+        private Animation JumpingAnimation;
+        private Animation CrouchAnimation;
+        private AnimationPlayer PlayerAnimationController;
 
         public Player(Game1 game)
             : base(game)
@@ -39,11 +48,13 @@ namespace Assignment
             this.position = new Vector2();
             position.X = game.earth.radius * (float)Math.Cos(angle) +game.screenWidth * 0.4f;
             position.Y = 0;
-            texture = game.Content.Load<Texture2D>(@"lizard");
+            texture = game.Content.Load<Texture2D>(@"PlayerAnimations/Idle/t_IDLE_0");
             origin.X = texture.Width / 2 * scale;
             origin.Y = texture.Height / 2 * scale;
-            boxCollider = new Rectangle(0, 0, (int)(texture.Bounds.Width * scale), (int)(texture.Bounds.Height * scale));
+            boxCollider = new Rectangle(0, 0, (int)(texture.Bounds.Width * scale * 0.7), (int)(texture.Bounds.Height * scale* 0.7));
             jumpingTime = new TimeSpan();
+            crouchingTime = new TimeSpan();
+            Initialize();
         }
 
         /// <summary>
@@ -52,8 +63,11 @@ namespace Assignment
         /// </summary>
         public override void Initialize()
         {
-            // TODO: Add your initialization code here
-
+            IdleAnimation = Textures.PlayerIdleAnimation;
+            MovingAnimation = Textures.PlayerMoveingAnimation;
+            JumpingAnimation = Textures.PlayerJumpingAnimation;
+            CrouchAnimation = Textures.PlayerCrouchAnimation;
+            PlayerAnimationController.PlayAnimation(IdleAnimation);
             base.Initialize();
         }
 
@@ -63,6 +77,9 @@ namespace Assignment
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         public override void Update(GameTime gameTime)
         {
+
+            PlayerAnimationController.Update(gameTime);
+
             if (isJumping)
                 jumpingTime += gameTime.ElapsedGameTime;
 
@@ -71,6 +88,16 @@ namespace Assignment
                 jumpingTime = new TimeSpan();
                 isJumping = false;
             }
+
+            if (isCrouching)
+                crouchingTime += gameTime.ElapsedGameTime;
+
+            if (crouchingTime.TotalMilliseconds > GameSettings.JUMP_TIME)
+            {
+                crouchingTime = new TimeSpan();
+                isCrouching = false;
+            }
+
             if (InputManager.IsMovingRight())
             {
                 angle += GameSettings.PLAYER_SPEED_X;
@@ -78,6 +105,7 @@ namespace Assignment
                     angle = MAX_ANGLE;
                 //Console.Out.WriteLine("Angle " + angle);
                 adjustPosition(Rectangle.Empty);
+                isIdle = false;
                
             }
             else if (InputManager.IsMovingLeft())
@@ -87,32 +115,51 @@ namespace Assignment
                     angle = MIN_ANGLE;
                // Console.Out.WriteLine("Angle " + angle);
                 adjustPosition(Rectangle.Empty);
+                isIdle = false;
             }
             else
             { 
                 // drifting back with earth movement
-                angle -= 0.0002f;
+                angle -= 0.00015f;
                 if (angle < MIN_ANGLE)
                     angle = MIN_ANGLE;
                 Console.Out.WriteLine("Angle " + angle);
                 adjustPosition(Rectangle.Empty);
+                isIdle = true;
             }
 
             // jump
-            if (InputManager.PressedJump())
+            if (InputManager.IsMovingUp() && !isJumping)
             {
                 isJumping = true;
+                PlayerAnimationController.PlayAnimation(JumpingAnimation);
             }
+
+            if (InputManager.IsMovingDown() && !isCrouching)
+            {
+                isCrouching = true;
+                PlayerAnimationController.PlayAnimation(CrouchAnimation);
+            }
+
+            if (isIdle && !isJumping && !isCrouching)
+            {
+                 PlayerAnimationController.PlayAnimation(IdleAnimation);
+            }
+            else if (!isJumping && !isCrouching)
+                PlayerAnimationController.PlayAnimation(MovingAnimation);
 
             base.Update(gameTime);
         }
 
-        public virtual void Draw(SpriteBatch batch)
+        public virtual void Draw(GameTime gameTime, SpriteBatch batch)
         {
-            batch.Draw(texture, position, null, Color.White, 0, origin, scale, SpriteEffects.None, 0f);
+
+            PlayerAnimationController.Draw(gameTime, batch, position, scale, SpriteEffects.None, Color.DarkOliveGreen, 0, origin);
+
+            //batch.Draw(texture, position, null, Color.DarkOliveGreen, 0, origin, scale, SpriteEffects.None, 0f);
             var t = new Texture2D(game.GraphicsDevice, 1, 1);
             t.SetData(new[] { Color.White });
-           // batch.Draw(t, boxCollider, Color.Black);
+          //batch.Draw(t, boxCollider, Color.Black);
         }
 
         public void adjustPosition(Rectangle boxCollider)
