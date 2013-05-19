@@ -70,19 +70,15 @@ namespace Assignment
             float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             // TODO: Add your game logic here.
-            rotationAngle -= elapsed * 0.02f;
+            rotationAngle -= elapsed * GameSettings.EARTH_ROTATION_SPEED;
             float circle = MathHelper.Pi * 2;
             rotationAngle = rotationAngle % circle;
 
 
-
-            //if (terrains != null)
-            //{
-            //    foreach (var terrain in terrains)
-            //    {
-            //        terrain.Update(gameTime);
-            //    }
-            //}
+            foreach (var terrain in this.terrains)
+            {
+                terrain.Update(gameTime);
+            }
            
 
             base.Update(gameTime);
@@ -91,13 +87,14 @@ namespace Assignment
         public virtual void Draw(SpriteBatch batch) 
         {
            batch.Draw(texture, position, null, Color.White, rotationAngle, origin, scale, SpriteEffects.None, 0f);
-           //if (terrains != null)
-           //{
-           //    foreach (var terrain in terrains)
-           //    {
-           //        terrain.Draw(batch);
-           //    }
-           //}
+           foreach (var terrain in this.terrains)
+           {
+
+               if (terrain.isOnScreen)
+               {
+                   terrain.Draw(batch);
+               }
+           }
         }
     }
 }

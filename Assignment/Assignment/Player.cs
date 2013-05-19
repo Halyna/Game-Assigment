@@ -19,7 +19,7 @@ namespace Assignment
     {
         Texture2D texture;
         Game1 game;
-        Vector2 position;
+        public Vector2 position;
         Vector2 origin;
         float angle; // radians
         float scale = 0.3f;
@@ -46,8 +46,8 @@ namespace Assignment
             this.game = game;
             angle = MIN_ANGLE;
             this.position = new Vector2();
-            position.X = game.earth.radius * (float)Math.Cos(angle) +game.screenWidth * 0.4f;
-            position.Y = 0;
+            position.X = game.earth.radius * (float)Math.Cos(angle) + game.screenWidth * 0.4f;
+            position.Y = 100;
             texture = game.Content.Load<Texture2D>(@"PlayerAnimations/Idle/t_IDLE_0");
             origin.X = texture.Width / 2 * scale;
             origin.Y = texture.Height / 2 * scale;
@@ -120,10 +120,10 @@ namespace Assignment
             else
             { 
                 // drifting back with earth movement
-                angle -= 0.00015f;
+                angle -= 0.0002f;
                 if (angle < MIN_ANGLE)
                     angle = MIN_ANGLE;
-                Console.Out.WriteLine("Angle " + angle);
+                //Console.Out.WriteLine("Angle " + angle);
                 adjustPosition(Rectangle.Empty);
                 isIdle = true;
             }
@@ -189,5 +189,10 @@ namespace Assignment
             //Console.Out.WriteLine("Player Position: X " + position.X + " Y " + position.Y);
         }
 
+
+        internal void birdCollided(Bird bird)
+        {
+            game.bird = new Bird(game, this);
+        }
     }
 }

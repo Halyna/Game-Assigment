@@ -53,7 +53,7 @@ namespace Assignment
         {
            float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            angle -= elapsed * 0.02f;
+           angle -= elapsed * GameSettings.EARTH_ROTATION_SPEED;
             float circle = MathHelper.Pi * 2;
             angle = angle % circle;
             adjustPosition();
@@ -72,6 +72,13 @@ namespace Assignment
                 game.player.adjustPosition(boxCollider);
 
             }
+
+            if (boxCollider.Intersects(game.bird.boxCollider))
+            {
+
+                game.bird = new Bird(game, game.player);
+
+            }
         }
 
         public virtual void Draw(SpriteBatch batch) 
@@ -80,6 +87,8 @@ namespace Assignment
             var t = new Texture2D(game.GraphicsDevice, 1, 1);
             t.SetData(new[] { Color.White });
             //batch.Draw(t, boxCollider, Color.Black);
+
+
         }
         
 

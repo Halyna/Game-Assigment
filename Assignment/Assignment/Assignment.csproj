@@ -74,6 +74,7 @@
   <ItemGroup>
     <Compile Include="Animation\Animation.cs" />
     <Compile Include="Animation\AnimationPlayer.cs" />
+    <Compile Include="Bird.cs" />
     <Compile Include="Earth.cs" />
     <Compile Include="GameSettings.cs" />
     <Compile Include="InputManager.cs" />

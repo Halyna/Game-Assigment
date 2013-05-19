@@ -21,6 +21,7 @@ namespace Assignment
 
         public Earth earth;
         public Player player;
+        public Bird bird;
 
         public int screenWidth;
         public int screenHeight;
@@ -41,10 +42,11 @@ namespace Assignment
             graphics.PreferredBackBufferWidth = screenWidth;
             graphics.PreferredBackBufferHeight = screenHeight;
             graphics.ApplyChanges();
+
+
             this.earth = new Earth(this);
-            // TODO: Add your initialization code here
-           
             this.player = new Player(this);
+            this.bird = new Bird(this, player);
             
         }
 
@@ -86,11 +88,8 @@ namespace Assignment
             base.Update(gameTime);
             earth.Update(gameTime);
             player.Update(gameTime);
+            bird.Update(gameTime);
 
-            foreach (var terrain in earth.terrains)
-                {
-                    terrain.Update(gameTime);
-                }
             InputManager.Update(gameTime);
         }
 
@@ -101,21 +100,11 @@ namespace Assignment
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.SkyBlue);
-
-            // TODO: Add your drawing code here
             spriteBatch.Begin();
+
             earth.Draw(spriteBatch);
             player.Draw(gameTime, spriteBatch);
-            int visibleTerrains = 0;
-            foreach (var terrain in earth.terrains)
-            {
-               
-                if (terrain.isOnScreen)
-                {
-                    visibleTerrains++;
-                    terrain.Draw(spriteBatch);
-                }
-            }
+            bird.Draw(spriteBatch);
             spriteBatch.End();
             base.Draw(gameTime);
             
