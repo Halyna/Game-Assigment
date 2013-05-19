@@ -76,6 +76,7 @@
     <Compile Include="Animation\AnimationPlayer.cs" />
     <Compile Include="Bird.cs" />
     <Compile Include="Earth.cs" />
+    <Compile Include="Fly.cs" />
     <Compile Include="GameSettings.cs" />
     <Compile Include="InputManager.cs" />
     <Compile Include="Player.cs" />

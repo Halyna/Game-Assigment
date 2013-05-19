@@ -12,28 +12,28 @@ using Microsoft.Xna.Framework.Media;
 
 namespace Assignment
 {
-    /// <summary>
-    /// This is a game component that implements IUpdateable.
-    /// </summary>
     public class Player : Microsoft.Xna.Framework.GameComponent
     {
         Texture2D texture;
         Game1 game;
+
         public Vector2 position;
         Vector2 origin;
         float angle; // radians
         float scale = 0.3f;
-
         const float MIN_ANGLE = 4.635f;
         const float MAX_ANGLE = 4.82f;
 
         public Rectangle boxCollider;
+
+        // States
         public bool isJumping;
         public bool isIdle;
         public bool isCrouching;
         public TimeSpan jumpingTime;
         public TimeSpan crouchingTime;
 
+        // Animations
         private Animation IdleAnimation;
         private Animation MovingAnimation;
         private Animation JumpingAnimation;
@@ -103,7 +103,6 @@ namespace Assignment
                 angle += GameSettings.PLAYER_SPEED_X;
                 if (angle > MAX_ANGLE)
                     angle = MAX_ANGLE;
-                //Console.Out.WriteLine("Angle " + angle);
                 adjustPosition(Rectangle.Empty);
                 isIdle = false;
                
@@ -113,7 +112,6 @@ namespace Assignment
                 angle -= GameSettings.PLAYER_SPEED_X;
                 if (angle < MIN_ANGLE)
                     angle = MIN_ANGLE;
-               // Console.Out.WriteLine("Angle " + angle);
                 adjustPosition(Rectangle.Empty);
                 isIdle = false;
             }
@@ -123,7 +121,6 @@ namespace Assignment
                 angle -= 0.0002f;
                 if (angle < MIN_ANGLE)
                     angle = MIN_ANGLE;
-                //Console.Out.WriteLine("Angle " + angle);
                 adjustPosition(Rectangle.Empty);
                 isIdle = true;
             }
@@ -135,6 +132,7 @@ namespace Assignment
                 PlayerAnimationController.PlayAnimation(JumpingAnimation);
             }
 
+            // Play animation
             if (InputManager.IsMovingDown() && !isCrouching)
             {
                 isCrouching = true;
@@ -155,8 +153,6 @@ namespace Assignment
         {
 
             PlayerAnimationController.Draw(gameTime, batch, position, scale, SpriteEffects.None, Color.DarkOliveGreen, 0, origin);
-
-            //batch.Draw(texture, position, null, Color.DarkOliveGreen, 0, origin, scale, SpriteEffects.None, 0f);
             var t = new Texture2D(game.GraphicsDevice, 1, 1);
             t.SetData(new[] { Color.White });
           //batch.Draw(t, boxCollider, Color.Black);
@@ -167,22 +163,14 @@ namespace Assignment
             position.X = game.earth.radius * (float)Math.Cos(angle) + game.screenWidth * 0.4f;
             if (boxCollider == Rectangle.Empty)
             {
-
                 if (isJumping)
-                {
                     position.Y -= GameSettings.PLAYER_SPEED_Y;
-                }
                 else
-                {
-                    // freefall
                     position.Y += GameSettings.PLAYER_SPEED_Y;
-                }
             }
             else
             {
-                
-                    position.Y = boxCollider.Top - this.boxCollider.Height;
-                
+                position.Y = boxCollider.Top - this.boxCollider.Height;
             }
             this.boxCollider.X = (int)position.X;
             this.boxCollider.Y = (int)position.Y;
@@ -193,6 +181,11 @@ namespace Assignment
         internal void birdCollided(Bird bird)
         {
             game.bird = new Bird(game, this);
+        }
+
+        internal void flyCollided(Fly fly)
+        {
+            game.fly = new Fly(game);
         }
     }
 }

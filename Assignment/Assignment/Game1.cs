@@ -22,6 +22,7 @@ namespace Assignment
         public Earth earth;
         public Player player;
         public Bird bird;
+        public Fly fly;
 
         public int screenWidth;
         public int screenHeight;
@@ -47,6 +48,7 @@ namespace Assignment
             this.earth = new Earth(this);
             this.player = new Player(this);
             this.bird = new Bird(this, player);
+            this.fly = new Fly(this);
             
         }
 
@@ -89,6 +91,7 @@ namespace Assignment
             earth.Update(gameTime);
             player.Update(gameTime);
             bird.Update(gameTime);
+            fly.Update(gameTime);
 
             InputManager.Update(gameTime);
         }
@@ -105,6 +108,8 @@ namespace Assignment
             earth.Draw(spriteBatch);
             player.Draw(gameTime, spriteBatch);
             bird.Draw(spriteBatch);
+            fly.Draw(spriteBatch);
+
             spriteBatch.End();
             base.Draw(gameTime);
             
