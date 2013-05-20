@@ -90,47 +90,59 @@ namespace Assignment
             }
 
             if (isCrouching)
+            {
                 crouchingTime += gameTime.ElapsedGameTime;
+                // drifting back with earth movement
+                angle -= 0.0002f;
+                if (angle < MIN_ANGLE)
+                    angle = MIN_ANGLE;
+            }
+            else
+            {
+                if (InputManager.IsMovingRight())
+                {
+                    angle += GameSettings.PLAYER_SPEED_X;
+                    if (angle > MAX_ANGLE)
+                        angle = MAX_ANGLE;
 
+                    isIdle = false;
+
+                }
+                else if (InputManager.IsMovingLeft())
+                {
+                    angle -= GameSettings.PLAYER_SPEED_X;
+                    if (angle < MIN_ANGLE)
+                        angle = MIN_ANGLE;
+                    isIdle = false;
+                }
+                else
+                {
+                    // drifting back with earth movement
+                    angle -= 0.0002f;
+                    if (angle < MIN_ANGLE)
+                        angle = MIN_ANGLE;
+                    isIdle = true;
+                }
+
+                // jump
+                if (InputManager.IsMovingUp() && !isJumping)
+                {
+                    isJumping = true;
+                    PlayerAnimationController.PlayAnimation(JumpingAnimation);
+                }
+
+            }
             if (crouchingTime.TotalMilliseconds > GameSettings.JUMP_TIME)
             {
                 crouchingTime = new TimeSpan();
                 isCrouching = false;
             }
 
-            if (InputManager.IsMovingRight())
-            {
-                angle += GameSettings.PLAYER_SPEED_X;
-                if (angle > MAX_ANGLE)
-                    angle = MAX_ANGLE;
-                adjustPosition(Rectangle.Empty);
-                isIdle = false;
-               
-            }
-            else if (InputManager.IsMovingLeft())
-            {
-                angle -= GameSettings.PLAYER_SPEED_X;
-                if (angle < MIN_ANGLE)
-                    angle = MIN_ANGLE;
-                adjustPosition(Rectangle.Empty);
-                isIdle = false;
-            }
-            else
-            { 
-                // drifting back with earth movement
-                angle -= 0.0002f;
-                if (angle < MIN_ANGLE)
-                    angle = MIN_ANGLE;
-                adjustPosition(Rectangle.Empty);
-                isIdle = true;
-            }
+           
 
-            // jump
-            if (InputManager.IsMovingUp() && !isJumping)
-            {
-                isJumping = true;
-                PlayerAnimationController.PlayAnimation(JumpingAnimation);
-            }
+
+            adjustPosition(Rectangle.Empty);
+            adjustCollider();
 
             // Play animation
             if (InputManager.IsMovingDown() && !isCrouching)
@@ -148,6 +160,8 @@ namespace Assignment
 
             base.Update(gameTime);
         }
+
+        
 
         public virtual void Draw(GameTime gameTime, SpriteBatch batch)
         {
@@ -172,20 +186,33 @@ namespace Assignment
             {
                 position.Y = boxCollider.Top - this.boxCollider.Height;
             }
+            
+            //Console.Out.WriteLine("Player Position: X " + position.X + " Y " + position.Y);
+        }
+
+        private void adjustCollider()
+        {
+            boxCollider.Width = (int)(texture.Bounds.Width * scale * 0.7);
+            boxCollider.Height = (int)(texture.Bounds.Height * scale * 0.7);
             this.boxCollider.X = (int)position.X;
             this.boxCollider.Y = (int)position.Y;
-            //Console.Out.WriteLine("Player Position: X " + position.X + " Y " + position.Y);
         }
 
 
         internal void birdCollided(Bird bird)
         {
+            if (isCrouching)
+                return;
             game.bird = new Bird(game, this);
+            scale -= 0.02f;
         }
 
         internal void flyCollided(Fly fly)
         {
+            if (isCrouching)
+                return;
             game.fly = new Fly(game);
+            scale += 0.02f;
         }
     }
 }
