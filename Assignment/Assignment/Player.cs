@@ -18,9 +18,11 @@ namespace Assignment
         Game1 game;
 
         public Vector2 position;
+        public bool isStuckRight;
+        public double isStuckLeft;
         Vector2 origin;
         float angle; // radians
-        float scale = 0.3f;
+        float scale = 0.25f;
         const float MIN_ANGLE = 4.635f;
         const float MAX_ANGLE = 4.82f;
 
@@ -57,10 +59,7 @@ namespace Assignment
             Initialize();
         }
 
-        /// <summary>
-        /// Allows the game component to perform any initialization it needs to before starting
-        /// to run.  This is where it can query for any required services and load content.
-        /// </summary>
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////
         public override void Initialize()
         {
             IdleAnimation = Textures.PlayerIdleAnimation;
@@ -71,15 +70,13 @@ namespace Assignment
             base.Initialize();
         }
 
-        /// <summary>
-        /// Allows the game component to update itself.
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////
         public override void Update(GameTime gameTime)
         {
 
             PlayerAnimationController.Update(gameTime);
 
+            // Movement updates
             if (isJumping)
                 jumpingTime += gameTime.ElapsedGameTime;
 
@@ -97,9 +94,10 @@ namespace Assignment
                 if (angle < MIN_ANGLE)
                     angle = MIN_ANGLE;
             }
+                // Read input
             else
             {
-                if (InputManager.IsMovingRight())
+                if (InputManager.IsMovingRight() && !isStuckRight)
                 {
                     angle += GameSettings.PLAYER_SPEED_X;
                     if (angle > MAX_ANGLE)
@@ -108,7 +106,7 @@ namespace Assignment
                     isIdle = false;
 
                 }
-                else if (InputManager.IsMovingLeft())
+                else if (InputManager.IsMovingLeft() && isStuckLeft == 0)
                 {
                     angle -= GameSettings.PLAYER_SPEED_X;
                     if (angle < MIN_ANGLE)
@@ -120,11 +118,18 @@ namespace Assignment
                     // drifting back with earth movement
                     angle -= 0.0002f;
                     if (angle < MIN_ANGLE)
-                        angle = MIN_ANGLE;
+                        if (!isStuckRight)
+                        {
+                            angle = MIN_ANGLE;
+                        }
+                        else
+                        {
+                             // we are dead!
+                            gameOver();
+                        }
                     isIdle = true;
                 }
 
-                // jump
                 if (InputManager.IsMovingUp() && !isJumping)
                 {
                     isJumping = true;
@@ -139,9 +144,7 @@ namespace Assignment
             }
 
            
-
-
-            adjustPosition(Rectangle.Empty);
+            adjustPosition(Rectangle.Empty, gameTime);
             adjustCollider();
 
             // Play animation
@@ -161,8 +164,15 @@ namespace Assignment
             base.Update(gameTime);
         }
 
-        
 
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        private void gameOver()
+        {
+            game.GameOver();
+        }
+
+
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////
         public virtual void Draw(GameTime gameTime, SpriteBatch batch)
         {
 
@@ -172,47 +182,75 @@ namespace Assignment
           //batch.Draw(t, boxCollider, Color.Black);
         }
 
-        public void adjustPosition(Rectangle boxCollider)
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        public void adjustPosition(Rectangle boxCollider, GameTime gameTime)
         {
-            position.X = game.earth.radius * (float)Math.Cos(angle) + game.screenWidth * 0.4f;
+            
             if (boxCollider == Rectangle.Empty)
             {
+                isStuckRight = false;
+                isStuckLeft = 0;
+
                 if (isJumping)
                     position.Y -= GameSettings.PLAYER_SPEED_Y;
                 else
                     position.Y += GameSettings.PLAYER_SPEED_Y;
+
+                if (position.Y > game.screenHeight)
+                    gameOver();
             }
             else
             {
-                position.Y = boxCollider.Top - this.boxCollider.Height;
+               // Console.WriteLine("box collider top {0}, player top {1}, player bottom {2}", boxCollider.Top, position.Y, position.Y + this.boxCollider.Height);
+                if (position.Y <= boxCollider.Top)
+                { 
+                    position.Y = boxCollider.Top - this.boxCollider.Height;
+                    isStuckRight = false;
+                    if (gameTime.TotalGameTime.TotalMilliseconds != isStuckLeft)
+                        isStuckLeft = 0;
+                }
+                else // we are facing a wall, stop movement
+                {
+                    if (position.X < boxCollider.X)
+                        isStuckRight = true;
+                    else if (position.X > boxCollider.X)
+                            isStuckLeft = gameTime.TotalGameTime.TotalMilliseconds;
+                    
+                    
+                }
             }
+
+            position.X = game.earth.radius * (float)Math.Cos(angle) + game.screenWidth * 0.4f;
             
             //Console.Out.WriteLine("Player Position: X " + position.X + " Y " + position.Y);
         }
 
+
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////
         private void adjustCollider()
         {
-            boxCollider.Width = (int)(texture.Bounds.Width * scale * 0.7);
+            boxCollider.Width = (int)(texture.Bounds.Width * scale * 0.6);
             boxCollider.Height = (int)(texture.Bounds.Height * scale * 0.7);
             this.boxCollider.X = (int)position.X;
             this.boxCollider.Y = (int)position.Y;
         }
 
-
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////
         internal void birdCollided(Bird bird)
         {
             if (isCrouching)
                 return;
             game.bird = new Bird(game, this);
-            scale -= 0.02f;
+            scale -= 0.01f;
         }
 
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////
         internal void flyCollided(Fly fly)
         {
             if (isCrouching)
                 return;
             game.fly = new Fly(game);
-            scale += 0.02f;
+            scale += 0.01f;
         }
     }
 }
