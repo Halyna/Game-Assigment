@@ -19,7 +19,7 @@ namespace Assignment
 
         public Vector2 position;
         public bool isStuckRight;
-        public double isStuckLeft;
+        public double isStuckLeft; //will use gameTime as a reference for multiple terrain colliders per frame
         Vector2 origin;
         float angle; // radians
         float scale = 0.25f;

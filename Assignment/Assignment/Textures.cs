@@ -9,12 +9,18 @@ namespace Assignment
 {
     class Textures
     {
+        private static ContentManager Content;
 
+        // player
         public static Animation PlayerIdleAnimation;
         public static Animation PlayerMoveingAnimation;
         public static Animation PlayerJumpingAnimation;
         public static Animation PlayerCrouchAnimation;
-        private static ContentManager Content;
+        
+        // menus
+        public static Texture2D gameOverText { get; set; }
+        public static Texture2D startGameText { get; set; }
+        public static Texture2D logoText { get; set; }
 
 
         public static void Initialize(ContentManager content)
@@ -69,6 +75,12 @@ namespace Assignment
             }
 
             PlayerCrouchAnimation = new Animation(playerCrouchArray, .1f, false, playerCrouchFrames);
+
+            // menus
+            gameOverText = Content.Load<Texture2D>("UI/gameovertext");
+            startGameText = Content.Load<Texture2D>("UI/gameovertext");
+            logoText = Content.Load<Texture2D>("UI/logoText");
+
         }
     }
 }

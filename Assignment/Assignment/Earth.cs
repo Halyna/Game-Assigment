@@ -31,7 +31,7 @@ namespace Assignment
             : base(game)
         {
             this.game = game;
-            this.position = new Vector2(game.screenWidth * 0.5f, game.screenHeight * 6.9f);
+            this.position = new Vector2(game.screenWidth * 0.5f, game.screenHeight * 7f);
             texture = game.Content.Load<Texture2D>(@"Earth");
             origin.X = texture.Width / 2;
             origin.Y = texture.Height / 2;

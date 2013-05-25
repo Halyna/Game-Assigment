@@ -63,7 +63,8 @@ namespace Assignment
 
         //static checks here
         public static bool PressedStart() {
-            if (Input.KeyJustPressed(Keys.Enter)) return true;
+            if (Input.KeyJustPressed(Keys.Enter)) 
+                return true;
          
             return false;
         }

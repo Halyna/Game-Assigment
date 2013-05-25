@@ -16,6 +16,8 @@ namespace Assignment
     /// </summary>
     public class Game1 : Microsoft.Xna.Framework.Game
     {
+        public enum GameState { MainMenu, InGame, GameOver };
+
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
@@ -26,6 +28,8 @@ namespace Assignment
 
         public int screenWidth;
         public int screenHeight;
+
+        public GameState gameState = GameState.MainMenu;
 
         public Game1()
         {
@@ -76,9 +80,24 @@ namespace Assignment
 
             base.Update(gameTime);
             earth.Update(gameTime);
-            player.Update(gameTime);
-            bird.Update(gameTime);
-            fly.Update(gameTime);
+            if (gameState == GameState.InGame)
+            {
+                player.Update(gameTime);
+                bird.Update(gameTime);
+                fly.Update(gameTime);
+            }
+
+            
+
+            if (gameState == GameState.MainMenu && InputManager.PressedStart())
+            {
+                gameState = GameState.InGame;
+            }
+            if (gameState == GameState.GameOver && InputManager.PressedStart())
+            {
+                gameState = GameState.MainMenu;
+                Initialize();
+            }
 
             InputManager.Update(gameTime);
         }
@@ -89,9 +108,26 @@ namespace Assignment
             spriteBatch.Begin();
 
             earth.Draw(spriteBatch);
-            player.Draw(gameTime, spriteBatch);
-            bird.Draw(spriteBatch);
-            fly.Draw(spriteBatch);
+            
+            
+
+            if (gameState == GameState.GameOver)
+            {
+                spriteBatch.Draw(Textures.gameOverText, new Rectangle(screenWidth / 2 - Textures.gameOverText.Width / 2,
+                        screenHeight / 2 - Textures.gameOverText.Height / 2, Textures.gameOverText.Width, Textures.gameOverText.Height), Color.White);
+
+            }
+            else if (gameState == GameState.MainMenu)
+            {
+                spriteBatch.Draw(Textures.logoText, new Rectangle(screenWidth / 2 - Textures.gameOverText.Width / 2,
+                        screenHeight / 3 - Textures.gameOverText.Height / 2, Textures.gameOverText.Width, Textures.gameOverText.Height), Color.White);
+            }
+            else
+            {
+                bird.Draw(spriteBatch);
+                fly.Draw(spriteBatch);
+                player.Draw(gameTime, spriteBatch);
+            }
 
             spriteBatch.End();
             base.Draw(gameTime);
@@ -100,7 +136,8 @@ namespace Assignment
 
         internal void GameOver()
         {
-            Initialize();
+            gameState = GameState.GameOver;
+            
         }
     }
 }
