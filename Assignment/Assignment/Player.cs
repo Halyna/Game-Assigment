@@ -32,6 +32,7 @@ namespace Assignment
         public bool isJumping;
         public bool isIdle;
         public bool isCrouching;
+        public bool inTheAir;
         public TimeSpan jumpingTime;
         public TimeSpan crouchingTime;
 
@@ -53,7 +54,7 @@ namespace Assignment
             texture = game.Content.Load<Texture2D>(@"PlayerAnimations/Idle/t_IDLE_0");
             origin.X = texture.Width / 2 * scale;
             origin.Y = texture.Height / 2 * scale;
-            boxCollider = new Rectangle(0, 0, (int)(texture.Bounds.Width * scale * 0.7), (int)(texture.Bounds.Height * scale* 0.7));
+            boxCollider = new Rectangle(0, 0, (int)(texture.Bounds.Width * scale * 0.7), (int)(texture.Bounds.Height * scale * 0.7));
             jumpingTime = new TimeSpan();
             crouchingTime = new TimeSpan();
             Initialize();
@@ -86,77 +87,76 @@ namespace Assignment
                 isJumping = false;
             }
 
-            if (isCrouching)
+            //if (isCrouching)
+            //{
+            //    // drifting back with earth movement
+            //    angle -= 0.0002f;
+            //    if (angle < MIN_ANGLE)
+            //        angle = MIN_ANGLE;
+            //}
+            // Read input
+
+            if (InputManager.IsMovingRight() && !isCrouching && !isStuckRight)
             {
-                crouchingTime += gameTime.ElapsedGameTime;
+                angle += GameSettings.PLAYER_SPEED_X;
+                if (angle > MAX_ANGLE)
+                    angle = MAX_ANGLE;
+
+                isIdle = false;
+
+            }
+            else if (InputManager.IsMovingLeft() && !isCrouching && isStuckLeft == 0)
+            {
+                angle -= GameSettings.PLAYER_SPEED_X;
+                if (angle < MIN_ANGLE)
+                    angle = MIN_ANGLE;
+                isIdle = false;
+            }
+            else
+            {
                 // drifting back with earth movement
                 angle -= 0.0002f;
                 if (angle < MIN_ANGLE)
-                    angle = MIN_ANGLE;
-            }
-                // Read input
-            else
-            {
-                if (InputManager.IsMovingRight() && !isStuckRight)
-                {
-                    angle += GameSettings.PLAYER_SPEED_X;
-                    if (angle > MAX_ANGLE)
-                        angle = MAX_ANGLE;
-
-                    isIdle = false;
-
-                }
-                else if (InputManager.IsMovingLeft() && isStuckLeft == 0)
-                {
-                    angle -= GameSettings.PLAYER_SPEED_X;
-                    if (angle < MIN_ANGLE)
+                    if (!isStuckRight)
+                    {
                         angle = MIN_ANGLE;
-                    isIdle = false;
-                }
-                else
-                {
-                    // drifting back with earth movement
-                    angle -= 0.0002f;
-                    if (angle < MIN_ANGLE)
-                        if (!isStuckRight)
-                        {
-                            angle = MIN_ANGLE;
-                        }
-                        else
-                        {
-                             // we are dead!
-                            gameOver();
-                        }
-                    isIdle = true;
-                }
-
-                if (InputManager.IsMovingUp() && !isJumping)
-                {
-                    isJumping = true;
-                    PlayerAnimationController.PlayAnimation(JumpingAnimation);
-                }
-
+                    }
+                    else
+                    {
+                        // we are dead!
+                        gameOver();
+                    }
+                isIdle = true;
             }
-            if (crouchingTime.TotalMilliseconds > GameSettings.JUMP_TIME)
+
+            if (InputManager.IsMovingUp() && !isJumping && !inTheAir)
             {
-                crouchingTime = new TimeSpan();
+                isJumping = true;
+                PlayerAnimationController.PlayAnimation(JumpingAnimation);
+            }
+            if (InputManager.IsMovingDown() && !isCrouching && !inTheAir)
+            {
+                isCrouching = true;
+            }
+            else if (!InputManager.IsMovingDown())
+            {
                 isCrouching = false;
             }
 
-           
+
+
             adjustPosition(Rectangle.Empty, gameTime);
             adjustCollider();
 
             // Play animation
-            if (InputManager.IsMovingDown() && !isCrouching)
+            if (isCrouching)
             {
-                isCrouching = true;
                 PlayerAnimationController.PlayAnimation(CrouchAnimation);
             }
 
             if (isIdle && !isJumping && !isCrouching)
             {
-                 PlayerAnimationController.PlayAnimation(IdleAnimation);
+                PlayerAnimationController.PlayAnimation(IdleAnimation);
             }
             else if (!isJumping && !isCrouching)
                 PlayerAnimationController.PlayAnimation(MovingAnimation);
@@ -179,17 +179,18 @@ namespace Assignment
             PlayerAnimationController.Draw(gameTime, batch, position, scale, SpriteEffects.None, Color.DarkOliveGreen, 0, origin);
             var t = new Texture2D(game.GraphicsDevice, 1, 1);
             t.SetData(new[] { Color.White });
-          //batch.Draw(t, boxCollider, Color.Black);
+            //batch.Draw(t, boxCollider, Color.Black);
         }
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////
         public void adjustPosition(Rectangle boxCollider, GameTime gameTime)
         {
-            
+
             if (boxCollider == Rectangle.Empty)
             {
                 isStuckRight = false;
                 isStuckLeft = 0;
+                inTheAir = true;
 
                 if (isJumping)
                     position.Y -= GameSettings.PLAYER_SPEED_Y;
@@ -201,9 +202,9 @@ namespace Assignment
             }
             else
             {
-               // Console.WriteLine("box collider top {0}, player top {1}, player bottom {2}", boxCollider.Top, position.Y, position.Y + this.boxCollider.Height);
+                inTheAir = false;
                 if (position.Y <= boxCollider.Top)
-                { 
+                {
                     position.Y = boxCollider.Top - this.boxCollider.Height;
                     isStuckRight = false;
                     if (gameTime.TotalGameTime.TotalMilliseconds != isStuckLeft)
@@ -214,14 +215,14 @@ namespace Assignment
                     if (position.X < boxCollider.X)
                         isStuckRight = true;
                     else if (position.X > boxCollider.X)
-                            isStuckLeft = gameTime.TotalGameTime.TotalMilliseconds;
-                    
-                    
+                        isStuckLeft = gameTime.TotalGameTime.TotalMilliseconds;
+
+
                 }
             }
 
             position.X = game.earth.radius * (float)Math.Cos(angle) + game.screenWidth * 0.4f;
-            
+
             //Console.Out.WriteLine("Player Position: X " + position.X + " Y " + position.Y);
         }
 
