@@ -124,7 +124,7 @@ namespace Assignment
             }
             else
             {
-                bird.Draw(spriteBatch);
+                bird.Draw(gameTime, spriteBatch);
                 fly.Draw(spriteBatch);
                 player.Draw(gameTime, spriteBatch);
             }

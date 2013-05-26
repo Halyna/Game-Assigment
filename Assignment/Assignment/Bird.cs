@@ -19,6 +19,9 @@ namespace Assignment
     {
 
         Texture2D texture;
+        private Animation BirdAnimation;
+        private AnimationPlayer BirdAnimationController;
+
         Game1 game;
         Vector2 position;
         Vector2 target;
@@ -33,14 +36,14 @@ namespace Assignment
            
             this.position = new Vector2();
             Random r = new Random();
-            scale = 0.1f;
+            scale = 0.3f;
             position.X = r.Next(game.screenWidth);
             position.Y = 0;
             target = new Vector2();
-            texture = game.Content.Load<Texture2D>(@"Bird");
+            texture = game.Content.Load<Texture2D>("ObjectsAnimations/Bird/d_FLAP_0");
             origin.X = texture.Width / 2 * scale;
             origin.Y = texture.Height / 2 * scale;
-            boxCollider = new Rectangle(0, 0, (int)(texture.Bounds.Width * scale), (int)(texture.Bounds.Height * scale));
+            boxCollider = new Rectangle(0, 0, (int)(texture.Bounds.Width * 0.8f * scale), (int)(texture.Bounds.Height * 0.6f * scale));
             Initialize();
         }
 
@@ -50,14 +53,17 @@ namespace Assignment
         /// </summary>
         public override void Initialize()
         {
-            // TODO: Add your initialization code here
-
+            BirdAnimation = Textures.BirdAnimation;
+            BirdAnimationController.PlayAnimation(BirdAnimation);
             base.Initialize();
         }
 
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
+
+            BirdAnimationController.Update(gameTime);
+
            // will stop adjusting direction at some point
             if (position.Y < game.screenHeight / 3)
             {
@@ -86,12 +92,23 @@ namespace Assignment
             }
         }
 
-        public virtual void Draw(SpriteBatch batch)
+        public virtual void Draw(GameTime gameTime, SpriteBatch batch)
         {
-            batch.Draw(texture, position, null, Color.White, 0, origin, scale, SpriteEffects.None, 0f);
+           // batch.Draw(texture, position, null, Color.White, 0, origin, scale, SpriteEffects.None, 0f);
+            if (position.X > game.player.position.X)
+            {
+                BirdAnimationController.Draw(gameTime, batch, position, scale, SpriteEffects.FlipHorizontally, Color.DarkOliveGreen, 0, origin);
+            }
+            else
+            {
+                BirdAnimationController.Draw(gameTime, batch, position, scale, SpriteEffects.None, Color.DarkOliveGreen, 0, origin);
+            }
+           
+
             var t = new Texture2D(game.GraphicsDevice, 1, 1);
             t.SetData(new[] { Color.White });
-            //batch.Draw(t, boxCollider, Color.Black);
+            Color c = new Color(0, 0, 0, 0.5f);
+            batch.Draw(t, boxCollider, c);
 
 
         }

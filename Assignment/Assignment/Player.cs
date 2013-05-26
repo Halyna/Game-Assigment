@@ -179,7 +179,8 @@ namespace Assignment
             PlayerAnimationController.Draw(gameTime, batch, position, scale, SpriteEffects.None, Color.DarkOliveGreen, 0, origin);
             var t = new Texture2D(game.GraphicsDevice, 1, 1);
             t.SetData(new[] { Color.White });
-            //batch.Draw(t, boxCollider, Color.Black);
+            Color c = new Color(0, 0, 0, 0.5f);
+            batch.Draw(t, boxCollider, c);
         }
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////

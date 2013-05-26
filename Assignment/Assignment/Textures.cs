@@ -16,6 +16,8 @@ namespace Assignment
         public static Animation PlayerMoveingAnimation;
         public static Animation PlayerJumpingAnimation;
         public static Animation PlayerCrouchAnimation;
+
+        public static Animation BirdAnimation;
         
         // menus
         public static Texture2D gameOverText { get; set; }
@@ -75,6 +77,17 @@ namespace Assignment
             }
 
             PlayerCrouchAnimation = new Animation(playerCrouchArray, .1f, false, playerCrouchFrames);
+
+            // Bird
+            Texture2D[] birdArray = new Texture2D[8];
+            int[] birdFrames = new int[8] { 1, 1, 1, 1, 1, 1, 1, 1 };
+            for (int i = 0; i < birdArray.Length; i++)
+            {
+                frameName = String.Format("ObjectsAnimations/Bird/d_FLAP_{0}", i);
+                birdArray[i] = Content.Load<Texture2D>(frameName);
+            }
+
+            BirdAnimation = new Animation(birdArray, .1f, true, birdFrames);
 
             // menus
             gameOverText = Content.Load<Texture2D>("UI/gameovertext");
