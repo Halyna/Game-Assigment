@@ -65,6 +65,7 @@ namespace Assignment
             if (boxCollider.Intersects(game.bird.boxCollider))
             {
 
+                //sound of bird hitting ground
                 game.bird = new Bird(game, game.player);
 
             }
