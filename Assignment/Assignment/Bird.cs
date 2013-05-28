@@ -84,10 +84,12 @@ namespace Assignment
 
         private void detectCollistions()
         {
+            //hits player
             if (boxCollider.Intersects(game.player.boxCollider))
             {
 
                 game.player.birdCollided(this);
+
 
             }
         }
