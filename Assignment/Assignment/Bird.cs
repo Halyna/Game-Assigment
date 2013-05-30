@@ -22,6 +22,8 @@ namespace Assignment
         private Animation BirdAnimation;
         private AnimationPlayer BirdAnimationController;
 
+
+
         Game1 game;
         Vector2 position;
         Vector2 target;
@@ -53,6 +55,7 @@ namespace Assignment
         /// </summary>
         public override void Initialize()
         {
+            game.birdSpawnedSound.Play();
             BirdAnimation = Textures.BirdAnimation;
             BirdAnimationController.PlayAnimation(BirdAnimation);
             base.Initialize();
@@ -84,10 +87,11 @@ namespace Assignment
 
         private void detectCollistions()
         {
-            //hits player
+            
             if (boxCollider.Intersects(game.player.boxCollider))
             {
 
+                game.hitTerrainSound.Play();
                 game.player.birdCollided(this);
 
 

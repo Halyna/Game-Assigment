@@ -17,7 +17,7 @@ namespace Assignment
     /// </summary>
     public class Earth : Microsoft.Xna.Framework.GameComponent
     {
-        //lukw ==
+ 
         Texture2D texture;
         Game1 game;
         Vector2 position;
