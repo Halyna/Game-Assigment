@@ -149,6 +149,7 @@ namespace Assignment
 
         internal void GameOver()
         {
+            dyingSound.Play();
             gameState = GameState.GameOver;
             
         }
