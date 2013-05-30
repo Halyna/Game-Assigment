@@ -88,7 +88,7 @@ namespace Assignment
         private void detectCollistions()
         {
             
-            if (boxCollider.Intersects(game.player.boxCollider))
+            if (boxCollider.Intersects(game.player.boxCollider) && game.player.isCrouching != true)
             {
 
                 game.hitTerrainSound.Play();
