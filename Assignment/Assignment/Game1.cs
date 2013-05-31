@@ -31,6 +31,12 @@ namespace Assignment
 
         public GameState gameState = GameState.MainMenu;
 
+
+        public SoundEffect dyingSound;
+        public SoundEffect hitTerrainSound;
+        public SoundEffect birdSpawnedSound;
+        public SoundEffect biteSound;
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -61,7 +67,14 @@ namespace Assignment
             spriteBatch = new SpriteBatch(GraphicsDevice);
             Textures.Initialize(Content);
             Textures.LoadTextures();
+
+            birdSpawnedSound = Content.Load<SoundEffect>("Sound/Screech");
+            hitTerrainSound = Content.Load<SoundEffect>("Sound/BoneCrush");
+            dyingSound = Content.Load<SoundEffect>("Sound/Dying");
+            biteSound = Content.Load<SoundEffect>("Sound/Bite");
+
             // TODO: use this.Content to load your game content here
+
         }
 
         protected override void UnloadContent()
@@ -102,7 +115,7 @@ namespace Assignment
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.SkyBlue);
+            GraphicsDevice.Clear(Color.Yellow);
             spriteBatch.Begin();
 
             earth.Draw(spriteBatch);
@@ -133,6 +146,7 @@ namespace Assignment
 
         internal void GameOver()
         {
+            dyingSound.Play();
             gameState = GameState.GameOver;
             
         }

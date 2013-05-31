@@ -138,11 +138,13 @@ namespace Assignment
             if (InputManager.IsMovingUp() && !isJumping && !inTheAir)
             {
                 isJumping = true;
+                //add jump sound
                 PlayerAnimationController.PlayAnimation(JumpingAnimation);
             }
             if (InputManager.IsMovingDown() && !isCrouching && !inTheAir)
             {
                 isCrouching = true;
+                //add crouch sound
             }
             else if (!InputManager.IsMovingDown())
             {
@@ -174,6 +176,7 @@ namespace Assignment
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////
         private void gameOver()
         {
+            //add death sound
             game.GameOver();
         }
 

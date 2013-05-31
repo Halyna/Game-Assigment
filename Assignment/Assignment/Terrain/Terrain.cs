@@ -75,7 +75,6 @@ namespace Assignment
 
             if (boxCollider.Intersects(game.bird.boxCollider))
             {
-
                 game.bird.FlyAway();
 
             }

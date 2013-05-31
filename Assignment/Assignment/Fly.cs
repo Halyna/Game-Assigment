@@ -80,7 +80,7 @@ namespace Assignment
         {
             if (boxCollider.Intersects(game.player.boxCollider))
             {
-
+                game.biteSound.Play();
                 game.player.flyCollided(this);
 
             }
