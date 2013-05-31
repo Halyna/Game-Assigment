@@ -26,10 +26,16 @@ namespace Assignment
         public Rectangle boxCollider;
         public bool isOnScreen;
 
-        public Terrain(Game1 game, float startAngle)
+        public Fly fly;
+
+        public Terrain(Game1 game, float startAngle, bool hasFly)
         {
             this.game = game;
             angle = startAngle;
+            if (hasFly)
+            {
+                fly = new Fly(game, startAngle, this);
+            }
         }
        
         public virtual void Initialize()
@@ -50,6 +56,11 @@ namespace Assignment
             {
                 detectCollistions(gameTime);
             }
+
+            if (fly != null)
+            {
+                fly.Update(gameTime);
+            }
             
         }
 
@@ -65,7 +76,7 @@ namespace Assignment
             if (boxCollider.Intersects(game.bird.boxCollider))
             {
 
-                game.bird = new Bird(game, game.player);
+                game.bird.FlyAway();
 
             }
         }
@@ -73,6 +84,12 @@ namespace Assignment
         public virtual void Draw(SpriteBatch batch) 
         {
             batch.Draw(texture, position, null, Color.White, 0, origin, scale, SpriteEffects.None, 0f);
+            if (fly != null)
+            {
+                fly.Draw(batch);
+            }
+
+            // debug: collider
             var t = new Texture2D(game.GraphicsDevice, 1, 1);
             t.SetData(new[] { Color.White });
             Color c = new Color(0, 0, 0, 0.5f);

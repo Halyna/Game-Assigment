@@ -20,10 +20,12 @@ namespace Assignment
         public static Animation BirdAnimation;
         
         // menus
-        public static Texture2D gameOverText { get; set; }
-        public static Texture2D startGameText { get; set; }
-        public static Texture2D logoText { get; set; }
+        public static Texture2D gameOverText;
+        public static Texture2D startGameText;
+        public static Texture2D logoText;
 
+        // fonts
+        public static SpriteFont font24;
 
         public static void Initialize(ContentManager content)
         {
@@ -93,6 +95,9 @@ namespace Assignment
             gameOverText = Content.Load<Texture2D>("UI/gameovertext");
             startGameText = Content.Load<Texture2D>("UI/gameovertext");
             logoText = Content.Load<Texture2D>("UI/logoText");
+
+            // fonts
+            font24 = Content.Load<SpriteFont>("Fonts/Font24");
 
         }
     }

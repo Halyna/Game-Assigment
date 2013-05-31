@@ -23,27 +23,33 @@ namespace Assignment
         private AnimationPlayer BirdAnimationController;
 
         Game1 game;
+        Vector2 startPosition;
         Vector2 position;
         Vector2 target;
         Vector2 origin;
+
+        bool isFlyingAway = false;
+
         float scale;
         public Rectangle boxCollider;
 
-        public Bird(Game1 game, Player player)
+        public Bird(Game1 game)
             : base(game)
         {
             this.game = game;
-           
+
             this.position = new Vector2();
             Random r = new Random();
-            scale = 0.3f;
             position.X = r.Next(game.screenWidth);
             position.Y = 0;
+            startPosition = position;
             target = new Vector2();
+
+            scale = 0.3f;
             texture = game.Content.Load<Texture2D>("ObjectsAnimations/Bird/d_FLAP_0");
             origin.X = texture.Width / 2 * scale;
             origin.Y = texture.Height / 2 * scale;
-            boxCollider = new Rectangle(0, 0, (int)(texture.Bounds.Width * 0.8f * scale), (int)(texture.Bounds.Height * 0.6f * scale));
+            boxCollider = new Rectangle(0, 0, (int)(texture.Bounds.Width * 0.8f * scale), (int)(texture.Bounds.Height * 0.4f * scale));
             Initialize();
         }
 
@@ -58,44 +64,56 @@ namespace Assignment
             base.Initialize();
         }
 
+        private void Reset()
+        {
+            this.position = new Vector2();
+            Random r = new Random();
+            position.X = r.Next(game.screenWidth);
+            position.Y = 0;
+            startPosition = position;
+
+            isFlyingAway = false;
+        }
+
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
 
             BirdAnimationController.Update(gameTime);
 
-           // will stop adjusting direction at some point
-            if (position.Y < game.screenHeight / 3)
+            // will stop adjusting direction at some point
+            if (position.Y < game.screenHeight / 3 && !isFlyingAway)
             {
                 // Direction between two poins is Vector(x2-x1,y2-y1)
                 target = new Vector2(game.player.position.X - position.X, game.player.position.Y - position.Y);
                 target.Normalize();
             }
-           
 
             position += target * 4;
             this.boxCollider.X = (int)position.X;
             this.boxCollider.Y = (int)position.Y;
-           
+
 
             detectCollistions();
-            
+
+            if (position.Y < -50)
+                Reset();
+
         }
+
+
 
         private void detectCollistions()
         {
             if (boxCollider.Intersects(game.player.boxCollider))
             {
-
                 game.player.birdCollided(this);
-
             }
         }
 
         public virtual void Draw(GameTime gameTime, SpriteBatch batch)
         {
-           // batch.Draw(texture, position, null, Color.White, 0, origin, scale, SpriteEffects.None, 0f);
-            if (position.X > game.player.position.X)
+            if (target.X < 0)
             {
                 BirdAnimationController.Draw(gameTime, batch, position, scale, SpriteEffects.FlipHorizontally, Color.DarkOliveGreen, 0, origin);
             }
@@ -103,14 +121,21 @@ namespace Assignment
             {
                 BirdAnimationController.Draw(gameTime, batch, position, scale, SpriteEffects.None, Color.DarkOliveGreen, 0, origin);
             }
-           
 
+            // debug: collider
             var t = new Texture2D(game.GraphicsDevice, 1, 1);
             t.SetData(new[] { Color.White });
             Color c = new Color(0, 0, 0, 0.5f);
             batch.Draw(t, boxCollider, c);
 
 
+        }
+
+        internal void FlyAway()
+        {
+            target = new Vector2(startPosition.X - position.X, startPosition.Y - position.Y);
+            target.Normalize();
+            isFlyingAway = true;
         }
     }
 }

@@ -55,11 +55,11 @@ namespace Assignment
                 float angle = 4.4f;
                 for (int i = 0; i < 50; i++)
                 {
-                    this.terrains.Add(new PlainTerrain(game, angle));
+                    this.terrains.Add(new PlainTerrain(game, angle, true));
                     angle += 0.027f;
-                    this.terrains.Add(new PlainTerrain(game, angle));
+                    this.terrains.Add(new PlainTerrain(game, angle, false));
                     angle += 0.027f;
-                    this.terrains.Add(new LoweredTerrain(game, angle));
+                    this.terrains.Add(new LoweredTerrain(game, angle, false));
                     angle += 0.027f;
                 }
             }

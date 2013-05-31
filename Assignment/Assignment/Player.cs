@@ -16,6 +16,7 @@ namespace Assignment
     {
         Texture2D texture;
         Game1 game;
+        ScoreDisplay scoreDisplay;
 
         public Vector2 position;
         public bool isStuckRight;
@@ -47,16 +48,21 @@ namespace Assignment
             : base(game)
         {
             this.game = game;
+            scoreDisplay = new ScoreDisplay(game);
+            scoreDisplay.currentSize = (int)(scale * 1000);
+
             angle = MIN_ANGLE;
             this.position = new Vector2();
             position.X = game.earth.radius * (float)Math.Cos(angle) + game.screenWidth * 0.4f;
             position.Y = 100;
+
             texture = game.Content.Load<Texture2D>(@"PlayerAnimations/Idle/t_IDLE_0");
             origin.X = texture.Width / 2 * scale;
             origin.Y = texture.Height / 2 * scale;
             boxCollider = new Rectangle(0, 0, (int)(texture.Bounds.Width * scale * 0.7), (int)(texture.Bounds.Height * scale * 0.7));
             jumpingTime = new TimeSpan();
             crouchingTime = new TimeSpan();
+
             Initialize();
         }
 
@@ -177,6 +183,9 @@ namespace Assignment
         {
 
             PlayerAnimationController.Draw(gameTime, batch, position, scale, SpriteEffects.None, Color.DarkOliveGreen, 0, origin);
+            scoreDisplay.Draw(batch);
+
+            // debug: collider
             var t = new Texture2D(game.GraphicsDevice, 1, 1);
             t.SetData(new[] { Color.White });
             Color c = new Color(0, 0, 0, 0.5f);
@@ -232,7 +241,7 @@ namespace Assignment
         private void adjustCollider()
         {
             boxCollider.Width = (int)(texture.Bounds.Width * scale * 0.6);
-            boxCollider.Height = (int)(texture.Bounds.Height * scale * 0.7);
+            boxCollider.Height = (int)(texture.Bounds.Height * scale * 0.67);
             this.boxCollider.X = (int)position.X;
             this.boxCollider.Y = (int)position.Y;
         }
@@ -242,8 +251,15 @@ namespace Assignment
         {
             if (isCrouching)
                 return;
-            game.bird = new Bird(game, this);
+            game.bird = new Bird(game);
             scale -= 0.01f;
+
+            scoreDisplay.currentPoints -= 200;
+            if (scoreDisplay.currentPoints < 0)
+            {
+                scoreDisplay.currentPoints = 0;
+            }
+            scoreDisplay.currentSize = (int)(scale * 1000);
         }
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -251,8 +267,12 @@ namespace Assignment
         {
             if (isCrouching)
                 return;
-            game.fly = new Fly(game);
+            fly.terrain.fly = null;
+            
             scale += 0.01f;
+
+            scoreDisplay.currentPoints += 100;
+            scoreDisplay.currentSize = (int)(scale * 1000);
         }
     }
 }

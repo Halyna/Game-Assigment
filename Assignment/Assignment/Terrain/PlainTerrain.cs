@@ -17,8 +17,8 @@ namespace Assignment
     /// </summary>
     public class PlainTerrain : Terrain
     {
-        public PlainTerrain(Game1 game, float startAngle)
-            : base(game, startAngle)
+        public PlainTerrain(Game1 game, float startAngle, bool hasFly)
+            : base(game, startAngle, hasFly)
         {
             texture = game.Content.Load<Texture2D>(@"Earth_fragment");
             origin.X = texture.Width / 2 * scale;
@@ -42,8 +42,8 @@ namespace Assignment
         {
             position.X = (int)(game.earth.radius * 1f * (float)Math.Cos(angle) + game.screenWidth * 0.5f);
             position.Y = (int)(game.earth.radius * 1f * (float)Math.Sin(angle) + (game.screenHeight * 0.6f + game.earth.radius));
-            boxCollider.X = (int)(position.X - 10f);//(int)position.X - boxCollider.Width;
-            boxCollider.Y = (int)(position.Y - 10f); //+ boxCollider.Height/3;
+            boxCollider.X = (int)(position.X - 18f);//(int)position.X - boxCollider.Width;
+            boxCollider.Y = (int)(position.Y - 18f); //+ boxCollider.Height/3;
             //Console.Out.WriteLine("Terrain Position: X " + position.X + " Y " + position.Y);
             if (position.X < 0 - texture.Width || position.X > game.screenWidth + texture.Width)
             {

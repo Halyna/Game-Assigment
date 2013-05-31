@@ -18,6 +18,8 @@ namespace Assignment
 
         Texture2D texture;
         Game1 game;
+        public Terrain terrain;
+
         Vector2 position;
         Vector2 origin;
         float scale;
@@ -25,20 +27,21 @@ namespace Assignment
         float positionAngle; // radians
         public Rectangle boxCollider;
 
-        public Fly(Game1 game)
+        public Fly(Game1 game, float startAngle, Terrain terrain)
             : base(game)
         {
             this.game = game;
+            this.terrain = terrain;
 
             this.position = new Vector2();
             Random r = new Random();
             scale = 0.05f;
             //position.X = r.Next(game.screenWidth);
             position.Y = game.screenHeight * 0.5f;
-            positionAngle = 4.82f;
+            positionAngle = startAngle;
             texture = game.Content.Load<Texture2D>(@"Fly");
             origin.X = texture.Width * 2 * scale;
-            origin.Y = game.screenHeight * 0.4f;
+            origin.Y = terrain.position.Y - 100;
             boxCollider = new Rectangle(0, 0, (int)(texture.Bounds.Width * scale), (int)(texture.Bounds.Height * scale));
             Initialize();
         }
@@ -64,6 +67,7 @@ namespace Assignment
 
             rotationAngle += 0.1f;
             origin.X = (int)(game.earth.radius * 1f * (float)Math.Cos(positionAngle) + game.screenWidth * 0.5f);
+            origin.Y = terrain.position.Y - game.player.boxCollider.Height * 2.5f;
             position = origin + Vector2.Transform(new Vector2(20, 0), Matrix.CreateRotationZ(rotationAngle));
 
             this.boxCollider.X = (int)position.X;

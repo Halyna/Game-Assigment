@@ -51,8 +51,7 @@ namespace Assignment
 
             this.earth = new Earth(this);
             this.player = new Player(this);
-            this.bird = new Bird(this, player);
-            this.fly = new Fly(this);
+            this.bird = new Bird(this);
             
         }
 
@@ -84,7 +83,6 @@ namespace Assignment
             {
                 player.Update(gameTime);
                 bird.Update(gameTime);
-                fly.Update(gameTime);
             }
 
             
@@ -125,7 +123,6 @@ namespace Assignment
             else
             {
                 bird.Draw(gameTime, spriteBatch);
-                fly.Draw(spriteBatch);
                 player.Draw(gameTime, spriteBatch);
             }
 
