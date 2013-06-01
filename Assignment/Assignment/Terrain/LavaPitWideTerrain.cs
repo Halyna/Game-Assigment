@@ -17,13 +17,30 @@ namespace Assignment
     /// </summary>
     public class LavaPitWideTerrain : Terrain
     {
+
+        Rectangle pitCollider;
+        Rectangle leftRidgeCollider;
+        Rectangle rightRidgeCollider;
+
+
         public LavaPitWideTerrain(Game1 game, float startAngle, bool hasFly)
             : base(game, startAngle, hasFly)
         {
             texture = game.Content.Load<Texture2D>(@"Terrains/lp_2");
             origin.X = texture.Width / 2 * scale;
             origin.Y = texture.Height / 2 * scale;
-            boxCollider = new Rectangle(0, 0, (int)(texture.Bounds.Width * scale), (int)(texture.Bounds.Height * scale));
+
+            // colliders
+            boxCollider = new Rectangle(0, 0, (int)(texture.Bounds.Width * scale), (int)(texture.Bounds.Height * 0.9f * scale));
+            /*
+             * --|     |---
+             * --|     |---
+             * --|=====|---
+             */
+            pitCollider = new Rectangle(0, 0, (int)(boxCollider.Width * 0.7f), (int)(boxCollider.Height * 0.66f));
+            leftRidgeCollider = new Rectangle(0, 0, (int)(boxCollider.Width * 0.15f), boxCollider.Height);
+            rightRidgeCollider = new Rectangle(0, 0, (int)(boxCollider.Width * 0.15f), boxCollider.Height);
+
             offsetAngle = 0.055f;
         }
 
@@ -43,9 +60,19 @@ namespace Assignment
         {
             position.X = (int)(game.earth.radius * 1f * (float)Math.Cos(angle) + game.screenWidth * 0.5f);
             position.Y = (int)(game.earth.radius * 1f * (float)Math.Sin(angle) + (game.screenHeight * 0.6f + game.earth.radius));
-            boxCollider.X = (int)(position.X - 18f);//(int)position.X - boxCollider.Width;
-            boxCollider.Y = (int)(position.Y - 18f); //+ boxCollider.Height/3;
-            //Console.Out.WriteLine("Terrain Position: X " + position.X + " Y " + position.Y);
+
+            // main collider
+            boxCollider.X = (int)(position.X - 18f);
+            boxCollider.Y = (int)(position.Y - 18f);
+
+            // pit colliders
+            pitCollider.X = (int)(boxCollider.X + leftRidgeCollider.Width);
+            pitCollider.Y = (int)(boxCollider.Y + boxCollider.Height * 0.33f);
+            leftRidgeCollider.X = boxCollider.X;
+            leftRidgeCollider.Y = boxCollider.Y;
+            rightRidgeCollider.X = (int)(boxCollider.X + boxCollider.Width - rightRidgeCollider.Width*1.5f);
+            rightRidgeCollider.Y = boxCollider.Y;
+
             if (position.X < 0 - texture.Width || position.X > game.screenWidth + texture.Width)
             {
                 isOnScreen = false;
@@ -57,5 +84,52 @@ namespace Assignment
                 //Console.Out.WriteLine("Collider Position: X " + boxCollider.X + " Y " + boxCollider.Y);
             }
         }
+
+        protected override void detectCollistions(GameTime gameTime)
+        {
+            if (boxCollider.Intersects(game.player.boxCollider))
+            {
+                if (rightRidgeCollider.Intersects(game.player.boxCollider))
+                {
+                    game.player.adjustPosition(rightRidgeCollider, gameTime);
+                }
+                else if (leftRidgeCollider.Intersects(game.player.boxCollider))
+                {
+                    game.player.adjustPosition(leftRidgeCollider, gameTime);
+                }
+                else if (pitCollider.Intersects(game.player.boxCollider))
+                {
+                    game.player.FallInPit(pitCollider);
+                }
+            }
+
+            if (boxCollider.Intersects(game.bird.boxCollider))
+            {
+                game.bird.FlyAway();
+
+            }
+        }
+
+        public override void Draw(SpriteBatch batch, GameTime gameTime)
+        {
+            batch.Draw(texture, position, null, Color.White, 0, origin, scale, SpriteEffects.FlipHorizontally, 0f);
+            if (fly != null)
+            {
+                fly.Draw(batch);
+            }
+
+            /* debug: collider
+            var t = new Texture2D(game.GraphicsDevice, 1, 1);
+            t.SetData(new[] { Color.White });
+            Color c = new Color(0, 0, 0, 0.5f);
+            batch.Draw(t, boxCollider, c);
+
+            c = new Color(1, 1, 1, 0.5f);
+            batch.Draw(t, pitCollider, c);
+            batch.Draw(t, leftRidgeCollider, c);
+            batch.Draw(t, rightRidgeCollider, c);
+             */
+        }
+
     }
 }

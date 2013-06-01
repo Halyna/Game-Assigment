@@ -19,8 +19,6 @@ namespace Assignment
         ScoreDisplay scoreDisplay;
 
         public Vector2 position;
-        //public bool isStuckRight;
-        //public double isStuckLeft; //will use gameTime as a reference for multiple terrain colliders per frame
         Vector2 origin;
         float angle; // radians
         float scale = 0.25f;
@@ -59,7 +57,7 @@ namespace Assignment
             texture = game.Content.Load<Texture2D>(@"PlayerAnimations/Idle/t_IDLE_0");
             origin.X = texture.Width / 2 * scale;
             origin.Y = texture.Height / 2 * scale;
-            boxCollider = new Rectangle(0, 0, (int)(texture.Bounds.Width * scale * 0.7), (int)(texture.Bounds.Height * scale * 0.7));
+            boxCollider = new Rectangle(0, 0, (int)(texture.Bounds.Width * scale * 0.6), (int)(texture.Bounds.Height * scale * 0.7));
             jumpingTime = new TimeSpan();
             crouchingTime = new TimeSpan();
 
@@ -92,15 +90,6 @@ namespace Assignment
                 jumpingTime = new TimeSpan();
                 isJumping = false;
             }
-
-            //if (isCrouching)
-            //{
-            //    // drifting back with earth movement
-            //    angle -= 0.0002f;
-            //    if (angle < MIN_ANGLE)
-            //        angle = MIN_ANGLE;
-            //}
-            // Read input
 
             if (InputManager.IsMovingRight() && !isCrouching)
             {
@@ -143,8 +132,6 @@ namespace Assignment
             {
                 isCrouching = false;
             }
-
-
 
             adjustPosition(Rectangle.Empty, gameTime);
             adjustCollider();
@@ -194,7 +181,6 @@ namespace Assignment
 
             if (boxCollider == Rectangle.Empty)
             {
-                
                 inTheAir = true;
 
                 if (isJumping)
@@ -213,13 +199,9 @@ namespace Assignment
                 {
                     position.Y = boxCollider.Top - this.boxCollider.Height;
                 }
-                  
-
             }
 
             position.X = game.earth.radius * (float)Math.Cos(angle) + game.screenWidth * 0.4f;
-
-            //Console.Out.WriteLine("Player Position: X " + position.X + " Y " + position.Y);
         }
 
 
@@ -259,6 +241,13 @@ namespace Assignment
 
             scoreDisplay.currentPoints += 100;
             scoreDisplay.currentSize = (int)(scale * 1000);
+        }
+
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        internal void FallInPit(Rectangle pitCollider)
+        {
+            position.Y = boxCollider.Bottom - this.boxCollider.Height;
+            gameOver();
         }
     }
 }
