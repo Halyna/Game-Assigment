@@ -19,8 +19,8 @@ namespace Assignment
         ScoreDisplay scoreDisplay;
 
         public Vector2 position;
-        public bool isStuckRight;
-        public double isStuckLeft; //will use gameTime as a reference for multiple terrain colliders per frame
+        //public bool isStuckRight;
+        //public double isStuckLeft; //will use gameTime as a reference for multiple terrain colliders per frame
         Vector2 origin;
         float angle; // radians
         float scale = 0.25f;
@@ -102,7 +102,7 @@ namespace Assignment
             //}
             // Read input
 
-            if (InputManager.IsMovingRight() && !isCrouching && !isStuckRight)
+            if (InputManager.IsMovingRight() && !isCrouching)
             {
                 angle += GameSettings.PLAYER_SPEED_X;
                 if (angle > MAX_ANGLE)
@@ -111,7 +111,7 @@ namespace Assignment
                 isIdle = false;
 
             }
-            else if (InputManager.IsMovingLeft() && !isCrouching && isStuckLeft == 0)
+            else if (InputManager.IsMovingLeft() && !isCrouching)
             {
                 angle -= GameSettings.PLAYER_SPEED_X;
                 if (angle < MIN_ANGLE)
@@ -123,15 +123,8 @@ namespace Assignment
                 // drifting back with earth movement
                 angle -= 0.0002f;
                 if (angle < MIN_ANGLE)
-                    if (!isStuckRight)
-                    {
-                        angle = MIN_ANGLE;
-                    }
-                    else
-                    {
-                        // we are dead!
-                        gameOver();
-                    }
+                    angle = MIN_ANGLE;
+                    
                 isIdle = true;
             }
 
@@ -192,7 +185,7 @@ namespace Assignment
             var t = new Texture2D(game.GraphicsDevice, 1, 1);
             t.SetData(new[] { Color.White });
             Color c = new Color(0, 0, 0, 0.5f);
-            batch.Draw(t, boxCollider, c);
+            //batch.Draw(t, boxCollider, c);
         }
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -201,8 +194,7 @@ namespace Assignment
 
             if (boxCollider == Rectangle.Empty)
             {
-                isStuckRight = false;
-                isStuckLeft = 0;
+                
                 inTheAir = true;
 
                 if (isJumping)
@@ -216,22 +208,13 @@ namespace Assignment
             else
             {
                 inTheAir = false;
-                if (position.Y <= boxCollider.Top)
+                // can intersect with multiple colliders, only choose the highest
+                if (position.Y > boxCollider.Top - this.boxCollider.Height)
                 {
                     position.Y = boxCollider.Top - this.boxCollider.Height;
-                    isStuckRight = false;
-                    if (gameTime.TotalGameTime.TotalMilliseconds != isStuckLeft)
-                        isStuckLeft = 0;
                 }
-                else // we are facing a wall, stop movement
-                {
-                    if (position.X < boxCollider.X)
-                        isStuckRight = true;
-                    else if (position.X > boxCollider.X)
-                        isStuckLeft = gameTime.TotalGameTime.TotalMilliseconds;
+                  
 
-
-                }
             }
 
             position.X = game.earth.radius * (float)Math.Cos(angle) + game.screenWidth * 0.4f;

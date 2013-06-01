@@ -17,6 +17,10 @@ namespace Assignment
     /// </summary>
     public class AscentTerrain : Terrain
     {
+        List<Rectangle> stepColliders;
+        int heightStep;
+        int widthStep;
+
         public AscentTerrain(Game1 game, float startAngle, bool hasFly)
             : base(game, startAngle, hasFly)
         {
@@ -25,6 +29,24 @@ namespace Assignment
             origin.Y = texture.Height / 2 * scale;
             boxCollider = new Rectangle(0, 0, (int)(texture.Bounds.Width * scale), (int)(texture.Bounds.Height * scale));
             offsetAngle = 0.029f;
+
+            // create list of smaller colliders that will act as steps:
+            /*
+             *                -------|
+             *           ------------|
+             *       ----------------|
+             * ----------------------|
+             */
+            stepColliders = new List<Rectangle>();
+            widthStep = (int)(texture.Width * scale / 4);
+            int heightOffset = (int)(texture.Height * scale / 4);
+            heightStep = (int)(heightOffset / 4);
+            for (int i = 0; i < 4; i++)
+            {
+                Rectangle step = new Rectangle(0, 0, widthStep * (i + 1), heightStep);
+                stepColliders.Add(step);
+            }
+
         }
 
 
@@ -43,9 +65,20 @@ namespace Assignment
         {
             position.X = (int)(game.earth.radius * 1f * (float)Math.Cos(angle) + game.screenWidth * 0.5f);
             position.Y = (int)(game.earth.radius * 1f * (float)Math.Sin(angle) + (game.screenHeight * 0.62f + game.earth.radius));
-            boxCollider.X = (int)(position.X - 18f);//(int)position.X - boxCollider.Width;
-            boxCollider.Y = (int)(position.Y - 18f); //+ boxCollider.Height/3;
-            //Console.Out.WriteLine("Terrain Position: X " + position.X + " Y " + position.Y);
+
+            // main collider
+            boxCollider.X = (int)(position.X - 18f);
+            boxCollider.Y = (int)(position.Y - 18f);
+
+            // step colliders
+            for (int i = 0; i < 4; i++)
+            {
+                Rectangle r = stepColliders[i];
+                r.X = boxCollider.X + widthStep * (3 - i) + 15;
+                r.Y = boxCollider.Y + heightStep * i;
+                stepColliders[i] = r;
+            }
+
             if (position.X < 0 - texture.Width || position.X > game.screenWidth + texture.Width)
             {
                 isOnScreen = false;
@@ -53,8 +86,47 @@ namespace Assignment
             else
             {
                 isOnScreen = true;
-                //Console.Out.WriteLine("Terrain Position: X " + position.X + " Y " + position.Y);
-                //Console.Out.WriteLine("Collider Position: X " + boxCollider.X + " Y " + boxCollider.Y);
+            }
+        }
+
+        public override void Draw(SpriteBatch batch, GameTime gameTime)
+        {
+            batch.Draw(texture, position, null, Color.White, 0, origin, scale, SpriteEffects.None, 0f);
+            if (fly != null)
+            {
+                fly.Draw(batch);
+            }
+
+            /* debug: collider
+            var t = new Texture2D(game.GraphicsDevice, 1, 1);
+            t.SetData(new[] { Color.White });
+            Color c = new Color(0, 0, 0, 0.5f);
+            batch.Draw(t, boxCollider, c);
+
+            c = new Color(1, 1, 1, 0.5f);
+            foreach (Rectangle r in stepColliders)
+            {
+                batch.Draw(t, r, c);
+            }
+            */
+        }
+
+        protected override void detectCollistions(GameTime gameTime)
+        {
+            if (boxCollider.Intersects(game.player.boxCollider))
+            {
+                foreach (Rectangle r in stepColliders)
+                {
+                    if (r.Intersects(game.player.boxCollider))
+                        game.player.adjustPosition(r, gameTime);
+                }
+
+            }
+
+            if (boxCollider.Intersects(game.bird.boxCollider))
+            {
+                game.bird.FlyAway();
+
             }
         }
     }

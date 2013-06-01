@@ -67,7 +67,7 @@ namespace Assignment
             
         }
 
-        private void detectCollistions(GameTime gameTime)
+        protected virtual void detectCollistions(GameTime gameTime)
         {
             if (boxCollider.Intersects(game.player.boxCollider))
             {

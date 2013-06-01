@@ -53,8 +53,6 @@ namespace Assignment
             else
             {
                 isOnScreen = true;
-                //Console.Out.WriteLine("Terrain Position: X " + position.X + " Y " + position.Y);
-                //Console.Out.WriteLine("Collider Position: X " + boxCollider.X + " Y " + boxCollider.Y);
             }
         }
 
