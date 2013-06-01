@@ -21,13 +21,50 @@ namespace Assignment
         private Animation volcanoAnimation;
         private AnimationController VolcanoAnimationController;
 
+        List<Rectangle> stepCollidersAscend;
+        List<Rectangle> stepCollidersDescend;
+        int heightStep;
+        int widthStep;
+
+        Rectangle lavaCollider;
+
         public VolcanoTerrain(Game1 game, float startAngle, bool hasFly)
             : base(game, startAngle, hasFly)
         {
             texture = game.Content.Load<Texture2D>(@"Terrains/vo_0");
             origin.X = texture.Width / 2 * scale;
             origin.Y = texture.Height / 2 * scale;
+
             boxCollider = new Rectangle(0, 0, (int)(texture.Bounds.Width * scale), (int)(texture.Bounds.Height * scale));
+
+            // create list of smaller colliders that will act as steps and lava:
+            /*
+             *                         |---|
+             *                         |---| 
+             *                -------| |---| |------ 
+             *           ------------|       |-------------  
+             *       ----------------|       |-----------------
+             * ----------------------|       |------------------------
+             */
+            stepCollidersAscend = new List<Rectangle>();
+            widthStep = (int)(texture.Width * scale / 10);
+            int heightOffset = (int)(texture.Height * scale / 3);
+            heightStep = (int)(heightOffset / 4);
+            for (int i = 0; i < 4; i++)
+            {
+                Rectangle step = new Rectangle(0, 0, widthStep * (i + 1), heightStep);
+                stepCollidersAscend.Add(step);
+            }
+
+            stepCollidersDescend = new List<Rectangle>();
+            for (int i = 0; i < 4; i++)
+            {
+                Rectangle step = new Rectangle(0, 0, widthStep * (i + 1), heightStep);
+                stepCollidersDescend.Add(step);
+            }
+
+            lavaCollider = new Rectangle(0, 0, (int)(boxCollider.Width * 0.02), (int)(texture.Bounds.Height * scale));
+
             offsetAngle = 0.055f;
 
             volcanoAnimation = Textures.VolcanoAnimation;
@@ -52,19 +89,35 @@ namespace Assignment
         {
             position.X = (int)(game.earth.radius * 1f * (float)Math.Cos(angle) + game.screenWidth * 0.5f);
             position.Y = (int)(game.earth.radius * 1f * (float)Math.Sin(angle) + (game.screenHeight * 0.45f + game.earth.radius));
-            boxCollider.X = (int)(position.X - 18f);//(int)position.X - boxCollider.Width;
-            boxCollider.Y = (int)(position.Y - 18f); //+ boxCollider.Height/3;
-            //Console.Out.WriteLine("Terrain Position: X " + position.X + " Y " + position.Y);
+            
+             // main collider
+            boxCollider.X = (int)(position.X - 18f);
+            boxCollider.Y = (int)(position.Y + boxCollider.Height * 0.35f);
+
+            // lava collider
+            lavaCollider.X = (int)(boxCollider.X + ((boxCollider.Width - lavaCollider.Width)/2) - 15);
+            lavaCollider.Y = (int)(position.Y + boxCollider.Height * 0.35f);
+
+            // step colliders
+            for (int i = 0; i < 4; i++)
+            {
+                Rectangle r = stepCollidersAscend[i];
+                r.X = boxCollider.X + widthStep * (3 - i);
+                r.Y = boxCollider.Y + heightStep * i;
+                stepCollidersAscend[i] = r;
+            }
+            for (int i = 0; i < 4; i++)
+            {
+                Rectangle r = stepCollidersDescend[i];
+                r.X = boxCollider.X + (int)(boxCollider.Width - widthStep * 5f);
+                r.Y = boxCollider.Y + heightStep * i;
+                stepCollidersDescend[i] = r;
+            }
+
             if (position.X < 0 - texture.Width || position.X > game.screenWidth + texture.Width)
-            {
                 isOnScreen = false;
-            }
             else
-            {
                 isOnScreen = true;
-                //Console.Out.WriteLine("Terrain Position: X " + position.X + " Y " + position.Y);
-                //Console.Out.WriteLine("Collider Position: X " + boxCollider.X + " Y " + boxCollider.Y);
-            }
         }
 
         public override void Draw(SpriteBatch batch, GameTime gameTime)
@@ -75,11 +128,50 @@ namespace Assignment
                 fly.Draw(batch);
             }
 
-            // debug: collider
+            /* debug: collider
             var t = new Texture2D(game.GraphicsDevice, 1, 1);
             t.SetData(new[] { Color.White });
             Color c = new Color(0, 0, 0, 0.5f);
-            //batch.Draw(t, boxCollider, c);
+            batch.Draw(t, boxCollider, c);
+
+            c = new Color(1, 1, 1, 0.5f);
+            foreach (Rectangle r in stepCollidersAscend)
+            {
+                batch.Draw(t, r, c);
+            }
+            foreach (Rectangle r in stepCollidersDescend)
+            {
+               batch.Draw(t, r, c);
+            }
+            batch.Draw(t, lavaCollider, c);
+             * */
+        }
+
+        protected override void detectCollistions(GameTime gameTime)
+        {
+            if (boxCollider.Intersects(game.player.boxCollider))
+            {
+                foreach (Rectangle r in stepCollidersAscend)
+                {
+                    if (r.Intersects(game.player.boxCollider))
+                        game.player.adjustPosition(r, gameTime);
+                }
+
+                foreach (Rectangle r in stepCollidersDescend)
+                {
+                    if (r.Intersects(game.player.boxCollider))
+                        game.player.adjustPosition(r, gameTime);
+                }
+
+                if (lavaCollider.Intersects(game.player.boxCollider))
+                    game.player.FallInPit(lavaCollider);
+            }
+
+            if (boxCollider.Intersects(game.bird.boxCollider))
+            {
+                game.bird.FlyAway();
+
+            }
         }
     }
 }

@@ -100,7 +100,7 @@ namespace Assignment
                     this.terrains.Add(t);
                     angle += t.offsetAngle;
 
-                    
+                    Console.WriteLine("Covered in terrains: {0} rad, left uncovered: {1}", angle - 4.4f, 2 * Math.PI - angle + 4.4f); 
                 }
             }
         }
