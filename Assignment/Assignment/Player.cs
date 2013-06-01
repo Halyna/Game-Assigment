@@ -42,7 +42,7 @@ namespace Assignment
         private Animation MovingAnimation;
         private Animation JumpingAnimation;
         private Animation CrouchAnimation;
-        private AnimationPlayer PlayerAnimationController;
+        private AnimationController PlayerAnimationController;
 
         public Player(Game1 game)
             : base(game)

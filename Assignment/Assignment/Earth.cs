@@ -54,14 +54,53 @@ namespace Assignment
             {
                   this.terrains = new List<Terrain>();
                 float angle = 4.4f;
-                for (int i = 0; i < 50; i++)
+                for (int i = 0; i < 15; i++)
                 {
-                    this.terrains.Add(new PlainTerrain(game, angle, true));
-                    angle += 0.027f;
-                    this.terrains.Add(new PlainTerrain(game, angle, false));
-                    angle += 0.027f;
-                    this.terrains.Add(new LoweredTerrain(game, angle, false));
-                    angle += 0.027f;
+                    Terrain t = new PlainTerrain(game, angle, true);
+                    this.terrains.Add(t);
+                    angle += t.offsetAngle;
+
+                    t = new LavaPitTerrain(game, angle, false);
+                    this.terrains.Add(t);
+                    angle += t.offsetAngle;
+
+                    t = new PlainTerrain(game, angle, true);
+                    this.terrains.Add(t);
+                    angle += t.offsetAngle;
+
+                    t = new LavaPitWideTerrain(game, angle, false);
+                    this.terrains.Add(t);
+                    angle += t.offsetAngle;
+
+                    t = new DescentTerrain(game, angle, false);
+                    this.terrains.Add(t);
+                    angle += t.offsetAngle;
+
+                    t = new LoweredTerrain(game, angle, false);
+                    this.terrains.Add(t);
+                    angle += t.offsetAngle;
+
+                    t = new LoweredTerrain(game, angle, false);
+                    this.terrains.Add(t);
+                    angle += t.offsetAngle;
+
+                    t = new VolcanoTerrain(game, angle, false);
+                    this.terrains.Add(t);
+                    angle += t.offsetAngle;
+
+                    t = new LoweredTerrain(game, angle, false);
+                    this.terrains.Add(t);
+                    angle += t.offsetAngle;
+
+                    t = new LoweredTerrain(game, angle, false);
+                    this.terrains.Add(t);
+                    angle += t.offsetAngle;
+
+                    t = new AscentTerrain(game, angle, false);
+                    this.terrains.Add(t);
+                    angle += t.offsetAngle;
+
+                    
                 }
             }
         }
@@ -82,14 +121,14 @@ namespace Assignment
 
             foreach (var terrain in this.terrains)
             {
-                terrain.Update(gameTime);
+                    terrain.Update(gameTime);
             }
            
 
             base.Update(gameTime);
         }
 
-        public virtual void Draw(SpriteBatch batch) 
+        public virtual void Draw(SpriteBatch batch, GameTime gameTime) 
         {
            batch.Draw(texture, position, null, Color.White, rotationAngle, origin, scale, SpriteEffects.None, 0f);
            foreach (var terrain in this.terrains)
@@ -97,7 +136,7 @@ namespace Assignment
 
                if (terrain.isOnScreen)
                {
-                   terrain.Draw(batch);
+                   terrain.Draw(batch, gameTime);
                }
            }
         }

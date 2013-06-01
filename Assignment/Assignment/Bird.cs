@@ -20,7 +20,7 @@ namespace Assignment
 
         Texture2D texture;
         private Animation BirdAnimation;
-        private AnimationPlayer BirdAnimationController;
+        private AnimationController BirdAnimationController;
 
 
 

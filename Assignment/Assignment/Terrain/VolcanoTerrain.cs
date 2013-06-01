@@ -15,34 +15,43 @@ namespace Assignment
     /// <summary>
     /// This is a game component that implements IUpdateable.
     /// </summary>
-    public class PlainTerrain : Terrain
+    public class VolcanoTerrain : Terrain
     {
-        public PlainTerrain(Game1 game, float startAngle, bool hasFly)
+
+        private Animation volcanoAnimation;
+        private AnimationController VolcanoAnimationController;
+
+        public VolcanoTerrain(Game1 game, float startAngle, bool hasFly)
             : base(game, startAngle, hasFly)
         {
-            texture = game.Content.Load<Texture2D>(@"Terrains/gr_0");
+            texture = game.Content.Load<Texture2D>(@"Terrains/vo_0");
             origin.X = texture.Width / 2 * scale;
             origin.Y = texture.Height / 2 * scale;
             boxCollider = new Rectangle(0, 0, (int)(texture.Bounds.Width * scale), (int)(texture.Bounds.Height * scale));
-            offsetAngle = 0.03f;
+            offsetAngle = 0.055f;
+
+            volcanoAnimation = Textures.VolcanoAnimation;
+            VolcanoAnimationController.PlayAnimation(volcanoAnimation);
         }
 
-       
+
         public override void Initialize()
         {
             base.Initialize();
         }
 
-      
+
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
+            if (isOnScreen)
+                VolcanoAnimationController.Update(gameTime);
         }
 
         public override void adjustPosition()
         {
             position.X = (int)(game.earth.radius * 1f * (float)Math.Cos(angle) + game.screenWidth * 0.5f);
-            position.Y = (int)(game.earth.radius * 1f * (float)Math.Sin(angle) + (game.screenHeight * 0.6f + game.earth.radius));
+            position.Y = (int)(game.earth.radius * 1f * (float)Math.Sin(angle) + (game.screenHeight * 0.45f + game.earth.radius));
             boxCollider.X = (int)(position.X - 18f);//(int)position.X - boxCollider.Width;
             boxCollider.Y = (int)(position.Y - 18f); //+ boxCollider.Height/3;
             //Console.Out.WriteLine("Terrain Position: X " + position.X + " Y " + position.Y);
@@ -60,7 +69,7 @@ namespace Assignment
 
         public override void Draw(SpriteBatch batch, GameTime gameTime)
         {
-            batch.Draw(texture, position, null, Color.Black, 0, origin, scale, SpriteEffects.None, 0f);
+            VolcanoAnimationController.Draw(gameTime, batch, position, scale, SpriteEffects.None, Color.White, 0, origin);
             if (fly != null)
             {
                 fly.Draw(batch);
@@ -71,8 +80,6 @@ namespace Assignment
             t.SetData(new[] { Color.White });
             Color c = new Color(0, 0, 0, 0.5f);
             //batch.Draw(t, boxCollider, c);
-
-
         }
     }
 }

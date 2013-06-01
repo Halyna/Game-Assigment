@@ -22,9 +22,10 @@ namespace Assignment
         public float angle; // radians
         public Game1 game;
         public Vector2 origin;
-        public float scale = 0.25f;
+        public float scale = 0.2f;
         public Rectangle boxCollider;
         public bool isOnScreen;
+        public float offsetAngle;
 
         public Fly fly;
 
@@ -36,6 +37,8 @@ namespace Assignment
             {
                 fly = new Fly(game, startAngle, this);
             }
+
+            isOnScreen = false;
         }
        
         public virtual void Initialize()
@@ -80,7 +83,7 @@ namespace Assignment
             }
         }
 
-        public virtual void Draw(SpriteBatch batch) 
+        public virtual void Draw(SpriteBatch batch, GameTime gameTime) 
         {
             batch.Draw(texture, position, null, Color.White, 0, origin, scale, SpriteEffects.None, 0f);
             if (fly != null)
@@ -92,7 +95,7 @@ namespace Assignment
             var t = new Texture2D(game.GraphicsDevice, 1, 1);
             t.SetData(new[] { Color.White });
             Color c = new Color(0, 0, 0, 0.5f);
-            batch.Draw(t, boxCollider, c);
+            //batch.Draw(t, boxCollider, c);
 
 
         }

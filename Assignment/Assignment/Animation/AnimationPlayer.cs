@@ -14,7 +14,7 @@ using Microsoft.Xna.Framework.Graphics;
 namespace Assignment
 {
 
-    struct AnimationPlayer
+    struct AnimationController
     {
        
         public Animation Animation

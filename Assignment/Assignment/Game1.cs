@@ -118,7 +118,7 @@ namespace Assignment
             GraphicsDevice.Clear(Color.Yellow);
             spriteBatch.Begin();
 
-            earth.Draw(spriteBatch);
+            earth.Draw(spriteBatch, gameTime);
             
             
 
@@ -133,6 +133,7 @@ namespace Assignment
                 spriteBatch.Draw(Textures.logoText, new Rectangle(screenWidth / 2 - Textures.gameOverText.Width / 2,
                         screenHeight / 3 - Textures.gameOverText.Height / 2, Textures.gameOverText.Width, Textures.gameOverText.Height), Color.White);
             }
+
             else
             {
                 bird.Draw(gameTime, spriteBatch);

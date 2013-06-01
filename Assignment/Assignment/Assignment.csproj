@@ -84,9 +84,14 @@
     <Compile Include="Program.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="ScoreDisplay.cs" />
+    <Compile Include="Terrain\AscentTerrain.cs" />
+    <Compile Include="Terrain\DescentTerrain.cs" />
+    <Compile Include="Terrain\LavaPitTerrain.cs" />
+    <Compile Include="Terrain\LavaPitWideTerrain.cs" />
     <Compile Include="Terrain\LoweredTerrain.cs" />
     <Compile Include="Terrain\PlainTerrain.cs" />
     <Compile Include="Terrain\Terrain.cs" />
+    <Compile Include="Terrain\VolcanoTerrain.cs" />
     <Compile Include="Textures.cs" />
     <Compile Include="Input\UserInput.cs" />
   </ItemGroup>
