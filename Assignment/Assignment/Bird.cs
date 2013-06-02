@@ -17,6 +17,7 @@ namespace Assignment
     /// </summary>
     public class Bird : Microsoft.Xna.Framework.GameComponent
     {
+        public const int SPAWN_TIME = 3000;//miliseconds
 
         Texture2D texture;
         private Animation BirdAnimation;
@@ -31,6 +32,9 @@ namespace Assignment
         Vector2 origin;
 
         bool isFlyingAway = false;
+
+        bool isSpawned = false;
+        int timeBeforeSpawn = 0;
 
         float scale;
         public Rectangle boxCollider;
@@ -61,7 +65,7 @@ namespace Assignment
         /// </summary>
         public override void Initialize()
         {
-            game.birdSpawnedSound.Play();
+            
             BirdAnimation = Textures.BirdAnimation;
             BirdAnimationController.PlayAnimation(BirdAnimation);
             base.Initialize();
@@ -74,13 +78,27 @@ namespace Assignment
             position.X = r.Next(game.screenWidth);
             position.Y = 0;
             startPosition = position;
-
+            isSpawned = false;
+            timeBeforeSpawn = 0;
             isFlyingAway = false;
         }
 
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
+
+            timeBeforeSpawn += (int)gameTime.ElapsedGameTime.TotalMilliseconds;
+            if (timeBeforeSpawn >= SPAWN_TIME)
+            {
+                if (!isSpawned)
+                {
+                    isSpawned = true;
+                    game.birdSpawnedSound.Play();
+                }
+               
+            }
+            else
+                return;
 
             BirdAnimationController.Update(gameTime);
 
@@ -120,6 +138,10 @@ namespace Assignment
 
         public virtual void Draw(GameTime gameTime, SpriteBatch batch)
         {
+            if (!isSpawned)
+            {
+                return;
+            }
             if (target.X < 0)
             {
                 BirdAnimationController.Draw(gameTime, batch, position, scale, SpriteEffects.FlipHorizontally, Color.DarkOliveGreen, 0, origin);
