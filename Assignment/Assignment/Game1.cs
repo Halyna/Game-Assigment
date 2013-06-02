@@ -26,16 +26,28 @@ namespace Assignment
         public Bird bird;
         public Fly fly;
 
+
         public int screenWidth;
         public int screenHeight;
 
         public GameState gameState = GameState.MainMenu;
 
+        public Song loop1;
+        public Song loop2;
+        public Song loop3;
+        public Song loop4;
+        public Song loop5;
+        public Song loop6;
 
-        public SoundEffect dyingSound;
-        public SoundEffect hitTerrainSound;
-        public SoundEffect birdSpawnedSound;
-        public SoundEffect biteSound;
+        public SoundEffect dyingSoundEffect;
+        public SoundEffect hitTerrainSoundEffect;
+        public SoundEffect birdSpawnedSoundEffect;
+        public SoundEffect biteSoundEffect;
+
+        public SoundEffectInstance dyingSound;
+        public SoundEffectInstance hitTerrainSound;
+        public SoundEffectInstance birdSpawnedSound;
+        public SoundEffectInstance biteSound;
 
         public Game1()
         {
@@ -58,6 +70,7 @@ namespace Assignment
             this.earth = new Earth(this);
             this.player = new Player(this);
             this.bird = new Bird(this);
+
             
         }
 
@@ -68,10 +81,25 @@ namespace Assignment
             Textures.Initialize(Content);
             Textures.LoadTextures();
 
-            birdSpawnedSound = Content.Load<SoundEffect>("Sound/Screech");
-            hitTerrainSound = Content.Load<SoundEffect>("Sound/BoneCrush");
-            dyingSound = Content.Load<SoundEffect>("Sound/Dying");
-            biteSound = Content.Load<SoundEffect>("Sound/Bite");
+
+            birdSpawnedSoundEffect = Content.Load<SoundEffect>("Sound/Screech");
+            hitTerrainSoundEffect = Content.Load<SoundEffect>("Sound/BoneCrush");
+            dyingSoundEffect = Content.Load<SoundEffect>("Sound/dyingYell");
+            biteSoundEffect = Content.Load<SoundEffect>("Sound/Bite");
+            
+            dyingSound = dyingSoundEffect.CreateInstance();
+            hitTerrainSound = hitTerrainSoundEffect.CreateInstance();
+            birdSpawnedSound = birdSpawnedSoundEffect.CreateInstance();
+            biteSound = biteSoundEffect.CreateInstance();
+            
+
+            loop1 = Content.Load<Song>("Sound/loop1");
+            loop2 = Content.Load<Song>("Sound/loop2");
+            loop3 = Content.Load<Song>("Sound/loop3");
+            loop4 = Content.Load<Song>("Sound/loop4");
+            loop5 = Content.Load<Song>("Sound/loop5");
+            loop6 = Content.Load<Song>("Sound/loop6");
+            
 
             // TODO: use this.Content to load your game content here
 
@@ -92,17 +120,19 @@ namespace Assignment
 
             base.Update(gameTime);
             earth.Update(gameTime);
+
             if (gameState == GameState.InGame)
             {
                 player.Update(gameTime);
                 bird.Update(gameTime);
             }
 
-            
 
             if (gameState == GameState.MainMenu && InputManager.PressedStart())
             {
-                gameState = GameState.InGame;
+                gameState = GameState.InGame;  
+             
+                
             }
             if (gameState == GameState.GameOver && InputManager.PressedStart())
             {
@@ -147,7 +177,7 @@ namespace Assignment
 
         internal void GameOver()
         {
-            dyingSound.Play();
+
             gameState = GameState.GameOver;
             
         }

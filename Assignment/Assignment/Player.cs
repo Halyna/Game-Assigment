@@ -156,7 +156,12 @@ namespace Assignment
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////
         private void gameOver()
         {
-            //add death sound
+            
+            if (game.dyingSound.State != SoundState.Playing)
+            {
+               game.dyingSound.Play();
+            }
+
             game.GameOver();
         }
 
@@ -168,11 +173,12 @@ namespace Assignment
             PlayerAnimationController.Draw(gameTime, batch, position, scale, SpriteEffects.None, Color.DarkOliveGreen, 0, origin);
             scoreDisplay.Draw(batch);
 
-            // debug: collider
+            /* debug: collider
             var t = new Texture2D(game.GraphicsDevice, 1, 1);
             t.SetData(new[] { Color.White });
             Color c = new Color(0, 0, 0, 0.5f);
-            //batch.Draw(t, boxCollider, c);
+            batch.Draw(t, boxCollider, c);
+             */
         }
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -228,6 +234,7 @@ namespace Assignment
                 scoreDisplay.currentPoints = 0;
             }
             scoreDisplay.currentSize = (int)(scale * 1000);
+            
         }
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -241,6 +248,7 @@ namespace Assignment
 
             scoreDisplay.currentPoints += 100;
             scoreDisplay.currentSize = (int)(scale * 1000);
+
         }
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////

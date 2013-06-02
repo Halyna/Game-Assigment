@@ -74,7 +74,7 @@ namespace Assignment
             position.X = r.Next(game.screenWidth);
             position.Y = 0;
             startPosition = position;
-
+            game.birdSpawnedSound.Play();
             isFlyingAway = false;
         }
 
@@ -112,7 +112,6 @@ namespace Assignment
             if (boxCollider.Intersects(game.player.boxCollider) && game.player.isCrouching != true)
             {
 
-                game.hitTerrainSound.Play();
                 game.player.birdCollided(this);
 
             }
