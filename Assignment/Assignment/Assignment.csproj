@@ -74,6 +74,8 @@
   <ItemGroup>
     <Compile Include="Animation\Animation.cs" />
     <Compile Include="Animation\AnimationPlayer.cs" />
+    <Compile Include="Background.cs" />
+    <Compile Include="BackgroundElement.cs" />
     <Compile Include="Bird.cs" />
     <Compile Include="Earth.cs" />
     <Compile Include="Fly.cs" />
@@ -128,6 +130,9 @@
       <ProductName>Windows Installer 4.5</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Background\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\Microsoft.Xna.GameStudio.targets" />

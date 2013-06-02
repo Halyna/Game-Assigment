@@ -24,7 +24,7 @@ namespace Assignment
         public Earth earth;
         public Player player;
         public Bird bird;
-        public Fly fly;
+        public Background background;
 
         public int screenWidth;
         public int screenHeight;
@@ -58,6 +58,7 @@ namespace Assignment
             this.earth = new Earth(this);
             this.player = new Player(this);
             this.bird = new Bird(this);
+            this.background = new Background(this);
             
         }
 
@@ -92,6 +93,7 @@ namespace Assignment
 
             base.Update(gameTime);
             earth.Update(gameTime);
+            background.Update(gameTime);
             if (gameState == GameState.InGame)
             {
                 player.Update(gameTime);
@@ -118,6 +120,7 @@ namespace Assignment
             GraphicsDevice.Clear(Color.Yellow);
             spriteBatch.Begin();
 
+            background.Draw(spriteBatch);
             earth.Draw(spriteBatch, gameTime);
             
             
