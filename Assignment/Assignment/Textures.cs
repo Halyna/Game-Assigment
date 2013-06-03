@@ -22,6 +22,9 @@ namespace Assignment
         public static Animation VolcanoAnimation;
 
         public static Animation FlyAnimation;
+
+        public static Animation MeteorBigAnimation;
+        public static Animation MeteorSmallAnimation;
         
         // menus
         public static Texture2D gameOverText;
@@ -116,6 +119,17 @@ namespace Assignment
             }
 
             FlyAnimation = new Animation(flyArray, .2f, true, flyFrames);
+
+            // Meteors
+            Texture2D[] metBigArray = new Texture2D[2];
+            int[] metBigFrames = new int[2] { 1, 1 };
+            for (int i = 0; i < metBigArray.Length; i++)
+            {
+                frameName = String.Format("ObjectsAnimations/MeteorBig/bm_{0}", i);
+                metBigArray[i] = Content.Load<Texture2D>(frameName);
+            }
+
+            MeteorBigAnimation = new Animation(metBigArray, .2f, true, metBigFrames);
 
             // menus
             gameOverText = Content.Load<Texture2D>("UI/gameovertext");

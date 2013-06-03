@@ -39,7 +39,6 @@ namespace Assignment
             if (hasFly)
             {
                 fly = new Fly(game, startAngle + flyOffset, this);
-                Console.WriteLine("Start angle " + startAngle + ", rand offset: " + flyOffset);
             }
 
             isOnScreen = false;

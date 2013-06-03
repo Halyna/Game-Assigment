@@ -60,11 +60,11 @@ namespace Assignment
                     this.terrains.Add(t);
                     angle += t.offsetAngle;
 
-                    t = new LavaPitTerrain(game, angle, true);
+                    t = new LavaPitTerrain(game, angle, false);
                     this.terrains.Add(t);
                     angle += t.offsetAngle;
 
-                    t = new PlainTerrain(game, angle, true);
+                    t = new PlainTerrain(game, angle, false);
                     this.terrains.Add(t);
                     angle += t.offsetAngle;
 
@@ -72,7 +72,7 @@ namespace Assignment
                     this.terrains.Add(t);
                     angle += t.offsetAngle;
 
-                    t = new DescentTerrain(game, angle, true);
+                    t = new DescentTerrain(game, angle, false);
                     this.terrains.Add(t);
                     angle += t.offsetAngle;
 
@@ -80,15 +80,15 @@ namespace Assignment
                     this.terrains.Add(t);
                     angle += t.offsetAngle;
 
-                    t = new LoweredTerrain(game, angle, true);
+                    t = new LoweredTerrain(game, angle, false);
                     this.terrains.Add(t);
                     angle += t.offsetAngle;
 
-                    t = new VolcanoTerrain(game, angle, true);
+                    t = new VolcanoTerrain(game, angle, false);
                     this.terrains.Add(t);
                     angle += t.offsetAngle;
 
-                    t = new LoweredTerrain(game, angle, true);
+                    t = new LoweredTerrain(game, angle, false);
                     this.terrains.Add(t);
                     angle += t.offsetAngle;
 

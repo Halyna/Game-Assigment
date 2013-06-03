@@ -73,14 +73,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Animation\Animation.cs" />
-    <Compile Include="Animation\AnimationPlayer.cs" />
+    <Compile Include="Animation\AnimationController.cs" />
     <Compile Include="Background\Background.cs" />
     <Compile Include="Background\BackgroundElement.cs" />
-    <Compile Include="Bird.cs" />
+    <Compile Include="Objects\Bird.cs" />
     <Compile Include="Earth.cs" />
-    <Compile Include="Fly.cs" />
+    <Compile Include="Objects\Fly.cs" />
     <Compile Include="GameSettings.cs" />
     <Compile Include="Input\InputManager.cs" />
+    <Compile Include="Objects\MeteorBig.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
