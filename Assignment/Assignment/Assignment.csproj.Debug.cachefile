@@ -1,6 +1,4 @@
 Content\Earth.xnb
-Content\lizard.xnb
-Content\Earth_fragment.xnb
 Content\PlayerAnimations\Idle\t_IDLE_0.xnb
 Content\PlayerAnimations\Idle\t_IDLE_1.xnb
 Content\PlayerAnimations\Idle\t_IDLE_2.xnb
@@ -23,7 +21,6 @@ Content\PlayerAnimations\Crouch\t_CROUCH_2.xnb
 Content\PlayerAnimations\Crouch\t_CROUCH_3.xnb
 Content\Bird.xnb
 Content\Fly.xnb
-Content\Earth_fragment_lowered.xnb
 Content\UI\gameovertext.xnb
 Content\UI\logoText.xnb
 Content\ObjectsAnimations\Bird\d_FLAP_0.xnb
@@ -60,3 +57,12 @@ Content\Terrains\vo_6.xnb
 Content\Terrains\vo_7.xnb
 Content\Terrains\vo_8.xnb
 Content\Terrains\vo_9.xnb
+Content\ObjectsAnimations\Fly\fl_0.xnb
+Content\ObjectsAnimations\Fly\fl_1.xnb
+Content\ObjectsAnimations\MeteorBig\bm_0.xnb
+Content\ObjectsAnimations\MeteorBig\bm_1.xnb
+Content\ObjectsAnimations\MeteorSmall\sm_0.xnb
+Content\ObjectsAnimations\MeteorSmall\sm_1.xnb
+Content\ObjectsAnimations\MeteorSmall\sm_2.xnb
+Content\ObjectsAnimations\MeteorSmall\sm_3.xnb
+Content\ObjectsAnimations\MeteorSmall\sm_4.xnb

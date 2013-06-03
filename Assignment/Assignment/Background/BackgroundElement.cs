@@ -21,12 +21,12 @@ namespace Assignment
         Vector2 position;
         Game1 game;
         public float alpha;
-        public float xOffset;
+        public float yOffset;
         public float movementOffset;
         public float scale;
         public bool isOnScreen;
 
-        public BackgroundElement(Game1 game, Texture2D texture, float alpha, int startX, float movementOffset, float xOffset)
+        public BackgroundElement(Game1 game, Texture2D texture, float alpha, int startX, float movementOffset, float yOffset)
             : base(game)
         {
             this.game = game;
@@ -34,7 +34,7 @@ namespace Assignment
             this.alpha = alpha;
             this.position.X = startX;
             this.movementOffset = movementOffset;
-            this.xOffset = xOffset;
+            this.yOffset = yOffset;
 
             scale = 0.25f;
         }
@@ -53,7 +53,7 @@ namespace Assignment
         public override void Update(GameTime gameTime)
         {
             position.X -= movementOffset;
-            position.Y = (int)(game.screenHeight * xOffset);
+            position.Y = (int)(game.screenHeight * yOffset);
 
             if (position.X < 0 - texture.Width*scale)
             {

@@ -42,7 +42,7 @@ namespace Assignment
         public override void adjustPosition()
         {
             position.X = (int)(game.earth.radius * 1f * (float)Math.Cos(angle) + game.screenWidth * 0.5f) ;
-            position.Y = (int)(game.earth.radius * 1f * (float)Math.Sin(angle) + (game.screenHeight * 0.6f + game.earth.radius)) + boxCollider.Height * 0.5f;
+            position.Y = (int)(game.earth.radius * 1f * (float)Math.Sin(angle) + (game.screenHeight * (GameSettings.TERRAIN_HEIGHT - 0.02) + game.earth.radius)) + boxCollider.Height * 0.5f;
             boxCollider.X = (int)(position.X - 17f);//(int)position.X - boxCollider.Width;
             boxCollider.Y = (int)(position.Y - 9f); //+ boxCollider.Height/3;
             if (position.X < 0 - texture.Width || position.X > game.screenWidth + texture.Width)

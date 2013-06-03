@@ -31,7 +31,7 @@ namespace Assignment
             Texture2D tex = game.Content.Load<Texture2D>(@"Backgrounds/bg_0");
             for (int i = 0; i < 4; i++)
             {
-                BackgroundElement b = new BackgroundElement(game, tex, 0.3f, statX, 0.2f, 0.25f);
+                BackgroundElement b = new BackgroundElement(game, tex, 0.3f, statX, 0.2f, 0.27f);
                 this.farBack.Add(b);
                 statX += (int)(tex.Bounds.Width * b.scale);
             }
@@ -40,7 +40,7 @@ namespace Assignment
             tex = game.Content.Load<Texture2D>(@"Backgrounds/bg_1");
             for (int i = 0; i < 4; i++)
             {
-                BackgroundElement b = new BackgroundElement(game, tex, 0.3f, statX, 0.4f, 0.3f);
+                BackgroundElement b = new BackgroundElement(game, tex, 0.3f, statX, 0.4f, 0.32f);
                 this.farBack.Add(b);
                 statX += (int)(tex.Bounds.Width * b.scale);
 

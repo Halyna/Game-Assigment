@@ -63,7 +63,7 @@ namespace Assignment
         public override void adjustPosition()
         {
             position.X = (int)(game.earth.radius * 1f * (float)Math.Cos(angle) + game.screenWidth * 0.5f);
-            position.Y = (int)(game.earth.radius * 1f * (float)Math.Sin(angle) + (game.screenHeight * 0.62f + game.earth.radius));
+            position.Y = (int)(game.earth.radius * 1f * (float)Math.Sin(angle) + (game.screenHeight * GameSettings.TERRAIN_HEIGHT + game.earth.radius));
 
             // main collider
             boxCollider.X = (int)(position.X - 18f);
@@ -93,7 +93,7 @@ namespace Assignment
             batch.Draw(texture, position, null, Color.White, 0, origin, scale, SpriteEffects.None, 0f);
             if (fly != null)
             {
-                fly.Draw(batch);
+                fly.Draw(batch, gameTime);
             }
 
             /* debug: collider

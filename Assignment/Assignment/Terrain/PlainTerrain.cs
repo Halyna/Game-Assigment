@@ -42,7 +42,7 @@ namespace Assignment
         public override void adjustPosition()
         {
             position.X = (int)(game.earth.radius * 1f * (float)Math.Cos(angle) + game.screenWidth * 0.5f);
-            position.Y = (int)(game.earth.radius * 1f * (float)Math.Sin(angle) + (game.screenHeight * 0.6f + game.earth.radius));
+            position.Y = (int)(game.earth.radius * 1f * (float)Math.Sin(angle) + (game.screenHeight * (GameSettings.TERRAIN_HEIGHT - 0.02) + game.earth.radius));
             boxCollider.X = (int)(position.X - 18f);//(int)position.X - boxCollider.Width;
             boxCollider.Y = (int)(position.Y - 18f); //+ boxCollider.Height/3;
             //Console.Out.WriteLine("Terrain Position: X " + position.X + " Y " + position.Y);
@@ -61,7 +61,7 @@ namespace Assignment
             batch.Draw(texture, position, null, Color.Black, 0, origin, scale, SpriteEffects.None, 0f);
             if (fly != null)
             {
-                fly.Draw(batch);
+                fly.Draw(batch, gameTime);
             }
 
             // debug: collider

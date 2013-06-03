@@ -37,20 +37,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="lizard.png">
-      <Name>lizard</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Earth_fragment.png">
-      <Name>Earth_fragment</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="PlayerAnimations\Idle\t_IDLE_0.png">
       <Name>t_IDLE_0</Name>
       <Importer>TextureImporter</Importer>
@@ -173,13 +159,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Earth_fragment_lowered.png">
-      <Name>Earth_fragment_lowered</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="UI\gameovertext.png">
       <Name>gameovertext</Name>
       <Importer>TextureImporter</Importer>
@@ -274,7 +253,18 @@
       <Processor>SoundEffectProcessor</Processor>
     </Compile>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Compile Include="ObjectsAnimations\Fly\fl_0.png">
+      <Name>fl_0</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="ObjectsAnimations\Fly\fl_1.png">
+      <Name>fl_1</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
   <ItemGroup>
     <Compile Include="Backgrounds\bg_0.png">
       <Name>bg_0</Name>
@@ -368,6 +358,45 @@
     </Compile>
     <Compile Include="Terrains\vo_9.png">
       <Name>vo_9</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ObjectsAnimations\MeteorBig\bm_0.png">
+      <Name>bm_0</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="ObjectsAnimations\MeteorBig\bm_1.png">
+      <Name>bm_1</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ObjectsAnimations\MeteorSmall\sm_0.png">
+      <Name>sm_0</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="ObjectsAnimations\MeteorSmall\sm_1.png">
+      <Name>sm_1</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="ObjectsAnimations\MeteorSmall\sm_2.png">
+      <Name>sm_2</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="ObjectsAnimations\MeteorSmall\sm_3.png">
+      <Name>sm_3</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="ObjectsAnimations\MeteorSmall\sm_4.png">
+      <Name>sm_4</Name>
       <Importer>TextureImporter</Importer>
       <Processor>TextureProcessor</Processor>
     </Compile>

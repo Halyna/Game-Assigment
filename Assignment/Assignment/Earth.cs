@@ -60,7 +60,7 @@ namespace Assignment
                     this.terrains.Add(t);
                     angle += t.offsetAngle;
 
-                    t = new LavaPitTerrain(game, angle, false);
+                    t = new LavaPitTerrain(game, angle, true);
                     this.terrains.Add(t);
                     angle += t.offsetAngle;
 
@@ -68,35 +68,35 @@ namespace Assignment
                     this.terrains.Add(t);
                     angle += t.offsetAngle;
 
-                    t = new LavaPitWideTerrain(game, angle, false);
+                    t = new LavaPitWideTerrain(game, angle, true);
                     this.terrains.Add(t);
                     angle += t.offsetAngle;
 
-                    t = new DescentTerrain(game, angle, false);
+                    t = new DescentTerrain(game, angle, true);
                     this.terrains.Add(t);
                     angle += t.offsetAngle;
 
-                    t = new LoweredTerrain(game, angle, false);
+                    t = new LoweredTerrain(game, angle, true);
                     this.terrains.Add(t);
                     angle += t.offsetAngle;
 
-                    t = new LoweredTerrain(game, angle, false);
+                    t = new LoweredTerrain(game, angle, true);
                     this.terrains.Add(t);
                     angle += t.offsetAngle;
 
-                    t = new VolcanoTerrain(game, angle, false);
+                    t = new VolcanoTerrain(game, angle, true);
                     this.terrains.Add(t);
                     angle += t.offsetAngle;
 
-                    t = new LoweredTerrain(game, angle, false);
+                    t = new LoweredTerrain(game, angle, true);
                     this.terrains.Add(t);
                     angle += t.offsetAngle;
 
-                    t = new LoweredTerrain(game, angle, false);
+                    t = new LoweredTerrain(game, angle, true);
                     this.terrains.Add(t);
                     angle += t.offsetAngle;
 
-                    t = new AscentTerrain(game, angle, false);
+                    t = new AscentTerrain(game, angle, true);
                     this.terrains.Add(t);
                     angle += t.offsetAngle;
 

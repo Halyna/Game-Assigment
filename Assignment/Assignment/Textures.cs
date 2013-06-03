@@ -20,6 +20,8 @@ namespace Assignment
         public static Animation BirdAnimation;
 
         public static Animation VolcanoAnimation;
+
+        public static Animation FlyAnimation;
         
         // menus
         public static Texture2D gameOverText;
@@ -103,6 +105,17 @@ namespace Assignment
             }
 
             VolcanoAnimation = new Animation(volcanoArray, .5f, true, volcanoFrames);
+
+            // Fly
+            Texture2D[] flyArray = new Texture2D[2];
+            int[] flyFrames = new int[2] { 1, 1 };
+            for (int i = 0; i < flyArray.Length; i++)
+            {
+                frameName = String.Format("ObjectsAnimations/Fly/fl_{0}", i);
+                flyArray[i] = Content.Load<Texture2D>(frameName);
+            }
+
+            FlyAnimation = new Animation(flyArray, .2f, true, flyFrames);
 
             // menus
             gameOverText = Content.Load<Texture2D>("UI/gameovertext");

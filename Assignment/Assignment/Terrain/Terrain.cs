@@ -33,9 +33,13 @@ namespace Assignment
         {
             this.game = game;
             angle = startAngle;
+
+            Random r = new Random();
+            float flyOffset = (float)r.NextDouble() * 0.055f; // max offfset angle
             if (hasFly)
             {
-                fly = new Fly(game, startAngle, this);
+                fly = new Fly(game, startAngle + flyOffset, this);
+                Console.WriteLine("Start angle " + startAngle + ", rand offset: " + flyOffset);
             }
 
             isOnScreen = false;
@@ -88,7 +92,7 @@ namespace Assignment
             batch.Draw(texture, position, null, Color.White, 0, origin, scale, SpriteEffects.None, 0f);
             if (fly != null)
             {
-                fly.Draw(batch);
+                fly.Draw(batch, gameTime);
             }
 
             // debug: collider

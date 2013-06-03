@@ -88,7 +88,7 @@ namespace Assignment
         public override void adjustPosition()
         {
             position.X = (int)(game.earth.radius * 1f * (float)Math.Cos(angle) + game.screenWidth * 0.5f);
-            position.Y = (int)(game.earth.radius * 1f * (float)Math.Sin(angle) + (game.screenHeight * 0.45f + game.earth.radius));
+            position.Y = (int)(game.earth.radius * 1f * (float)Math.Sin(angle) + (game.screenHeight * (GameSettings.TERRAIN_HEIGHT - 0.17) + game.earth.radius));
             
              // main collider
             boxCollider.X = (int)(position.X - 18f);
@@ -125,7 +125,7 @@ namespace Assignment
             VolcanoAnimationController.Draw(gameTime, batch, position, scale, SpriteEffects.None, Color.White, 0, origin);
             if (fly != null)
             {
-                fly.Draw(batch);
+                fly.Draw(batch, gameTime);
             }
 
             /* debug: collider

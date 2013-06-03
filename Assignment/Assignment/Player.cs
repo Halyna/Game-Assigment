@@ -165,10 +165,10 @@ namespace Assignment
         public virtual void Draw(GameTime gameTime, SpriteBatch batch)
         {
 
-            PlayerAnimationController.Draw(gameTime, batch, position, scale, SpriteEffects.None, Color.DarkOliveGreen, 0, origin);
+            PlayerAnimationController.Draw(gameTime, batch, position, scale, SpriteEffects.None, Color.DarkOliveGreen, 0, Vector2.Zero);
             scoreDisplay.Draw(batch);
 
-            /* debug: collider
+            /*debug: collider
             var t = new Texture2D(game.GraphicsDevice, 1, 1);
             t.SetData(new[] { Color.White });
             Color c = new Color(0, 0, 0, 0.5f);
@@ -199,9 +199,10 @@ namespace Assignment
             {
                 inTheAir = false;
                 // can intersect with multiple colliders, only choose the highest
-                if (position.Y > boxCollider.Top - this.boxCollider.Height)
+                if (this.boxCollider.Top > boxCollider.Top - this.boxCollider.Height)
                 {
-                    position.Y = boxCollider.Top - this.boxCollider.Height;
+                    position.Y = boxCollider.Top - this.boxCollider.Height - 
+                        (int)((texture.Bounds.Height * scale - this.boxCollider.Height) / 2);
                 }
             }
 
@@ -214,8 +215,8 @@ namespace Assignment
         {
             boxCollider.Width = (int)(texture.Bounds.Width * scale * 0.6);
             boxCollider.Height = (int)(texture.Bounds.Height * scale * 0.67);
-            this.boxCollider.X = (int)position.X;
-            this.boxCollider.Y = (int)position.Y;
+            this.boxCollider.X = (int)position.X + (int)((texture.Bounds.Width * scale - boxCollider.Width) / 2);
+            this.boxCollider.Y = (int)position.Y + (int)((texture.Bounds.Height * scale - boxCollider.Height) / 2);
         }
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////
