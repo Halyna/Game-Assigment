@@ -82,6 +82,7 @@
     <Compile Include="GameSettings.cs" />
     <Compile Include="Input\InputManager.cs" />
     <Compile Include="Objects\MeteorBig.cs" />
+    <Compile Include="Objects\MeteorSmall.cs" />
     <Compile Include="Player.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />

@@ -26,6 +26,7 @@ namespace Assignment
         public Bird bird;
         public Background background;
         public MeteorBig meteorBig;
+        public MeteorSmall meteorSmall;
 
         public int screenWidth;
         public int screenHeight;
@@ -61,6 +62,7 @@ namespace Assignment
             this.bird = new Bird(this);
             this.background = new Background(this);
             this.meteorBig = new MeteorBig(this);
+            this.meteorSmall = new MeteorSmall(this);
             
         }
 
@@ -101,6 +103,7 @@ namespace Assignment
                 player.Update(gameTime);
                 bird.Update(gameTime);
                 meteorBig.Update(gameTime);
+                meteorSmall.Update(gameTime);
             }
 
             
@@ -145,6 +148,7 @@ namespace Assignment
                 bird.Draw(gameTime, spriteBatch);
                 player.Draw(gameTime, spriteBatch);
                 meteorBig.Draw(spriteBatch, gameTime);
+                meteorSmall.Draw(spriteBatch, gameTime);
             }
 
             spriteBatch.End();

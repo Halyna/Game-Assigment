@@ -131,6 +131,16 @@ namespace Assignment
 
             MeteorBigAnimation = new Animation(metBigArray, .2f, true, metBigFrames);
 
+            Texture2D[] metSmallArray = new Texture2D[2];
+            int[] metSmallFrames = new int[2] { 1, 1 };
+            for (int i = 0; i < metSmallArray.Length; i++)
+            {
+                frameName = String.Format("ObjectsAnimations/MeteorSmall/sm_{0}", i);
+                metSmallArray[i] = Content.Load<Texture2D>(frameName);
+            }
+
+            MeteorSmallAnimation = new Animation(metSmallArray, 1f, false, metSmallFrames);
+
             // menus
             gameOverText = Content.Load<Texture2D>("UI/gameovertext");
             startGameText = Content.Load<Texture2D>("UI/gameovertext");

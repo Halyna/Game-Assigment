@@ -46,6 +46,7 @@ namespace Assignment
         {
             if (Animation == animation)
                 return;
+            
             this.animation = animation;
             this.frameIndex = 0;
             this.time = 0.0f;

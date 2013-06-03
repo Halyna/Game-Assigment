@@ -172,6 +172,12 @@ namespace Assignment
                 game.bird.FlyAway();
 
             }
+
+            if (boxCollider.Intersects(game.meteorSmall.boxCollider))
+            {
+                game.meteorSmall = new MeteorSmall(game);
+
+            }
         }
     }
 }

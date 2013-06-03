@@ -254,5 +254,20 @@ namespace Assignment
             position.Y = boxCollider.Bottom - this.boxCollider.Height;
             gameOver();
         }
+
+        internal void MeteorCollided(MeteorSmall meteorSmall)
+        {
+            if (isCrouching)
+                return;
+            game.meteorSmall = new MeteorSmall(game);
+            scale -= 0.01f;
+
+            scoreDisplay.currentPoints -= 200;
+            if (scoreDisplay.currentPoints < 0)
+            {
+                scoreDisplay.currentPoints = 0;
+            }
+            scoreDisplay.currentSize = (int)(scale * 1000);
+        }
     }
 }
