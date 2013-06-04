@@ -58,12 +58,12 @@ namespace Assignment
             float circle = MathHelper.Pi * 2;
             angle = angle % circle;
             adjustPosition();
-            if (isOnScreen)
+            if (isOnScreen && game.gameState == Game1.GameState.InGame)
             {
                 detectCollistions(gameTime);
             }
 
-            if (fly != null)
+            if (fly != null && game.gameState != Game1.GameState.GameComplete)
             {
                 fly.Update(gameTime);
             }
@@ -94,7 +94,7 @@ namespace Assignment
         public virtual void Draw(SpriteBatch batch, GameTime gameTime) 
         {
             batch.Draw(texture, position, null, Color.White, 0, origin, scale, SpriteEffects.None, 0f);
-            if (fly != null)
+            if (fly != null && game.gameState != Game1.GameState.GameComplete)
             {
                 fly.Draw(batch, gameTime);
             }

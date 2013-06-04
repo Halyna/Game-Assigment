@@ -56,7 +56,7 @@ namespace Assignment
                 float angle = 4.4f;
                 for (int i = 0; i < 15; i++)
                 {
-                    Terrain t = new PlainTerrain(game, angle, true);
+                    Terrain t = new PlainTerrain(game, angle, false);
                     this.terrains.Add(t);
                     angle += t.offsetAngle;
 
@@ -68,7 +68,7 @@ namespace Assignment
                     this.terrains.Add(t);
                     angle += t.offsetAngle;
 
-                    t = new LavaPitWideTerrain(game, angle, true);
+                    t = new LavaPitWideTerrain(game, angle, false);
                     this.terrains.Add(t);
                     angle += t.offsetAngle;
 
@@ -76,7 +76,7 @@ namespace Assignment
                     this.terrains.Add(t);
                     angle += t.offsetAngle;
 
-                    t = new LoweredTerrain(game, angle, true);
+                    t = new LoweredTerrain(game, angle, false);
                     this.terrains.Add(t);
                     angle += t.offsetAngle;
 

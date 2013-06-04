@@ -14,8 +14,8 @@ namespace Assignment
 {
     public class Player : Microsoft.Xna.Framework.GameComponent
     {
-        public const float colliderOffsetX = 0.5f;
-        public const float colliderOffsetY = 0.65f;
+        public const float colliderOffsetX = 0.45f;
+        public const float colliderOffsetY = 0.6f;
 
         Texture2D texture;
         Game1 game;
@@ -153,12 +153,18 @@ namespace Assignment
                 PlayerAnimationController.PlayAnimation(MovingAnimation);
 
             scoreDisplay.Update(gameTime);
+
+            // are we too small to continue?
+            if (scale < 0.2f)
+            {
+                gameOver("Your poor lizard died of hunger...");
+            }
             base.Update(gameTime);
         }
 
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        private void gameOver()
+        private void gameOver(String reason)
         {
             
             if (game.dyingSound.State != SoundState.Playing)
@@ -166,7 +172,7 @@ namespace Assignment
                game.dyingSound.Play();
             }
 
-            game.GameOver();
+            game.GameOver(reason);
         }
 
 
@@ -177,13 +183,13 @@ namespace Assignment
             PlayerAnimationController.Draw(gameTime, batch, position, scale, SpriteEffects.None, Color.DarkOliveGreen, 0, Vector2.Zero);
             scoreDisplay.Draw(batch);
 
-            /* debug: collider*/
+            /* debug: collider
 
             var t = new Texture2D(game.GraphicsDevice, 1, 1);
             t.SetData(new[] { Color.White });
             Color c = new Color(0, 0, 0, 0.5f);
             batch.Draw(t, boxCollider, c);
-             
+             */
         }
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -203,7 +209,7 @@ namespace Assignment
                     position.Y += GameSettings.PLAYER_SPEED_Y;
 
                 if (position.Y > game.screenHeight)
-                    gameOver();
+                    gameOver("Earth is moving too fast for you...");
             }
             else
             {
@@ -264,7 +270,7 @@ namespace Assignment
         internal void FallInPit(Rectangle pitCollider)
         {
             position.Y = boxCollider.Bottom - this.boxCollider.Height;
-            gameOver();
+            gameOver("Lava will kill you every time...");
         }
 
         internal void MeteorCollided(MeteorSmall meteorSmall)

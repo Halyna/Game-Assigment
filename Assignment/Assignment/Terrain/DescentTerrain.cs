@@ -95,7 +95,7 @@ namespace Assignment
                 fly.Draw(batch, gameTime);
             }
 
-            /* debug: collider*/
+            /* debug: collider
             var t = new Texture2D(game.GraphicsDevice, 1, 1);
             t.SetData(new[] { Color.White });
             Color c = new Color(0, 0, 0, 0.5f);
@@ -106,7 +106,7 @@ namespace Assignment
             {
                 batch.Draw(t, r, c);
             }
-            
+            */
         }
 
         protected override void detectCollistions(GameTime gameTime)

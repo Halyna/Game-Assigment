@@ -16,7 +16,7 @@ namespace Assignment
     /// </summary>
     public class Game1 : Microsoft.Xna.Framework.Game
     {
-        public enum GameState { MainMenu, InGame, GameOver, Paused };
+        public enum GameState { MainMenu, InGame, GameOver, Paused, GameComplete};
 
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
@@ -41,6 +41,12 @@ namespace Assignment
         public Song loop5;
         public Song loop6;
         public int songPlaying;
+
+        // will change sky color over game time from yellow to red
+        public float colorChange;
+        public float greenColor;
+
+        string deathReason;
 
         public SoundEffect dyingSoundEffect;
         public SoundEffect hitTerrainSoundEffect;
@@ -69,7 +75,14 @@ namespace Assignment
             graphics.PreferredBackBufferHeight = screenHeight;
             graphics.ApplyChanges();
 
+            colorChange = 255 / 2.0f / 60 / 60; // 2 min, 60 frames per sec
 
+            Reset();
+           
+        }
+
+        void Reset()
+        {
             this.earth = new Earth(this);
             this.player = new Player(this);
             this.bird = new Bird(this);
@@ -77,6 +90,11 @@ namespace Assignment
             this.background = new Background(this);
             this.meteorBig = new MeteorBig(this);
             this.meteorSmall = new MeteorSmall(this);
+
+            MediaPlayer.Play(loop1);
+            songPlaying = 1;
+
+            greenColor = 255.0f;
         }
 
         protected override void LoadContent()
@@ -106,9 +124,6 @@ namespace Assignment
             loop6 = Content.Load<Song>("Sound/loop6");
 
             MediaPlayer.IsRepeating = true;
-            MediaPlayer.Play(loop1);
-            songPlaying = 1;
-            Console.WriteLine(MediaPlayer.Queue.ActiveSong.Name);
             
 
             // TODO: use this.Content to load your game content here
@@ -122,13 +137,24 @@ namespace Assignment
 
         protected override void Update(GameTime gameTime)
         {
-            // Allows the game to pause and exit
+            // Get user input
             if (InputManager.PressedBack() == true && this.gameState == GameState.Paused)
                 this.gameState = GameState.InGame;
             else if (InputManager.PressedBack() == true && this.gameState == GameState.InGame)
                 this.gameState = GameState.Paused;
             else if (InputManager.PressedBack() == true && this.gameState == GameState.MainMenu)
                 this.Exit();
+
+            if (gameState == GameState.MainMenu && InputManager.PressedStart())
+            {
+                gameState = GameState.InGame;
+            }
+            if ((gameState == GameState.GameOver || gameState == GameState.GameComplete) && InputManager.PressedStart())
+            {
+                gameState = GameState.MainMenu;
+                Reset();
+            }
+
 
             if (this.gameState == GameState.Paused)
             {
@@ -145,6 +171,10 @@ namespace Assignment
                 bird.Update(gameTime);
                 meteorBig.Update(gameTime);
                 meteorSmall.Update(gameTime);
+
+                greenColor -= colorChange;
+   
+                #region music tracks
 
                 // update music track
                 if (player.scoreDisplay.timeElapsed > GameSettings.PLAY_TIME - GameSettings.PLAY_TIME * 1 / 6)
@@ -189,39 +219,37 @@ namespace Assignment
                         songPlaying = 2;
                     }
                 }
-                
+                #endregion
+
             }
 
-
-            if (gameState == GameState.MainMenu && InputManager.PressedStart())
+            if (gameState == GameState.GameComplete)
             {
-                gameState = GameState.InGame;  
-             
-                
+                meteorBig.Update(gameTime);
             }
-            if (gameState == GameState.GameOver && InputManager.PressedStart())
+            // check for completion
+            if (player.scoreDisplay.timeElapsed > GameSettings.PLAY_TIME)
             {
-                gameState = GameState.MainMenu;
-                Initialize();
+                gameState = GameState.GameComplete;
             }
-
             
-
+          
             InputManager.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.Yellow);
+            Color skyColor = new Color(255.0f/255, greenColor/255, 0);
+            GraphicsDevice.Clear(skyColor);
             spriteBatch.Begin();
 
             background.Draw(spriteBatch);
             earth.Draw(spriteBatch, gameTime);
-            
-            
-
+      
             if (gameState == GameState.GameOver)
             {
+                spriteBatch.DrawString(Textures.font24, deathReason, new Vector2(300, 100), Color.Black, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
+
                 spriteBatch.Draw(Textures.gameOverText, new Rectangle(screenWidth / 2 - Textures.gameOverText.Width / 2,
                         screenHeight / 2 - Textures.gameOverText.Height / 2, Textures.gameOverText.Width, Textures.gameOverText.Height), Color.White);
 
@@ -231,13 +259,22 @@ namespace Assignment
                 spriteBatch.Draw(Textures.logoText, new Rectangle(screenWidth / 2 - Textures.gameOverText.Width / 2,
                         screenHeight / 3 - Textures.gameOverText.Height / 2, Textures.gameOverText.Width, Textures.gameOverText.Height), Color.White);
             }
+            else if (gameState == GameState.GameComplete)
+            {
+                meteorBig.Draw(spriteBatch, gameTime);
+
+                spriteBatch.DrawString(Textures.font24, "Huge meteor hit Earth!", new Vector2(300, 100), Color.Black, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
+                spriteBatch.DrawString(Textures.font24, "Your species is now extinct...", new Vector2(250, 180), Color.Black, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
+                spriteBatch.DrawString(Textures.font24, "Your score is " + player.scoreDisplay.currentPoints.ToString(), new Vector2(320, 240), Color.Black, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
+                spriteBatch.DrawString(Textures.font24, "Come on, you can do better than that!", new Vector2(170, 320), Color.Black, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
+            }
 
             else
             {
-                bird.Draw(gameTime, spriteBatch);
-                player.Draw(gameTime, spriteBatch);
                 meteorBig.Draw(spriteBatch, gameTime);
-                meteorSmall.Draw(spriteBatch, gameTime);
+                player.Draw(gameTime, spriteBatch);
+                meteorSmall.Draw(spriteBatch, gameTime);                          
+                bird.Draw(gameTime, spriteBatch);              
             }
 
             spriteBatch.End();
@@ -245,9 +282,9 @@ namespace Assignment
             
         }
 
-        internal void GameOver()
+        internal void GameOver(String reason)
         {
-
+            deathReason = reason;
             gameState = GameState.GameOver;
             
         }
