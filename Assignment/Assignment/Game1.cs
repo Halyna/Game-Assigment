@@ -16,7 +16,7 @@ namespace Assignment
     /// </summary>
     public class Game1 : Microsoft.Xna.Framework.Game
     {
-        public enum GameState { MainMenu, InGame, GameOver };
+        public enum GameState { MainMenu, InGame, GameOver, Paused };
 
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
@@ -40,6 +40,7 @@ namespace Assignment
         public Song loop4;
         public Song loop5;
         public Song loop6;
+        public int songPlaying;
 
         public SoundEffect dyingSoundEffect;
         public SoundEffect hitTerrainSoundEffect;
@@ -106,6 +107,8 @@ namespace Assignment
 
             MediaPlayer.IsRepeating = true;
             MediaPlayer.Play(loop1);
+            songPlaying = 1;
+            Console.WriteLine(MediaPlayer.Queue.ActiveSong.Name);
             
 
             // TODO: use this.Content to load your game content here
@@ -119,12 +122,19 @@ namespace Assignment
 
         protected override void Update(GameTime gameTime)
         {
-            // Allows the game to exit
-            if (InputManager.PressedBack() == true)
+            // Allows the game to pause and exit
+            if (InputManager.PressedBack() == true && this.gameState == GameState.Paused)
+                this.gameState = GameState.InGame;
+            else if (InputManager.PressedBack() == true && this.gameState == GameState.InGame)
+                this.gameState = GameState.Paused;
+            else if (InputManager.PressedBack() == true && this.gameState == GameState.MainMenu)
                 this.Exit();
 
-            // TODO: Add your update logic here
-
+            if (this.gameState == GameState.Paused)
+            {
+                InputManager.Update(gameTime);
+                return;
+            }
             base.Update(gameTime);
             earth.Update(gameTime);
             background.Update(gameTime);
@@ -135,6 +145,51 @@ namespace Assignment
                 bird.Update(gameTime);
                 meteorBig.Update(gameTime);
                 meteorSmall.Update(gameTime);
+
+                // update music track
+                if (player.scoreDisplay.timeElapsed > GameSettings.PLAY_TIME - GameSettings.PLAY_TIME * 1 / 6)
+                {
+                    if (songPlaying != 6)
+                    {
+                        MediaPlayer.Play(loop6);
+                        songPlaying = 6;
+                    }
+                }
+                else if (player.scoreDisplay.timeElapsed > GameSettings.PLAY_TIME - GameSettings.PLAY_TIME * 2 / 6)
+                {
+                    if (songPlaying != 5)
+                    {
+                        MediaPlayer.Play(loop5);
+                        songPlaying = 5;
+                    }
+                }
+                else if (player.scoreDisplay.timeElapsed > GameSettings.PLAY_TIME - GameSettings.PLAY_TIME * 3 / 6)
+                {
+                    if (songPlaying != 4)
+                    {
+                        MediaPlayer.Play(loop4);
+                        songPlaying = 4;
+                    }
+                }
+
+                else if (player.scoreDisplay.timeElapsed > GameSettings.PLAY_TIME - GameSettings.PLAY_TIME * 4 / 6)
+                {
+                    if (songPlaying != 3)
+                    {
+                        MediaPlayer.Play(loop3);
+                        songPlaying = 3;
+                    }
+                }
+
+                else if (player.scoreDisplay.timeElapsed > GameSettings.PLAY_TIME - GameSettings.PLAY_TIME * 5 / 6)
+                {
+                    if (songPlaying != 2)
+                    {
+                        MediaPlayer.Play(loop2);
+                        songPlaying = 2;
+                    }
+                }
+                
             }
 
 
@@ -149,6 +204,8 @@ namespace Assignment
                 gameState = GameState.MainMenu;
                 Initialize();
             }
+
+            
 
             InputManager.Update(gameTime);
         }

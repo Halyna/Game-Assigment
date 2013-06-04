@@ -14,5 +14,7 @@ namespace Assignment
         public const float TERRAIN_HEIGHT = 0.65f; // % of screen height 
 
         public const float EARTH_ROTATION_SPEED = 0.02f; // radians per frame
+
+        public const float PLAY_TIME = 2 * 60 * 1000; // miliseconds
     }
 }

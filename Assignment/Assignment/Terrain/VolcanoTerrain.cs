@@ -129,7 +129,7 @@ namespace Assignment
                 fly.Draw(batch, gameTime);
             }
 
-            /* debug: collider
+            /* debug: collider * */
             var t = new Texture2D(game.GraphicsDevice, 1, 1);
             t.SetData(new[] { Color.White });
             Color c = new Color(0, 0, 0, 0.5f);
@@ -145,7 +145,7 @@ namespace Assignment
                batch.Draw(t, r, c);
             }
             batch.Draw(t, lavaCollider, c);
-             * */
+            
         }
 
         protected override void detectCollistions(GameTime gameTime)
@@ -155,13 +155,19 @@ namespace Assignment
                 foreach (Rectangle r in stepCollidersAscend)
                 {
                     if (r.Intersects(game.player.boxCollider))
+                    {
                         game.player.adjustPosition(r, gameTime);
+                        break;
+                    }
                 }
 
                 foreach (Rectangle r in stepCollidersDescend)
                 {
                     if (r.Intersects(game.player.boxCollider))
+                    {
                         game.player.adjustPosition(r, gameTime);
+                        break;
+                    }
                 }
 
                 if (lavaCollider.Intersects(game.player.boxCollider))

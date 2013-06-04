@@ -19,18 +19,22 @@ namespace Assignment
     {
         public int currentPoints;
         public int currentSize;
+        public float timeElapsed;
 
         Vector2 pointsPosition;
         Vector2 sizePosition;
+        Vector2 timerPosition;
 
-        public ScoreDisplay(Game game)
+        public ScoreDisplay(Game1 game)
             : base(game)
         {
             currentPoints = 0;
             currentSize = 50;
+            timeElapsed = 0;
 
             pointsPosition = new Vector2(20, 30);
-            sizePosition = new Vector2(500, 30);
+            sizePosition = new Vector2(300, 30);
+            timerPosition = new Vector2(game.screenWidth - 300, 30);
         }
 
         /// <summary>
@@ -50,8 +54,7 @@ namespace Assignment
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         public override void Update(GameTime gameTime)
         {
-            // TODO: Add your update code here
-
+            timeElapsed += (float)gameTime.ElapsedGameTime.TotalMilliseconds;
             base.Update(gameTime);
         }
 
@@ -62,6 +65,8 @@ namespace Assignment
             batch.DrawString(Textures.font24, "Points: " + currentPoints.ToString(), pointsPosition, Color.Black, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
 
             batch.DrawString(Textures.font24, "Size: " + currentSize.ToString(), sizePosition, Color.Black, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
+
+            batch.DrawString(Textures.font24, "Time: " + ((int)(timeElapsed/1000)).ToString(), timerPosition, Color.Black, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
         }
     }
 }

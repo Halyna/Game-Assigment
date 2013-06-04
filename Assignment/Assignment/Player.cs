@@ -14,9 +14,12 @@ namespace Assignment
 {
     public class Player : Microsoft.Xna.Framework.GameComponent
     {
+        public const float colliderOffsetX = 0.5f;
+        public const float colliderOffsetY = 0.65f;
+
         Texture2D texture;
         Game1 game;
-        ScoreDisplay scoreDisplay;
+        public ScoreDisplay scoreDisplay;
 
         public Vector2 position;
         Vector2 origin;
@@ -57,7 +60,7 @@ namespace Assignment
             texture = game.Content.Load<Texture2D>(@"PlayerAnimations/Idle/t_IDLE_0");
             origin.X = texture.Width / 2 * scale;
             origin.Y = texture.Height / 2 * scale;
-            boxCollider = new Rectangle(0, 0, (int)(texture.Bounds.Width * scale * 0.6), (int)(texture.Bounds.Height * scale * 0.7));
+            boxCollider = new Rectangle(0, 0, (int)(texture.Bounds.Width * scale * colliderOffsetX), (int)(texture.Bounds.Height * scale * colliderOffsetY));
             jumpingTime = new TimeSpan();
             crouchingTime = new TimeSpan();
 
@@ -110,7 +113,7 @@ namespace Assignment
             else
             {
                 // drifting back with earth movement
-                angle -= 0.0002f;
+                angle -= GameSettings.EARTH_ROTATION_SPEED / 60;
                 if (angle < MIN_ANGLE)
                     angle = MIN_ANGLE;
                     
@@ -149,6 +152,7 @@ namespace Assignment
             else if (!isJumping && !isCrouching)
                 PlayerAnimationController.PlayAnimation(MovingAnimation);
 
+            scoreDisplay.Update(gameTime);
             base.Update(gameTime);
         }
 
@@ -173,13 +177,13 @@ namespace Assignment
             PlayerAnimationController.Draw(gameTime, batch, position, scale, SpriteEffects.None, Color.DarkOliveGreen, 0, Vector2.Zero);
             scoreDisplay.Draw(batch);
 
-            /* debug: collider
+            /* debug: collider*/
 
             var t = new Texture2D(game.GraphicsDevice, 1, 1);
             t.SetData(new[] { Color.White });
             Color c = new Color(0, 0, 0, 0.5f);
             batch.Draw(t, boxCollider, c);
-             */
+             
         }
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -205,11 +209,11 @@ namespace Assignment
             {
                 inTheAir = false;
                 // can intersect with multiple colliders, only choose the highest
-                if (this.boxCollider.Top > boxCollider.Top - this.boxCollider.Height)
-                {
+               // if (this.boxCollider.Top > boxCollider.Top - this.boxCollider.Height)
+               // {
                     position.Y = boxCollider.Top - this.boxCollider.Height - 
                         (int)((texture.Bounds.Height * scale - this.boxCollider.Height) / 2);
-                }
+               // }
             }
 
             position.X = game.earth.radius * (float)Math.Cos(angle) + game.screenWidth * 0.4f;
@@ -219,8 +223,8 @@ namespace Assignment
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////
         private void adjustCollider()
         {
-            boxCollider.Width = (int)(texture.Bounds.Width * scale * 0.6);
-            boxCollider.Height = (int)(texture.Bounds.Height * scale * 0.67);
+            boxCollider.Width = (int)(texture.Bounds.Width * scale * colliderOffsetX);
+            boxCollider.Height = (int)(texture.Bounds.Height * scale * colliderOffsetY);
             this.boxCollider.X = (int)position.X + (int)((texture.Bounds.Width * scale - boxCollider.Width) / 2);
             this.boxCollider.Y = (int)position.Y + (int)((texture.Bounds.Height * scale - boxCollider.Height) / 2);
         }
