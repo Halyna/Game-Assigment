@@ -89,6 +89,7 @@ namespace Assignment
         {
             position.X = (int)(game.earth.radius * 1f * (float)Math.Cos(angle) + game.screenWidth * 0.5f);
             position.Y = (int)(game.earth.radius * 1f * (float)Math.Sin(angle) + (game.screenHeight * (GameSettings.TERRAIN_HEIGHT - 0.17) + game.earth.radius));
+
             
              // main collider
             boxCollider.X = (int)(position.X - 18f);
@@ -178,6 +179,7 @@ namespace Assignment
                 game.meteorSmall = new MeteorSmall(game);
 
             }
+
         }
     }
 }
