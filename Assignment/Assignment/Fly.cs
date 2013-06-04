@@ -82,6 +82,7 @@ namespace Assignment
             {
                 game.biteSound.Play();
                 game.player.flyCollided(this);
+                MediaPlayer.Play(game.loop3);
 
             }
         }

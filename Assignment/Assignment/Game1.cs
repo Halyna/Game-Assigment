@@ -99,6 +99,9 @@ namespace Assignment
             loop4 = Content.Load<Song>("Sound/loop4");
             loop5 = Content.Load<Song>("Sound/loop5");
             loop6 = Content.Load<Song>("Sound/loop6");
+
+            MediaPlayer.IsRepeating = true;
+            MediaPlayer.Play(loop1);
             
 
             // TODO: use this.Content to load your game content here
