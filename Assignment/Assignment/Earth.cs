@@ -25,6 +25,10 @@ namespace Assignment
         float rotationAngle;
         public float scale = 6f;
         public float radius;
+        double lowestH;
+        double secondH;
+        double thirdH;
+        double topH;
 
         public List<Terrain> terrains;
 
@@ -37,6 +41,13 @@ namespace Assignment
             origin.X = texture.Width / 2;
             origin.Y = texture.Height / 2;
             radius = texture.Bounds.Height * 0.5f * scale;
+            lowestH = 0.01;
+            secondH = 0.1;
+            thirdH = 0.2;
+            topH = 0.3;
+
+
+
 
             Initialize();
         }
@@ -50,53 +61,66 @@ namespace Assignment
            
             base.Initialize();
 
+            
             if (this.terrains == null)
             {
                   this.terrains = new List<Terrain>();
                 float angle = 4.4f;
+                Random rand = new Random();
                 for (int i = 0; i < 15; i++)
                 {
-                    Terrain t = new PlainTerrain(game, angle, true);
+                    
+                    Terrain t = new PlainTerrain(game, angle, lowestH, true);
                     this.terrains.Add(t);
                     angle += t.offsetAngle;
+                    Terrain lastTerrain = t;
 
-                    t = new LavaPitTerrain(game, angle, false);
+                    t = generateRandomTerrain(lastTerrain, angle, rand);
                     this.terrains.Add(t);
                     angle += t.offsetAngle;
+                    lastTerrain = t;
 
-                    t = new PlainTerrain(game, angle, false);
+                    t = generateRandomTerrain(lastTerrain, angle, rand);
                     this.terrains.Add(t);
                     angle += t.offsetAngle;
+                    lastTerrain = t;
 
-                    t = new LavaPitWideTerrain(game, angle, true);
+                    t = generateRandomTerrain(lastTerrain, angle, rand);
                     this.terrains.Add(t);
                     angle += t.offsetAngle;
+                    lastTerrain = t;
 
-                    t = new DescentTerrain(game, angle, false);
+                    t = generateRandomTerrain(lastTerrain, angle, rand);
                     this.terrains.Add(t);
                     angle += t.offsetAngle;
+                    lastTerrain = t;
 
-                    t = new LoweredTerrain(game, angle, true);
+                    t = generateRandomTerrain(lastTerrain, angle, rand);
                     this.terrains.Add(t);
                     angle += t.offsetAngle;
+                    lastTerrain = t;
 
-                    t = new LoweredTerrain(game, angle, false);
+                    t = generateRandomTerrain(lastTerrain, angle, rand);
                     this.terrains.Add(t);
                     angle += t.offsetAngle;
+                    lastTerrain = t;
 
-                    t = new VolcanoTerrain(game, angle, false);
+                    t = generateRandomTerrain(lastTerrain, angle, rand);
                     this.terrains.Add(t);
                     angle += t.offsetAngle;
+                    lastTerrain = t;
 
-                    t = new LoweredTerrain(game, angle, false);
+                    t = generateRandomTerrain(lastTerrain, angle, rand);
                     this.terrains.Add(t);
                     angle += t.offsetAngle;
+                    lastTerrain = t;
 
-                    t = new LoweredTerrain(game, angle, true);
+                    t = generateRandomTerrain(lastTerrain, angle, rand);
                     this.terrains.Add(t);
                     angle += t.offsetAngle;
+                    lastTerrain = t;
 
-                    t = new AscentTerrain(game, angle, true);
+                    t = generateRandomTerrain(lastTerrain, angle, rand);
                     this.terrains.Add(t);
                     angle += t.offsetAngle;
 
@@ -105,6 +129,62 @@ namespace Assignment
             }
         }
 
+        public Terrain generateRandomTerrain(Terrain lastTerrain, float angle, Random rand)
+        {
+            lastTerrain = this.terrains[terrains.Count -1];
+
+            bool fly = false;
+            int flyChance = rand.Next(0, 10);
+            if (flyChance == 9){
+                fly = true;
+            }
+
+            double terrainHeight = lowestH;
+            int terNum = rand.Next(0,4);
+            
+
+            if (terNum == 1)
+            {
+                terrainHeight = secondH;
+            }
+            if (terNum == 2 && lastTerrain.tHeight != lowestH)
+            {
+                terrainHeight = thirdH;
+            }
+            if (terNum == 3 && lastTerrain.tHeight != lowestH && lastTerrain.tHeight != secondH)
+            {
+                terrainHeight = topH;
+            }
+            if (lastTerrain is AscentTerrain)
+            {
+                if (lastTerrain.tHeight == lowestH)
+                {
+                    terrainHeight = lowestH;
+                }
+                if (lastTerrain.tHeight == secondH)
+                {
+                    terrainHeight = secondH;
+                }
+                if (lastTerrain.tHeight == thirdH)
+                {
+                    terrainHeight = thirdH;
+                }
+            }
+         
+            Terrain[] allTerrains = new Terrain[7];
+            allTerrains[0] = new PlainTerrain(game, angle, terrainHeight, fly);
+            allTerrains[1] = new AscentTerrain(game, angle, terrainHeight, fly);
+            allTerrains[2] = new VolcanoTerrain(game, angle, lastTerrain.tHeight, fly);
+            allTerrains[3] = new LavaPitTerrain(game, angle, terrainHeight, fly);
+            allTerrains[4] = new LavaPitWideTerrain(game, angle, terrainHeight, fly);
+            allTerrains[5] = new LoweredTerrain(game, angle, terrainHeight, fly);
+            allTerrains[6] = new DescentTerrain(game, angle, terrainHeight, fly);
+
+
+            Terrain nextTerrain = allTerrains[rand.Next(0, 6)];
+            return nextTerrain;
+            
+        }
         /// <summary>
         /// Allows the game component to update itself.
         /// </summary>

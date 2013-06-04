@@ -20,8 +20,8 @@ namespace Assignment
         List<Rectangle> stepColliders;
         int heightStep;
 
-        public DescentTerrain(Game1 game, float startAngle, bool hasFly)
-            : base(game, startAngle, hasFly)
+        public DescentTerrain(Game1 game, float startAngle, double terrianHeight, bool hasFly)
+            : base(game, startAngle, terrianHeight, hasFly)
         {
             texture = game.Content.Load<Texture2D>(@"Terrains/gr_2");
             origin.X = texture.Width / 2 * scale;
@@ -59,10 +59,10 @@ namespace Assignment
             base.Update(gameTime);
         }
 
-        public override void adjustPosition()
+        public override void adjustPosition(double tHeight)
         {
             position.X = (int)(game.earth.radius * 1f * (float)Math.Cos(angle) + game.screenWidth * 0.5f);
-            position.Y = (int)(game.earth.radius * 1f * (float)Math.Sin(angle) + (game.screenHeight * GameSettings.TERRAIN_HEIGHT + game.earth.radius));
+            position.Y = (int)(game.earth.radius * 1f * (float)Math.Sin(angle) + (game.screenHeight * GameSettings.TERRAIN_HEIGHT - tHeight+ game.earth.radius));
 
             // main collider
             boxCollider.X = (int)(position.X - 18f);
