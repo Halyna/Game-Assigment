@@ -158,6 +158,7 @@ namespace Assignment
 
             if (this.gameState == GameState.Paused)
             {
+                MediaPlayer.Pause();
                 InputManager.Update(gameTime);
                 return;
             }
@@ -167,6 +168,7 @@ namespace Assignment
 
             if (gameState == GameState.InGame)
             {
+                MediaPlayer.Resume();
                 player.Update(gameTime);
                 bird.Update(gameTime);
                 meteorBig.Update(gameTime);
@@ -177,7 +179,7 @@ namespace Assignment
                 #region music tracks
 
                 // update music track
-                if (player.scoreDisplay.timeElapsed > GameSettings.PLAY_TIME - GameSettings.PLAY_TIME * 1 / 6)
+                if (player.scoreDisplay.timeElapsed > GameSettings.PLAY_TIME - GameSettings.PLAY_TIME * 1 / 8)
                 {
                     if (songPlaying != 6)
                     {
@@ -185,7 +187,7 @@ namespace Assignment
                         songPlaying = 6;
                     }
                 }
-                else if (player.scoreDisplay.timeElapsed > GameSettings.PLAY_TIME - GameSettings.PLAY_TIME * 2 / 6)
+                else if (player.scoreDisplay.timeElapsed > GameSettings.PLAY_TIME - GameSettings.PLAY_TIME * 2 / 8)
                 {
                     if (songPlaying != 5)
                     {
@@ -193,7 +195,7 @@ namespace Assignment
                         songPlaying = 5;
                     }
                 }
-                else if (player.scoreDisplay.timeElapsed > GameSettings.PLAY_TIME - GameSettings.PLAY_TIME * 3 / 6)
+                else if (player.scoreDisplay.timeElapsed > GameSettings.PLAY_TIME - GameSettings.PLAY_TIME * 3 / 8)
                 {
                     if (songPlaying != 4)
                     {
@@ -202,7 +204,7 @@ namespace Assignment
                     }
                 }
 
-                else if (player.scoreDisplay.timeElapsed > GameSettings.PLAY_TIME - GameSettings.PLAY_TIME * 4 / 6)
+                else if (player.scoreDisplay.timeElapsed > GameSettings.PLAY_TIME - GameSettings.PLAY_TIME * 4 / 8)
                 {
                     if (songPlaying != 3)
                     {
@@ -211,7 +213,7 @@ namespace Assignment
                     }
                 }
 
-                else if (player.scoreDisplay.timeElapsed > GameSettings.PLAY_TIME - GameSettings.PLAY_TIME * 5 / 6)
+                else if (player.scoreDisplay.timeElapsed > GameSettings.PLAY_TIME - GameSettings.PLAY_TIME * 6 / 8)
                 {
                     if (songPlaying != 2)
                     {

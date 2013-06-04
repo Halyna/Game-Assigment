@@ -132,7 +132,7 @@ namespace Assignment
             
             if (boxCollider.Intersects(game.player.boxCollider) && game.player.isCrouching != true)
             {
-
+                game.hitTerrainSound.Play();
                 game.player.birdCollided(this);
 
             }
