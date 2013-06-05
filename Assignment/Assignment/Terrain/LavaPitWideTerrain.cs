@@ -103,15 +103,20 @@ namespace Assignment
                 }
             }
 
-            if (boxCollider.Intersects(game.bird.boxCollider))
+            for (int i = game.objectSpawner.birds.Count - 1; i >= 0; i--)
             {
-                game.bird.FlyAway();
-
+                if (boxCollider.Intersects(game.objectSpawner.birds[i].boxCollider))
+                {
+                    game.objectSpawner.birds[i].FlyAway();
+                }
             }
-            if (boxCollider.Intersects(game.meteorSmall.boxCollider))
-            {
-                game.meteorSmall = new MeteorSmall(game);
 
+            for (int i = game.objectSpawner.meteors.Count - 1; i >= 0; i--)
+            {
+                if (boxCollider.Intersects(game.objectSpawner.meteors[i].boxCollider))
+                {
+                    game.objectSpawner.meteors.RemoveAt(i);
+                }
             }
         }
 

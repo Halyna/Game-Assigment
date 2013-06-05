@@ -76,6 +76,7 @@
     <Compile Include="Animation\AnimationController.cs" />
     <Compile Include="Background\Background.cs" />
     <Compile Include="Background\BackgroundElement.cs" />
+    <Compile Include="ObjectSpawner.cs" />
     <Compile Include="Objects\Bird.cs" />
     <Compile Include="Earth.cs" />
     <Compile Include="Objects\Fly.cs" />

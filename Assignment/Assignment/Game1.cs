@@ -23,11 +23,13 @@ namespace Assignment
 
         public Earth earth;
         public Player player;
-        public Bird bird;
+        
         public Background background;
         public MeteorBig meteorBig;
-        public MeteorSmall meteorSmall;
+        //public MeteorSmall meteorSmall;
+        //public Bird bird;
 
+        public ObjectSpawner objectSpawner;
 
         public int screenWidth;
         public int screenHeight;
@@ -62,6 +64,8 @@ namespace Assignment
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+
+            objectSpawner = new ObjectSpawner(this);
             screenWidth = 1024;
             screenHeight = 800;
         }
@@ -85,11 +89,12 @@ namespace Assignment
         {
             this.earth = new Earth(this);
             this.player = new Player(this);
-            this.bird = new Bird(this);
-
+            
             this.background = new Background(this);
             this.meteorBig = new MeteorBig(this);
-            this.meteorSmall = new MeteorSmall(this);
+            //this.meteorSmall = new MeteorSmall(this);
+            //this.bird = new Bird(this);
+            objectSpawner.Reset();
 
             MediaPlayer.Play(loop1);
             songPlaying = 1;
@@ -137,6 +142,8 @@ namespace Assignment
 
         protected override void Update(GameTime gameTime)
         {
+            base.Update(gameTime);
+
             // Get user input
             if (InputManager.PressedBack() == true && this.gameState == GameState.Paused)
                 this.gameState = GameState.InGame;
@@ -162,7 +169,8 @@ namespace Assignment
                 InputManager.Update(gameTime);
                 return;
             }
-            base.Update(gameTime);
+
+            
             earth.Update(gameTime);
             background.Update(gameTime);
 
@@ -170,10 +178,10 @@ namespace Assignment
             {
                 MediaPlayer.Resume();
                 player.Update(gameTime);
-                bird.Update(gameTime);
                 meteorBig.Update(gameTime);
-                meteorSmall.Update(gameTime);
-
+                //meteorSmall.Update(gameTime);
+                //bird.Update(gameTime);
+                objectSpawner.Update(gameTime);
                 greenColor -= colorChange;
    
                 #region music tracks
@@ -275,8 +283,9 @@ namespace Assignment
             {
                 meteorBig.Draw(spriteBatch, gameTime);
                 player.Draw(gameTime, spriteBatch);
-                meteorSmall.Draw(spriteBatch, gameTime);                          
-                bird.Draw(gameTime, spriteBatch);              
+                //meteorSmall.Draw(spriteBatch, gameTime);                          
+                //bird.Draw(gameTime, spriteBatch); 
+                objectSpawner.Draw(spriteBatch, gameTime);
             }
 
             spriteBatch.End();

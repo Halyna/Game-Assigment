@@ -240,7 +240,8 @@ namespace Assignment
         {
             if (isCrouching)
                 return;
-            game.bird = new Bird(game);
+            //game.bird = new Bird(game);
+            game.objectSpawner.birds.Remove(bird);
             scale -= 0.01f;
 
             scoreDisplay.currentPoints -= 200;
@@ -277,7 +278,8 @@ namespace Assignment
         {
             if (isCrouching)
                 return;
-            game.meteorSmall = new MeteorSmall(game);
+            //game.meteorSmall = new MeteorSmall(game);
+            game.objectSpawner.meteors.Remove(meteorSmall);
             scale -= 0.01f;
 
             scoreDisplay.currentPoints -= 200;

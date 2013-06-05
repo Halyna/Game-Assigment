@@ -19,7 +19,6 @@ namespace Assignment
         Texture2D texture;
         Vector2 position;
         float scale;
-        int direction;
 
         public Rectangle boxCollider;
 
@@ -36,10 +35,6 @@ namespace Assignment
             position.X = r.Next(game.screenWidth);
             position.Y = -10;
 
-            if (position.X > game.screenWidth * 0.5f)
-                direction = -1;
-            else
-                direction = 1;
             scale = 0.1f;
 
             Initialize();

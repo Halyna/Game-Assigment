@@ -17,7 +17,7 @@ namespace Assignment
     /// </summary>
     public class Bird : Microsoft.Xna.Framework.GameComponent
     {
-        public const int SPAWN_TIME = 3000;//miliseconds
+        //public const int SPAWN_TIME = 3000;//miliseconds
 
         Texture2D texture;
         private Animation BirdAnimation;
@@ -56,6 +56,8 @@ namespace Assignment
             origin.X = texture.Width / 2 * scale;
             origin.Y = texture.Height / 2 * scale;
             boxCollider = new Rectangle(0, 0, (int)(texture.Bounds.Width * 0.8f * scale), (int)(texture.Bounds.Height * 0.4f * scale));
+
+            game.birdSpawnedSound.Play();
             Initialize();
         }
 
@@ -90,19 +92,6 @@ namespace Assignment
         {
             base.Update(gameTime);
 
-            timeBeforeSpawn += (int)gameTime.ElapsedGameTime.TotalMilliseconds;
-            if (timeBeforeSpawn >= SPAWN_TIME)
-            {
-                if (!isSpawned)
-                {
-                    isSpawned = true;
-                    game.birdSpawnedSound.Play();
-                }
-               
-            }
-            else
-                return;
-
             BirdAnimationController.Update(gameTime);
 
             // will stop adjusting direction at some point
@@ -121,7 +110,7 @@ namespace Assignment
             detectCollistions();
 
             if (position.Y < -50)
-                Reset();
+                game.objectSpawner.birds.Remove(this);
 
         }
 
@@ -140,10 +129,6 @@ namespace Assignment
 
         public virtual void Draw(GameTime gameTime, SpriteBatch batch)
         {
-            if (!isSpawned)
-            {
-                return;
-            }
             if (target.X < 0)
             {
                 BirdAnimationController.Draw(gameTime, batch, position, scale, SpriteEffects.FlipHorizontally, Color.DarkOliveGreen, 0, origin);
@@ -153,12 +138,12 @@ namespace Assignment
                 BirdAnimationController.Draw(gameTime, batch, position, scale, SpriteEffects.None, Color.DarkOliveGreen, 0, origin);
             }
 
-            // debug: collider
+            /* debug: collider
             var t = new Texture2D(game.GraphicsDevice, 1, 1);
             t.SetData(new[] { Color.White });
             Color c = new Color(0, 0, 0, 0.5f);
             batch.Draw(t, boxCollider, c);
-
+            */
 
         }
 
