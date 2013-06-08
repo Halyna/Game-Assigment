@@ -17,8 +17,8 @@ namespace Assignment
     /// </summary>
     public class PlainTerrain : Terrain
     {
-        public PlainTerrain(Game1 game, float startAngle, bool hasFly)
-            : base(game, startAngle, hasFly)
+        public PlainTerrain(Game1 game, float startAngle, double terrianHeight, bool hasFly)
+            : base(game, startAngle, terrianHeight, hasFly)
         {
             texture = game.Content.Load<Texture2D>(@"Terrains/gr_0");
             origin.X = texture.Width / 2 * scale;
@@ -39,10 +39,10 @@ namespace Assignment
             base.Update(gameTime);
         }
 
-        public override void adjustPosition()
+        public override void adjustPosition(double tHeight)
         {
             position.X = (int)(game.earth.radius * 1f * (float)Math.Cos(angle) + game.screenWidth * 0.5f);
-            position.Y = (int)(game.earth.radius * 1f * (float)Math.Sin(angle) + (game.screenHeight * (GameSettings.TERRAIN_HEIGHT - 0.02) + game.earth.radius));
+            position.Y = (int)(game.earth.radius * 1f * (float)Math.Sin(angle) + (game.screenHeight * (GameSettings.TERRAIN_HEIGHT - tHeight) + game.earth.radius));
             boxCollider.X = (int)(position.X - 18f);//(int)position.X - boxCollider.Width;
             boxCollider.Y = (int)(position.Y - 18f); //+ boxCollider.Height/3;
             //Console.Out.WriteLine("Terrain Position: X " + position.X + " Y " + position.Y);

@@ -17,14 +17,15 @@ namespace Assignment
     /// </summary>
     public class LoweredTerrain : Terrain
     {
-        public LoweredTerrain(Game1 game, float startAngle, bool hasFly)
-            : base(game, startAngle, hasFly)
+        public LoweredTerrain(Game1 game, float startAngle, double terrianHeight, bool hasFly)
+            : base(game, startAngle, terrianHeight, hasFly)
         {
             texture = game.Content.Load<Texture2D>(@"Terrains/gr_1");
             origin.X = texture.Width / 2 * scale;
             origin.Y = texture.Height / 2 * scale;
             boxCollider = new Rectangle(0, 0, (int)(texture.Bounds.Width * scale), (int)(texture.Bounds.Height * scale));
             offsetAngle = 0.029f;
+
         }
 
 
@@ -39,10 +40,10 @@ namespace Assignment
             base.Update(gameTime);
         }
 
-        public override void adjustPosition()
+        public override void adjustPosition(double tHeight)
         {
             position.X = (int)(game.earth.radius * 1f * (float)Math.Cos(angle) + game.screenWidth * 0.5f) ;
-            position.Y = (int)(game.earth.radius * 1f * (float)Math.Sin(angle) + (game.screenHeight * (GameSettings.TERRAIN_HEIGHT - 0.02) + game.earth.radius)) + boxCollider.Height * 0.5f;
+            position.Y = (int)(game.earth.radius * 1f * (float)Math.Sin(angle) + (game.screenHeight * (GameSettings.TERRAIN_HEIGHT - tHeight) + game.earth.radius));// +boxCollider.Height * 0.5f;
             boxCollider.X = (int)(position.X - 17f);//(int)position.X - boxCollider.Width;
             boxCollider.Y = (int)(position.Y - 9f); //+ boxCollider.Height/3;
             if (position.X < 0 - texture.Width || position.X > game.screenWidth + texture.Width)

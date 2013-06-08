@@ -25,6 +25,10 @@ namespace Assignment
         float rotationAngle;
         public float scale = 6f;
         public float radius;
+        double lowestH;
+        double secondH;
+        double thirdH;
+        double topH;
 
         public List<Terrain> terrains;
 
@@ -37,6 +41,13 @@ namespace Assignment
             origin.X = texture.Width / 2;
             origin.Y = texture.Height / 2;
             radius = texture.Bounds.Height * 0.5f * scale;
+            lowestH = 0.01;
+            secondH = 0.08;
+            thirdH = 0.15;
+            topH = 0.22;
+
+
+
 
             Initialize();
         }
@@ -50,53 +61,57 @@ namespace Assignment
            
             base.Initialize();
 
+            
             if (this.terrains == null)
             {
                   this.terrains = new List<Terrain>();
                 float angle = 4.4f;
+                Random rand = new Random();
                 for (int i = 0; i < 15; i++)
                 {
-                    Terrain t = new PlainTerrain(game, angle, false);
+                    
+                    Terrain t = new PlainTerrain(game, angle, lowestH, true);s
                     this.terrains.Add(t);
                     angle += t.offsetAngle;
 
-                    t = new LavaPitTerrain(game, angle, false);
+                    t = generateRandomTerrain(angle, rand);
                     this.terrains.Add(t);
                     angle += t.offsetAngle;
 
-                    t = new PlainTerrain(game, angle, false);
+                    t = generateRandomTerrain(angle, rand);
                     this.terrains.Add(t);
                     angle += t.offsetAngle;
 
-                    t = new LavaPitWideTerrain(game, angle, false);
+
+                    t = generateRandomTerrain(angle, rand);s
                     this.terrains.Add(t);
                     angle += t.offsetAngle;
 
-                    t = new DescentTerrain(game, angle, false);
+                    t = generateRandomTerrain(angle, rand);
                     this.terrains.Add(t);
                     angle += t.offsetAngle;
 
-                    t = new LoweredTerrain(game, angle, false);
+                    t = generateRandomTerrain(angle, rand);
                     this.terrains.Add(t);
                     angle += t.offsetAngle;
 
-                    t = new LoweredTerrain(game, angle, false);
+                    t = generateRandomTerrain(angle, rand);
                     this.terrains.Add(t);
                     angle += t.offsetAngle;
 
-                    t = new VolcanoTerrain(game, angle, false);
+                    t = generateRandomTerrain(angle, rand);
                     this.terrains.Add(t);
                     angle += t.offsetAngle;
 
-                    t = new LoweredTerrain(game, angle, false);
+                    t = generateRandomTerrain(angle, rand);
                     this.terrains.Add(t);
                     angle += t.offsetAngle;
 
-                    t = new LoweredTerrain(game, angle, true);
+                    t = generateRandomTerrain(angle, rand);
                     this.terrains.Add(t);
                     angle += t.offsetAngle;
 
-                    t = new AscentTerrain(game, angle, true);
+                    t = generateRandomTerrain(angle, rand);
                     this.terrains.Add(t);
                     angle += t.offsetAngle;
 
@@ -105,6 +120,85 @@ namespace Assignment
             }
         }
 
+        public Terrain generateRandomTerrain( float angle, Random rand)
+        {
+            Terrain lastTerrain = this.terrains[terrains.Count -1];
+
+            bool fly = false;
+            int flyChance = rand.Next(0, 6);
+            if (flyChance == 2){
+                fly = true;
+            }
+
+            double terrainHeight = lowestH;
+            int terNum = rand.Next(0,4);
+
+            if (terNum == 1)
+            {
+                terrainHeight = secondH;
+            }
+            if (terNum == 2 && lastTerrain.tHeight != lowestH)
+            {
+                terrainHeight = thirdH;
+            }
+            if (terNum == 3 && lastTerrain.tHeight != lowestH && lastTerrain.tHeight != secondH)
+            {
+                terrainHeight = topH;
+            }
+         
+            Terrain[] allTerrains = new Terrain[7];
+            allTerrains[0] = new PlainTerrain(game, angle, terrainHeight, fly);
+            allTerrains[1] = new AscentTerrain(game, angle, terrainHeight, fly);
+            allTerrains[2] = new VolcanoTerrain(game, angle, lastTerrain.tHeight, fly);
+            allTerrains[3] = new LavaPitTerrain(game, angle, terrainHeight, fly);
+            allTerrains[4] = new LavaPitWideTerrain(game, angle, terrainHeight, fly);
+            allTerrains[5] = new LoweredTerrain(game, angle, terrainHeight, fly);
+            allTerrains[6] = new DescentTerrain(game, angle, terrainHeight, fly);
+
+            Terrain nextTerrain = allTerrains[rand.Next(0, 7)];
+            if (lastTerrain is AscentTerrain)
+            {
+                if (lastTerrain.tHeight == lowestH)
+                {
+                    nextTerrain.tHeight = lowestH;
+                }
+                if (lastTerrain.tHeight == secondH)
+                {
+                    nextTerrain.tHeight = secondH;
+                }
+                if (lastTerrain.tHeight == thirdH)
+                {
+                    nextTerrain.tHeight = thirdH;
+                }
+                if (nextTerrain is AscentTerrain)
+                {
+                    nextTerrain = generateRandomTerrain(angle, rand);
+                }
+            }
+
+            if (lastTerrain is DescentTerrain)
+            {
+                if (lastTerrain.tHeight == lowestH)
+                {
+                    nextTerrain.tHeight = lowestH;
+                }
+                if (lastTerrain.tHeight == secondH)
+                {
+                    nextTerrain.tHeight = secondH;
+                }
+                if (lastTerrain.tHeight == thirdH)
+                {
+                    nextTerrain.tHeight = thirdH;
+                }
+                if (nextTerrain is DescentTerrain)
+                {
+                    nextTerrain = generateRandomTerrain(angle, rand);
+                }
+            }
+
+            return nextTerrain;
+            
+        }
         /// <summary>
         /// Allows the game component to update itself.
         /// </summary>

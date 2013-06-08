@@ -26,13 +26,15 @@ namespace Assignment
         public Rectangle boxCollider;
         public bool isOnScreen;
         public float offsetAngle;
+        public double tHeight;
 
         public Fly fly;
 
-        public Terrain(Game1 game, float startAngle, bool hasFly)
+        public Terrain(Game1 game, float startAngle, double terrianHeight, bool hasFly)
         {
             this.game = game;
             angle = startAngle;
+            tHeight = terrianHeight;
 
             Random r = new Random();
             float flyOffset = (float)r.NextDouble() * 0.055f; // max offfset angle
@@ -43,22 +45,23 @@ namespace Assignment
 
             isOnScreen = false;
         }
-       
+
         public virtual void Initialize()
         {
             // TODO: Add your initialization code here
         }
 
-      
+
         public virtual void Update(GameTime gameTime)
         {
-           float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
-
-           angle -= elapsed * GameSettings.EARTH_ROTATION_SPEED;
+            float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            angle -= elapsed * GameSettings.EARTH_ROTATION_SPEED;
             float circle = MathHelper.Pi * 2;
             angle = angle % circle;
-            adjustPosition();
+
+            adjustPosition(this.tHeight);
             if (isOnScreen && game.gameState == Game1.GameState.InGame)
+
             {
                 detectCollistions(gameTime);
             }
@@ -67,7 +70,7 @@ namespace Assignment
             {
                 fly.Update(gameTime);
             }
-            
+
         }
 
         protected virtual void detectCollistions(GameTime gameTime)
@@ -97,7 +100,7 @@ namespace Assignment
            
         }
 
-        public virtual void Draw(SpriteBatch batch, GameTime gameTime) 
+        public virtual void Draw(SpriteBatch batch, GameTime gameTime)
         {
             batch.Draw(texture, position, null, Color.White, 0, origin, scale, SpriteEffects.None, 0f);
             if (fly != null && game.gameState != Game1.GameState.GameComplete)
@@ -113,11 +116,11 @@ namespace Assignment
             */
 
         }
-        
 
-        public virtual void adjustPosition()
+
+        public virtual void adjustPosition(double tHeight)
         {
-            
+
         }
     }
 }
