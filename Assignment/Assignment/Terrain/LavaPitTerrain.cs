@@ -103,21 +103,7 @@ namespace Assignment
 
             }
 
-            for (int i = game.objectSpawner.birds.Count - 1; i >= 0; i--)
-            {
-                if (boxCollider.Intersects(game.objectSpawner.birds[i].boxCollider))
-                {
-                    game.objectSpawner.birds[i].FlyAway();
-                }
-            }
-
-            for (int i = game.objectSpawner.meteors.Count - 1; i >= 0; i--)
-            {
-                if (boxCollider.Intersects(game.objectSpawner.meteors[i].boxCollider))
-                {
-                    game.objectSpawner.meteors.RemoveAt(i);
-                }
-            }
+            base.detectCollistions(gameTime);
         }
 
         public override void Draw(SpriteBatch batch, GameTime gameTime)

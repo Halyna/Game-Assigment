@@ -75,13 +75,6 @@ namespace Assignment
 
         protected virtual void detectCollistions(GameTime gameTime)
         {
-            if (boxCollider.Intersects(game.player.boxCollider))
-            {
-                //Console.WriteLine("Terrain collision {0}", this.ToString());
-                game.player.adjustPosition(boxCollider, gameTime);
-
-            }
-
             for (int i = game.objectSpawner.birds.Count - 1; i >= 0; i--)
             {
                 if (boxCollider.Intersects(game.objectSpawner.birds[i].boxCollider))
@@ -94,7 +87,8 @@ namespace Assignment
             {
                 if (boxCollider.Intersects(game.objectSpawner.meteors[i].boxCollider))
                 {
-                    game.objectSpawner.meteors.RemoveAt(i);
+                    game.objectSpawner.meteors[i].Animate();
+                    //game.objectSpawner.meteors.RemoveAt(i);
                 }
             }
            
@@ -102,19 +96,7 @@ namespace Assignment
 
         public virtual void Draw(SpriteBatch batch, GameTime gameTime)
         {
-            batch.Draw(texture, position, null, Color.White, 0, origin, scale, SpriteEffects.None, 0f);
-            if (fly != null && game.gameState != Game1.GameState.GameComplete)
-            {
-                fly.Draw(batch, gameTime);
-            }
-
-            /* debug: collider
-            var t = new Texture2D(game.GraphicsDevice, 1, 1);
-            t.SetData(new[] { Color.White });
-            Color c = new Color(0, 0, 0, 0.5f);
-            batch.Draw(t, boxCollider, c);
-            */
-
+          
         }
 
 

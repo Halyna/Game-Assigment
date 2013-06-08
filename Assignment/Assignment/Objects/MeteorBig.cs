@@ -57,14 +57,14 @@ namespace Assignment
             BigMeteorAnimationController.Update(gameTime);
 
             scale += 0.0001f;
-            position += new Vector2(0.001f, -0.002f);
+            position += new Vector2(0.002f, -0.0015f);
 
             // need stopping conditions && link to time elapsed
         }
 
         public virtual void Draw(SpriteBatch batch, GameTime gameTime)
         {
-            BigMeteorAnimationController.Draw(gameTime, batch, position, scale, SpriteEffects.None, Color.DarkOliveGreen, rotationAngle, origin);
+            BigMeteorAnimationController.Draw(gameTime, batch, position, scale, SpriteEffects.None, Color.White, rotationAngle, origin);
            
 
         }

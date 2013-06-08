@@ -107,7 +107,7 @@ namespace Assignment
                 volcanoArray[i] = Content.Load<Texture2D>(frameName);
             }
 
-            VolcanoAnimation = new Animation(volcanoArray, .5f, true, volcanoFrames);
+            VolcanoAnimation = new Animation(volcanoArray, 1f, true, volcanoFrames);
 
             // Fly
             Texture2D[] flyArray = new Texture2D[2];
@@ -139,7 +139,7 @@ namespace Assignment
                 metSmallArray[i] = Content.Load<Texture2D>(frameName);
             }
 
-            MeteorSmallAnimation = new Animation(metSmallArray, 0.3f, false, metSmallFrames);
+            MeteorSmallAnimation = new Animation(metSmallArray, 0.1f, false, metSmallFrames);
 
             // menus
             gameOverText = Content.Load<Texture2D>("UI/gameovertext");

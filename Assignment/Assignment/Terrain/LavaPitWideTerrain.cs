@@ -37,7 +37,7 @@ namespace Assignment
              * --|     |---
              * --|=====|---
              */
-            pitCollider = new Rectangle(0, 0, (int)(boxCollider.Width * 0.7f), (int)(boxCollider.Height * 0.66f));
+            pitCollider = new Rectangle(0, 0, (int)(boxCollider.Width * 0.7f), (int)(boxCollider.Height * 0.75f));
             leftRidgeCollider = new Rectangle(0, 0, (int)(boxCollider.Width * 0.15f), boxCollider.Height);
             rightRidgeCollider = new Rectangle(0, 0, (int)(boxCollider.Width * 0.15f), boxCollider.Height);
 
@@ -62,12 +62,12 @@ namespace Assignment
             position.Y = (int)(game.earth.radius * 1f * (float)Math.Sin(angle) + (game.screenHeight * (GameSettings.TERRAIN_HEIGHT - tHeight) + game.earth.radius));
 
             // main collider
-            boxCollider.X = (int)(position.X - 18f);
-            boxCollider.Y = (int)(position.Y - 18f);
+            boxCollider.X = (int)(position.X - 29f);
+            boxCollider.Y = (int)(position.Y - 23f);
 
             // pit colliders
             pitCollider.X = (int)(boxCollider.X + leftRidgeCollider.Width);
-            pitCollider.Y = (int)(boxCollider.Y + boxCollider.Height * 0.33f);
+            pitCollider.Y = (int)(boxCollider.Y + boxCollider.Height * 0.2f);
             leftRidgeCollider.X = boxCollider.X;
             leftRidgeCollider.Y = boxCollider.Y;
             rightRidgeCollider.X = (int)(boxCollider.X + boxCollider.Width - rightRidgeCollider.Width*1.5f);
@@ -80,8 +80,6 @@ namespace Assignment
             else
             {
                 isOnScreen = true;
-                //Console.Out.WriteLine("Terrain Position: X " + position.X + " Y " + position.Y);
-                //Console.Out.WriteLine("Collider Position: X " + boxCollider.X + " Y " + boxCollider.Y);
             }
         }
 
@@ -103,21 +101,7 @@ namespace Assignment
                 }
             }
 
-            for (int i = game.objectSpawner.birds.Count - 1; i >= 0; i--)
-            {
-                if (boxCollider.Intersects(game.objectSpawner.birds[i].boxCollider))
-                {
-                    game.objectSpawner.birds[i].FlyAway();
-                }
-            }
-
-            for (int i = game.objectSpawner.meteors.Count - 1; i >= 0; i--)
-            {
-                if (boxCollider.Intersects(game.objectSpawner.meteors[i].boxCollider))
-                {
-                    game.objectSpawner.meteors.RemoveAt(i);
-                }
-            }
+            base.detectCollistions(gameTime);
         }
 
         public override void Draw(SpriteBatch batch, GameTime gameTime)

@@ -56,6 +56,18 @@ namespace Assignment
             }
         }
 
+
+        protected override void detectCollistions(GameTime gameTime)
+        {
+            base.detectCollistions(gameTime);
+
+            if (boxCollider.Intersects(game.player.boxCollider))
+            {
+                //Console.WriteLine("Terrain collision {0}", this.ToString());
+                game.player.adjustPosition(boxCollider, gameTime);
+            }
+
+        }
         public override void Draw(SpriteBatch batch, GameTime gameTime)
         {
             batch.Draw(texture, position, null, Color.Black, 0, origin, scale, SpriteEffects.None, 0f);
@@ -64,12 +76,12 @@ namespace Assignment
                 fly.Draw(batch, gameTime);
             }
 
-            // debug: collider
+            /* debug: collider 
             var t = new Texture2D(game.GraphicsDevice, 1, 1);
             t.SetData(new[] { Color.White });
             Color c = new Color(0, 0, 0, 0.5f);
-            //batch.Draw(t, boxCollider, c);
-
+            batch.Draw(t, boxCollider, c);
+            */
 
         }
     }

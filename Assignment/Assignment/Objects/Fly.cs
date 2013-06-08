@@ -69,7 +69,11 @@ namespace Assignment
 
             rotationAngle += 0.1f;
             origin.X = (int)(game.earth.radius * 1f * (float)Math.Cos(positionAngle) + game.screenWidth * 0.5f);
-            origin.Y = terrain.position.Y - game.player.boxCollider.Height * 2f;
+            
+            if (terrain.GetType() == typeof(VolcanoTerrain))
+                origin.Y = terrain.position.Y;// volcanos have large offset
+            else
+                origin.Y = terrain.position.Y - game.player.boxCollider.Height * 2f;
             position = origin + Vector2.Transform(new Vector2(20, 0), Matrix.CreateRotationZ(rotationAngle));
 
             this.boxCollider.X = (int)position.X;

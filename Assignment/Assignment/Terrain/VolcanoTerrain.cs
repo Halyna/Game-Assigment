@@ -17,9 +17,12 @@ namespace Assignment
     /// </summary>
     public class VolcanoTerrain : Terrain
     {
-
+        const float inactiveTime = 2000;
         private Animation volcanoAnimation;
         private AnimationController VolcanoAnimationController;
+
+        bool isAnimating;
+        float timeTillAnimation = inactiveTime;
 
         List<Rectangle> stepCollidersAscend;
         List<Rectangle> stepCollidersDescend;
@@ -48,7 +51,7 @@ namespace Assignment
              */
             stepCollidersAscend = new List<Rectangle>();
             widthStep = (int)(texture.Width * scale / 10);
-            int heightOffset = (int)(texture.Height * scale / 3);
+            int heightOffset = (int)(texture.Height * scale / 4);
             heightStep = (int)(heightOffset / 4);
             for (int i = 0; i < 4; i++)
             {
@@ -81,8 +84,27 @@ namespace Assignment
         public override void Update(GameTime gameTime)
         {
             base.Update(gameTime);
-            if (isOnScreen)
+            if (!isOnScreen)
+                return;
+
+            //if (isAnimating)
+            //{
                 VolcanoAnimationController.Update(gameTime);
+            //    if (VolcanoAnimationController.Finished)
+            //    {
+            //        timeTillAnimation = inactiveTime;
+            //        Console.WriteLine("timeTillAnimation " + timeTillAnimation);
+            //        isAnimating = false;
+            //        VolcanoAnimationController.Animation.CurrentTexture = 0;
+            //    }
+            //}
+
+            //else
+            //{
+            //    timeTillAnimation -= (float)gameTime.ElapsedGameTime.TotalMilliseconds;
+            //    if (timeTillAnimation < 0)
+            //        isAnimating = true;
+            //}
         }
 
         public override void adjustPosition(double tHeight)
@@ -93,11 +115,11 @@ namespace Assignment
             
              // main collider
             boxCollider.X = (int)(position.X - 18f);
-            boxCollider.Y = (int)(position.Y + boxCollider.Height * 0.35f);
+            boxCollider.Y = (int)(position.Y + boxCollider.Height * 0.25f);
 
             // lava collider
             lavaCollider.X = (int)(boxCollider.X + ((boxCollider.Width - lavaCollider.Width)/2) - 15);
-            lavaCollider.Y = (int)(position.Y + boxCollider.Height * 0.35f);
+            lavaCollider.Y = (int)(position.Y + boxCollider.Height * 0.25f);
 
             // step colliders
             for (int i = 0; i < 4; i++)
@@ -123,13 +145,20 @@ namespace Assignment
 
         public override void Draw(SpriteBatch batch, GameTime gameTime)
         {
-            VolcanoAnimationController.Draw(gameTime, batch, position, scale, SpriteEffects.None, Color.White, 0, origin);
+            if (!isOnScreen)
+                return;
+
+            //if (isAnimating)
+                VolcanoAnimationController.Draw(gameTime, batch, position, scale, SpriteEffects.None, Color.White, 0, origin);
+           // else
+            //    batch.Draw(texture, position, null, Color.Black, 0, origin, scale, SpriteEffects.None, 0f);
+
             if (fly != null)
             {
                 fly.Draw(batch, gameTime);
             }
 
-            /* debug: collider * 
+            /* debug: collider * */
             var t = new Texture2D(game.GraphicsDevice, 1, 1);
             t.SetData(new[] { Color.White });
             Color c = new Color(0, 0, 0, 0.5f);
@@ -145,7 +174,7 @@ namespace Assignment
                batch.Draw(t, r, c);
             }
             batch.Draw(t, lavaCollider, c);
-            */
+            
         }
 
         protected override void detectCollistions(GameTime gameTime)
@@ -174,21 +203,7 @@ namespace Assignment
                     game.player.FallInPit(lavaCollider);
             }
 
-            for (int i = game.objectSpawner.birds.Count - 1; i >= 0; i--)
-            {
-                if (boxCollider.Intersects(game.objectSpawner.birds[i].boxCollider))
-                {
-                    game.objectSpawner.birds[i].FlyAway();
-                }
-            }
-
-            for (int i = game.objectSpawner.meteors.Count - 1; i >= 0; i--)
-            {
-                if (boxCollider.Intersects(game.objectSpawner.meteors[i].boxCollider))
-                {
-                    game.objectSpawner.meteors.RemoveAt(i);
-                }
-            }
+            base.detectCollistions(gameTime);
 
         }
     }

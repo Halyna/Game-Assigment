@@ -279,7 +279,8 @@ namespace Assignment
             if (isCrouching)
                 return;
             //game.meteorSmall = new MeteorSmall(game);
-            game.objectSpawner.meteors.Remove(meteorSmall);
+            //game.objectSpawner.meteors.Remove(meteorSmall);
+            meteorSmall.Animate();
             scale -= 0.01f;
 
             scoreDisplay.currentPoints -= 200;

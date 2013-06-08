@@ -44,8 +44,8 @@ namespace Assignment
         {
             position.X = (int)(game.earth.radius * 1f * (float)Math.Cos(angle) + game.screenWidth * 0.5f) ;
             position.Y = (int)(game.earth.radius * 1f * (float)Math.Sin(angle) + (game.screenHeight * (GameSettings.TERRAIN_HEIGHT - tHeight) + game.earth.radius));// +boxCollider.Height * 0.5f;
-            boxCollider.X = (int)(position.X - 17f);//(int)position.X - boxCollider.Width;
-            boxCollider.Y = (int)(position.Y - 9f); //+ boxCollider.Height/3;
+            boxCollider.X = (int)(position.X - 18f);//(int)position.X - boxCollider.Width;
+            boxCollider.Y = (int)(position.Y - 18f); //+ boxCollider.Height/3;
             if (position.X < 0 - texture.Width || position.X > game.screenWidth + texture.Width)
             {
                 isOnScreen = false;
@@ -56,6 +56,33 @@ namespace Assignment
                 //Console.Out.WriteLine("Terrain Position: X " + position.X + " Y " + position.Y);
                 //Console.Out.WriteLine("Collider Position: X " + boxCollider.X + " Y " + boxCollider.Y);
             }
+        }
+
+        protected override void detectCollistions(GameTime gameTime)
+        {
+            base.detectCollistions(gameTime);
+
+            if (boxCollider.Intersects(game.player.boxCollider))
+            {
+                //Console.WriteLine("Terrain collision {0}", this.ToString());
+                game.player.adjustPosition(boxCollider, gameTime);
+            }
+        }
+
+        public override void Draw(SpriteBatch batch, GameTime gameTime)
+        {
+            batch.Draw(texture, position, null, Color.White, 0, origin, scale, SpriteEffects.None, 0f);
+            if (fly != null && game.gameState != Game1.GameState.GameComplete)
+            {
+                fly.Draw(batch, gameTime);
+            }
+
+            /* debug: collider
+            var t = new Texture2D(game.GraphicsDevice, 1, 1);
+            t.SetData(new[] { Color.White });
+            Color c = new Color(0, 0, 0, 0.5f);
+            batch.Draw(t, boxCollider, c);
+  */
         }
     }
 }
