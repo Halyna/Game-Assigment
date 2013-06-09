@@ -36,7 +36,7 @@ namespace Assignment
             : base(game)
         {
             this.game = game;
-            this.position = new Vector2(game.screenWidth * 0.5f, game.screenHeight * 7.01f);
+            this.position = new Vector2(game.screenWidth * 0.5f, game.screenHeight * 7f);
             // earth center
             texture = game.Content.Load<Texture2D>(@"Earth");
             origin.X = texture.Width / 2;
@@ -120,8 +120,10 @@ namespace Assignment
             allTerrains[3] = new LavaPitWideTerrain(game, angle, terrainHeight, fly);
             allTerrains[4] = new LoweredTerrain(game, angle, terrainHeight, fly);
             allTerrains[5] = new DescentTerrain(game, angle, terrainHeight, fly);
+
             // volcanos get too high..
             double volcanoHeight = lastTerrain.tHeight == topH || lastTerrain.tHeight == thirdH ? secondH : lastTerrain.tHeight;
+            Console.WriteLine("volcano height " + volcanoHeight);
             allTerrains[6] = new VolcanoTerrain(game, angle, volcanoHeight, fly);
 
             Terrain nextTerrain = allTerrains[rand.Next(0, 7)];

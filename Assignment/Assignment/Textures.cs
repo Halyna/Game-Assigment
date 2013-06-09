@@ -144,7 +144,7 @@ namespace Assignment
             // menus
             gameOverText = Content.Load<Texture2D>("UI/gameovertext");
             startGameText = Content.Load<Texture2D>("UI/gameovertext");
-            logoText = Content.Load<Texture2D>("UI/logoText");
+            logoText = Content.Load<Texture2D>("title");
 
             // fonts
             font24 = Content.Load<SpriteFont>("Fonts/Font24");

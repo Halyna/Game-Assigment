@@ -34,9 +34,9 @@ namespace Assignment
             timeElapsed = 0;
 
             this.game = game;
-            pointsPosition = new Vector2(20, 30);
-            sizePosition = new Vector2(300, 30);
-            timerPosition = new Vector2(game.screenWidth - 300, 30);
+            pointsPosition = new Vector2(20, 15);
+            sizePosition = new Vector2(20, 65);
+            timerPosition = new Vector2(game.screenWidth - 450, game.screenHeight - 50);
         }
 
         /// <summary>
@@ -67,9 +67,9 @@ namespace Assignment
 
             batch.DrawString(Textures.font24, "Points: " + currentPoints.ToString(), pointsPosition, Color.Black, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
 
-            batch.DrawString(Textures.font24, "Size: " + currentSize.ToString(), sizePosition, Color.Black, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
+            batch.DrawString(Textures.font24, "Weight: " + currentSize.ToString(), sizePosition, Color.Black, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
 
-            batch.DrawString(Textures.font24, "Time: " + ((int)(timeElapsed/1000)).ToString(), timerPosition, Color.Black, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
+            batch.DrawString(Textures.font24, "Time till extinction: " + ((int)(GameSettings.PLAY_TIME / 1000 - (timeElapsed/1000))).ToString(), timerPosition, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
 
         }
     }

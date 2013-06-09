@@ -283,7 +283,9 @@ namespace Assignment
                 earth.Draw(spriteBatch, gameTime);
 
                 spriteBatch.Draw(Textures.logoText, new Rectangle(screenWidth / 2 - Textures.gameOverText.Width / 2,
-                        screenHeight / 3 - Textures.gameOverText.Height / 2, Textures.gameOverText.Width, Textures.gameOverText.Height), Color.White);
+                        screenHeight / 4 - Textures.gameOverText.Height / 2, Textures.gameOverText.Width, Textures.gameOverText.Height), Color.White);
+
+                spriteBatch.DrawString(Textures.font24, "press enter to start", new Vector2(350, 300), Color.Black, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
 
                 // credits
                 spriteBatch.DrawString(Textures.font24, "Idea and art by Corbin Butler", new Vector2(screenWidth - 800, screenHeight - 150), Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
