@@ -229,7 +229,7 @@ namespace Assignment
                 if (isJumping)
                 {
                     position.Y -= GameSettings.PLAYER_SPEED_Y * (3.0f / ((int)(jumpingTime.TotalMilliseconds / 100) + 1));
-                    Console.WriteLine("Jump speed " + 3.0f/((int)(jumpingTime.TotalMilliseconds / 100) + 1));
+                    //Console.WriteLine("Jump speed " + 3.0f/((int)(jumpingTime.TotalMilliseconds / 100) + 1));
                 }
                 else
                     position.Y += GameSettings.PLAYER_SPEED_Y;
