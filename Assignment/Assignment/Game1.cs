@@ -60,6 +60,9 @@ namespace Assignment
         public SoundEffectInstance birdSpawnedSound;
         public SoundEffectInstance biteSound;
 
+        public Texture2D whiteScreen; // for explosion
+        public float whiteScreenAlpha = 0;
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -81,6 +84,7 @@ namespace Assignment
 
             colorChange = 255 / 2.0f / 60 / 60; // 2 min, 60 frames per sec
 
+            whiteScreen = Content.Load<Texture2D>(@"WhiteScreen");
             Reset();
            
         }
@@ -100,6 +104,7 @@ namespace Assignment
             songPlaying = 1;
 
             greenColor = 255.0f;
+            whiteScreenAlpha = 0;
         }
 
         protected override void LoadContent()
@@ -235,6 +240,8 @@ namespace Assignment
 
             if (gameState == GameState.GameComplete)
             {
+                whiteScreenAlpha += 0.01f;
+                Console.WriteLine("alpha " + whiteScreenAlpha);
                 meteorBig.Update(gameTime);
             }
             // check for completion
@@ -273,6 +280,10 @@ namespace Assignment
             {
                 meteorBig.Draw(spriteBatch, gameTime);
 
+                Color whiteScreenColor = new Color(whiteScreenAlpha, whiteScreenAlpha, whiteScreenAlpha, whiteScreenAlpha);
+                spriteBatch.Draw(whiteScreen, Vector2.Zero, whiteScreenColor);
+                
+                // labels
                 spriteBatch.DrawString(Textures.font24, "Huge meteor hit Earth!", new Vector2(300, 100), Color.Black, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
                 spriteBatch.DrawString(Textures.font24, "Your species is now extinct...", new Vector2(250, 180), Color.Black, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
                 spriteBatch.DrawString(Textures.font24, "Your score is " + player.scoreDisplay.currentPoints.ToString(), new Vector2(320, 240), Color.Black, 0, Vector2.Zero, 1, SpriteEffects.None, 0);

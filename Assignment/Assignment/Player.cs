@@ -244,7 +244,7 @@ namespace Assignment
             game.objectSpawner.birds.Remove(bird);
             scale -= 0.01f;
 
-            scoreDisplay.currentPoints -= 200;
+            scoreDisplay.currentPoints -= 100;
             if (scoreDisplay.currentPoints < 0)
             {
                 scoreDisplay.currentPoints = 0;
@@ -281,9 +281,9 @@ namespace Assignment
             //game.meteorSmall = new MeteorSmall(game);
             //game.objectSpawner.meteors.Remove(meteorSmall);
             meteorSmall.Animate();
-            scale -= 0.01f;
+            scale -= 0.005f;
 
-            scoreDisplay.currentPoints -= 200;
+            scoreDisplay.currentPoints -= 50;
             if (scoreDisplay.currentPoints < 0)
             {
                 scoreDisplay.currentPoints = 0;

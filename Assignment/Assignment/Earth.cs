@@ -121,7 +121,7 @@ namespace Assignment
             allTerrains[4] = new LoweredTerrain(game, angle, terrainHeight, fly);
             allTerrains[5] = new DescentTerrain(game, angle, terrainHeight, fly);
             // volcanos get too high..
-            double volcanoHeight = lastTerrain.tHeight == topH ? thirdH : lastTerrain.tHeight;
+            double volcanoHeight = lastTerrain.tHeight == topH || lastTerrain.tHeight == thirdH ? secondH : lastTerrain.tHeight;
             allTerrains[6] = new VolcanoTerrain(game, angle, volcanoHeight, fly);
 
             Terrain nextTerrain = allTerrains[rand.Next(0, 7)];

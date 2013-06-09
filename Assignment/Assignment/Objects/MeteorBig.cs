@@ -57,7 +57,7 @@ namespace Assignment
             BigMeteorAnimationController.Update(gameTime);
 
             scale += 0.0001f;
-            position += new Vector2(0.002f, -0.0015f);
+            position += new Vector2(0.003f, -0.0005f);
 
             // need stopping conditions && link to time elapsed
         }
