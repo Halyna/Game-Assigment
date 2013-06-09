@@ -22,6 +22,10 @@ namespace Assignment
         public ScoreDisplay scoreDisplay;
 
         public Vector2 position;
+
+        public bool isStuckRight;
+        public double isStuckLeft; //will use gameTime as a reference for multiple terrain colliders per frame
+
         Vector2 origin;
         float angle; // radians
         float scale = 0.25f;
@@ -94,7 +98,7 @@ namespace Assignment
                 isJumping = false;
             }
 
-            if (InputManager.IsMovingRight() && !isCrouching)
+            if (InputManager.IsMovingRight() && !isCrouching && !isStuckRight)
             {
                 angle += GameSettings.PLAYER_SPEED_X;
                 if (angle > MAX_ANGLE)
@@ -103,11 +107,20 @@ namespace Assignment
                 isIdle = false;
 
             }
-            else if (InputManager.IsMovingLeft() && !isCrouching)
+            else if (InputManager.IsMovingLeft() && !isCrouching && isStuckLeft == 0)
             {
                 angle -= GameSettings.PLAYER_SPEED_X;
                 if (angle < MIN_ANGLE)
-                    angle = MIN_ANGLE;
+                    if (!isStuckRight)
+                    {
+                        angle = MIN_ANGLE;
+                    }
+                    else
+                    {
+                        // we are dead!
+                        gameOver("Earth is moving too fast for you...");
+                    }
+
                 isIdle = false;
             }
             else
@@ -115,7 +128,13 @@ namespace Assignment
                 // drifting back with earth movement
                 angle -= GameSettings.EARTH_ROTATION_SPEED / 60;
                 if (angle < MIN_ANGLE)
-                    angle = MIN_ANGLE;
+                {
+                    if (!isStuckRight)
+                    {
+                        angle = MIN_ANGLE;
+                    }
+                    
+                }
                     
                 isIdle = true;
             }
@@ -155,10 +174,15 @@ namespace Assignment
             scoreDisplay.Update(gameTime);
 
             // are we too small to continue?
-            if (scale < 0.2f)
+            if (scale < 0.2f) 
             {
                 gameOver("Your poor lizard died of hunger...");
             }
+            if (angle < MIN_ANGLE - 0.02)
+            {
+                gameOver("Earth is moving too fast for you...");
+            }
+
             base.Update(gameTime);
         }
 
@@ -195,10 +219,12 @@ namespace Assignment
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////
         public void adjustPosition(Rectangle boxCollider, GameTime gameTime)
         {
-
             if (boxCollider == Rectangle.Empty)
             {
                 inTheAir = true;
+                isStuckRight = false;
+                isStuckLeft = 0;
+
 
                 if (isJumping)
                 {
@@ -214,11 +240,25 @@ namespace Assignment
             else
             {
                 inTheAir = false;
-                // can intersect with multiple colliders, only choose the highest
-               // if (this.boxCollider.Top > boxCollider.Top - this.boxCollider.Height)
-               // {
-                    position.Y = boxCollider.Top - this.boxCollider.Height - 
+                if (position.Y <= boxCollider.Top - 30)
+                {
+
+                    position.Y = boxCollider.Top - this.boxCollider.Height -
                         (int)((texture.Bounds.Height * scale - this.boxCollider.Height) / 2);
+
+                    isStuckRight = false;
+                    if (gameTime.TotalGameTime.TotalMilliseconds != isStuckLeft)
+                        isStuckLeft = 0;
+
+                }
+                else // we are facing a wall, stop movement
+                {
+                    if (position.X < boxCollider.X)
+                        isStuckRight = true;
+                    else if (position.X > boxCollider.X)
+                        isStuckLeft = gameTime.TotalGameTime.TotalMilliseconds;
+                }
+
                // }
             }
 

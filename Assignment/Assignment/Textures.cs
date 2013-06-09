@@ -74,7 +74,7 @@ namespace Assignment
                 playerJumpingArray[i] = Content.Load<Texture2D>(frameName);
             }
 
-            PlayerJumpingAnimation = new Animation(playerJumpingArray, .1f, true, playerJumpingFrames);
+            PlayerJumpingAnimation = new Animation(playerJumpingArray, .3f, true, playerJumpingFrames);
 
             // Crouching
             Texture2D[] playerCrouchArray = new Texture2D[4];
