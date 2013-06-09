@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
+using System.IO;
 
 namespace Assignment
 {
@@ -16,14 +17,14 @@ namespace Assignment
     /// </summary>
     public class Game1 : Microsoft.Xna.Framework.Game
     {
-        public enum GameState { MainMenu, InGame, GameOver, Paused, GameComplete};
+        public enum GameState { MainMenu, InGame, GameOver, Paused, GameComplete };
 
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
         public Earth earth;
         public Player player;
-        
+
         public Background background;
         public MeteorBig meteorBig;
         //public MeteorSmall meteorSmall;
@@ -73,6 +74,7 @@ namespace Assignment
             objectSpawner = new ObjectSpawner(this);
             screenWidth = 1024;
             screenHeight = 800;
+            loadHighscore();
         }
 
         protected override void Initialize()
@@ -88,14 +90,14 @@ namespace Assignment
 
             whiteScreen = Content.Load<Texture2D>(@"WhiteScreen");
             Reset();
-           
+
         }
 
         void Reset()
         {
             this.earth = new Earth(this);
             this.player = new Player(this);
-            
+
             this.background = new Background(this);
             this.meteorBig = new MeteorBig(this);
             //this.meteorSmall = new MeteorSmall(this);
@@ -121,12 +123,12 @@ namespace Assignment
             hitTerrainSoundEffect = Content.Load<SoundEffect>("Sound/BoneCrush");
             dyingSoundEffect = Content.Load<SoundEffect>("Sound/dyingYell");
             biteSoundEffect = Content.Load<SoundEffect>("Sound/Bite");
-            
+
             dyingSound = dyingSoundEffect.CreateInstance();
             hitTerrainSound = hitTerrainSoundEffect.CreateInstance();
             birdSpawnedSound = birdSpawnedSoundEffect.CreateInstance();
             biteSound = biteSoundEffect.CreateInstance();
-            
+
 
             loop1 = Content.Load<Song>("Sound/loop1");
             loop2 = Content.Load<Song>("Sound/loop2");
@@ -136,7 +138,7 @@ namespace Assignment
             loop6 = Content.Load<Song>("Sound/loop6");
 
             MediaPlayer.IsRepeating = true;
-            
+
 
             // TODO: use this.Content to load your game content here
 
@@ -157,7 +159,10 @@ namespace Assignment
             else if (InputManager.PressedBack() == true && this.gameState == GameState.InGame)
                 this.gameState = GameState.Paused;
             else if (InputManager.PressedBack() == true && this.gameState == GameState.MainMenu)
+            {
+                saveHighscore();
                 this.Exit();
+            }
 
             if (gameState == GameState.MainMenu && InputManager.PressedStart())
             {
@@ -177,7 +182,7 @@ namespace Assignment
                 return;
             }
 
-            
+
             earth.Update(gameTime);
             background.Update(gameTime);
 
@@ -190,7 +195,7 @@ namespace Assignment
                 //bird.Update(gameTime);
                 objectSpawner.Update(gameTime);
                 greenColor -= colorChange;
-   
+
                 #region music tracks
 
                 // update music track
@@ -252,19 +257,19 @@ namespace Assignment
                 gameState = GameState.GameComplete;
                 highScore = getHighScore();
             }
-            
-          
+
+
             InputManager.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
-            Color skyColor = new Color(255.0f/255, greenColor/255, 0);
+            Color skyColor = new Color(255.0f / 255, greenColor / 255, 0);
             GraphicsDevice.Clear(skyColor);
             spriteBatch.Begin();
 
             background.Draw(spriteBatch);
-            
+
             //////////////////////////////////////////////////////////////////////////////     
             if (gameState == GameState.GameOver)
             {
@@ -286,6 +291,7 @@ namespace Assignment
                         screenHeight / 4 - Textures.gameOverText.Height / 2, Textures.gameOverText.Width, Textures.gameOverText.Height), Color.White);
 
                 spriteBatch.DrawString(Textures.font24, "press enter to start", new Vector2(350, 300), Color.Black, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
+                spriteBatch.DrawString(Textures.font24, "Highscore: " + highScore, new Vector2(screenWidth - 600, screenHeight - 800), Color.Black, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
 
                 // credits
                 spriteBatch.DrawString(Textures.font24, "Idea and art by Corbin Butler", new Vector2(screenWidth - 800, screenHeight - 150), Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
@@ -303,7 +309,7 @@ namespace Assignment
 
                 Color whiteScreenColor = new Color(whiteScreenAlpha, whiteScreenAlpha, whiteScreenAlpha, whiteScreenAlpha);
                 spriteBatch.Draw(whiteScreen, Vector2.Zero, whiteScreenColor);
-                
+
                 // labels
                 spriteBatch.DrawString(Textures.font24, "Huge meteor hit Earth!", new Vector2(300, 100), Color.Black, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
                 spriteBatch.DrawString(Textures.font24, "Your species is now extinct...", new Vector2(250, 180), Color.Black, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
@@ -325,14 +331,14 @@ namespace Assignment
 
             spriteBatch.End();
             base.Draw(gameTime);
-            
+
         }
 
         internal void GameOver(String reason)
         {
             deathReason = reason;
             gameState = GameState.GameOver;
-            
+
         }
 
         public int getHighScore()
@@ -343,6 +349,34 @@ namespace Assignment
             }
             return highScore;
         }
-    }
 
+        // Saves the card data
+        private void saveHighscore()
+        {
+            // Write the string to a file.
+            System.IO.StreamWriter file = new System.IO.StreamWriter("highscore.txt");
+            if (highScore > 0)
+            {
+                file.WriteLine(highScore);
+            }
+            file.Close();
+        }
+
+        // Loads the card data
+        private void loadHighscore()
+        {
+            // Check to see if there is data to load.
+            if (File.Exists("highscore.txt"))
+            {
+                // Open the file.
+                System.IO.StreamReader file = new System.IO.StreamReader("highscore.txt");
+                highScore = Convert.ToInt32(file.ReadLine());
+                file.Close();
+            }
+            else
+            {
+                highScore = 0;
+            }
+        }
+    }
 }
