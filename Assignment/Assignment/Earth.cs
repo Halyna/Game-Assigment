@@ -91,7 +91,7 @@ namespace Assignment
             Terrain lastTerrain = this.terrains[terrains.Count - 1];
 
             bool fly = false;
-            int flyChance = rand.Next(0, 6);
+            int flyChance = rand.Next(0, 4);
             if (flyChance == 0)
             {
                 fly = true;

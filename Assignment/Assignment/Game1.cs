@@ -60,6 +60,8 @@ namespace Assignment
         public SoundEffectInstance birdSpawnedSound;
         public SoundEffectInstance biteSound;
 
+        public int highScore;
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -241,6 +243,7 @@ namespace Assignment
             if (player.scoreDisplay.timeElapsed > GameSettings.PLAY_TIME)
             {
                 gameState = GameState.GameComplete;
+                highScore = getHighScore();
             }
             
           
@@ -277,6 +280,7 @@ namespace Assignment
                 spriteBatch.DrawString(Textures.font24, "Your species is now extinct...", new Vector2(250, 180), Color.Black, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
                 spriteBatch.DrawString(Textures.font24, "Your score is " + player.scoreDisplay.currentPoints.ToString(), new Vector2(320, 240), Color.Black, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
                 spriteBatch.DrawString(Textures.font24, "Come on, you can do better than that!", new Vector2(170, 320), Color.Black, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
+                spriteBatch.DrawString(Textures.font24, "High Score:" + this.highScore, new Vector2(320, 400), Color.Black, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
             }
 
             else
@@ -299,5 +303,15 @@ namespace Assignment
             gameState = GameState.GameOver;
             
         }
+
+        public int getHighScore()
+        {
+            if (player.scoreDisplay.currentPoints > highScore)
+            {
+                highScore = player.scoreDisplay.currentPoints;
+            }
+            return highScore;
+        }
     }
+
 }

@@ -20,6 +20,7 @@ namespace Assignment
         public int currentPoints;
         public int currentSize;
         public float timeElapsed;
+        public Game1 game;
 
         Vector2 pointsPosition;
         Vector2 sizePosition;
@@ -32,6 +33,7 @@ namespace Assignment
             currentSize = 50;
             timeElapsed = 0;
 
+            this.game = game;
             pointsPosition = new Vector2(20, 30);
             sizePosition = new Vector2(300, 30);
             timerPosition = new Vector2(game.screenWidth - 300, 30);
@@ -58,6 +60,7 @@ namespace Assignment
             base.Update(gameTime);
         }
 
+
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////
         public virtual void Draw(SpriteBatch batch)
         {
@@ -67,6 +70,7 @@ namespace Assignment
             batch.DrawString(Textures.font24, "Size: " + currentSize.ToString(), sizePosition, Color.Black, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
 
             batch.DrawString(Textures.font24, "Time: " + ((int)(timeElapsed/1000)).ToString(), timerPosition, Color.Black, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
+
         }
     }
 }
