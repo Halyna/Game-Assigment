@@ -261,23 +261,39 @@ namespace Assignment
             spriteBatch.Begin();
 
             background.Draw(spriteBatch);
-            earth.Draw(spriteBatch, gameTime);
-      
+            
+            //////////////////////////////////////////////////////////////////////////////     
             if (gameState == GameState.GameOver)
             {
+                earth.Draw(spriteBatch, gameTime);
+
                 spriteBatch.DrawString(Textures.font24, deathReason, new Vector2(300, 100), Color.Black, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
 
                 spriteBatch.Draw(Textures.gameOverText, new Rectangle(screenWidth / 2 - Textures.gameOverText.Width / 2,
                         screenHeight / 2 - Textures.gameOverText.Height / 2, Textures.gameOverText.Width, Textures.gameOverText.Height), Color.White);
 
             }
+
+            //////////////////////////////////////////////////////////////////////////////
             else if (gameState == GameState.MainMenu)
             {
+                earth.Draw(spriteBatch, gameTime);
+
                 spriteBatch.Draw(Textures.logoText, new Rectangle(screenWidth / 2 - Textures.gameOverText.Width / 2,
                         screenHeight / 3 - Textures.gameOverText.Height / 2, Textures.gameOverText.Width, Textures.gameOverText.Height), Color.White);
+
+                // credits
+                spriteBatch.DrawString(Textures.font24, "Idea and art by Corbin Butler", new Vector2(screenWidth - 800, screenHeight - 150), Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
+                spriteBatch.DrawString(Textures.font24, "Programmed by Halyna Rubashko and Luke Giles", new Vector2(screenWidth - 800, screenHeight - 100), Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
+                spriteBatch.DrawString(Textures.font24, "Music by Albert Gumpl", new Vector2(screenWidth - 800, screenHeight - 50), Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
             }
+
+
+            //////////////////////////////////////////////////////////////////////////////
             else if (gameState == GameState.GameComplete)
             {
+                earth.Draw(spriteBatch, gameTime);
+
                 meteorBig.Draw(spriteBatch, gameTime);
 
                 Color whiteScreenColor = new Color(whiteScreenAlpha, whiteScreenAlpha, whiteScreenAlpha, whiteScreenAlpha);
@@ -290,9 +306,11 @@ namespace Assignment
                 spriteBatch.DrawString(Textures.font24, "Come on, you can do better than that!", new Vector2(170, 320), Color.Black, 0, Vector2.Zero, 1, SpriteEffects.None, 0);
             }
 
+            //////////////////////////////////////////////////////////////////////////////
             else
             {
                 meteorBig.Draw(spriteBatch, gameTime);
+                earth.Draw(spriteBatch, gameTime);
                 player.Draw(gameTime, spriteBatch);
                 //meteorSmall.Draw(spriteBatch, gameTime);                          
                 //bird.Draw(gameTime, spriteBatch); 
