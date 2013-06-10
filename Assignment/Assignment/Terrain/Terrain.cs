@@ -15,7 +15,7 @@ namespace Assignment
     /// <summary>
     /// This is a game component that implements IUpdateable.
     /// </summary>
-    public class Terrain
+    public class Terrain : Microsoft.Xna.Framework.GameComponent
     {
         public Texture2D texture;
         public Vector2 position;
@@ -31,6 +31,7 @@ namespace Assignment
         public Fly fly;
 
         public Terrain(Game1 game, float startAngle, double terrianHeight, bool hasFly)
+            : base(game)
         {
             this.game = game;
             angle = startAngle;
@@ -46,13 +47,13 @@ namespace Assignment
             isOnScreen = false;
         }
 
-        public virtual void Initialize()
+        public override void Initialize()
         {
             // TODO: Add your initialization code here
         }
 
 
-        public virtual void Update(GameTime gameTime)
+        public override void Update(GameTime gameTime)
         {
             float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
             angle -= elapsed * GameSettings.EARTH_ROTATION_SPEED;

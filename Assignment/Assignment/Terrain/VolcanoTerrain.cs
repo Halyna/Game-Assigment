@@ -21,8 +21,8 @@ namespace Assignment
         private Animation volcanoAnimation;
         private AnimationController VolcanoAnimationController;
 
-        bool isAnimating;
-        float timeTillAnimation = inactiveTime;
+        //bool isAnimating;
+        //float timeTillAnimation = inactiveTime;
 
         List<Rectangle> stepCollidersAscend;
         List<Rectangle> stepCollidersDescend;

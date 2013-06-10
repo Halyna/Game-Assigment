@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assignment", "Assignment\Assignment\Assignment.csproj", "{04DDEFBF-B3D0-44FD-BB1C-B6DBFC24A71D}"
 EndProject
-Project("{96E2B04D-8817-42C6-938A-82C39BA4D311}") = "AssignmentContent", "Assignment\AssignmentContent\AssignmentContent.contentproj", "{28E577AE-B8C2-4487-BD06-E5D8668EFEAB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AssignmentContent", "Assignment\AssignmentContent\AssignmentContent.contentproj", "{28E577AE-B8C2-4487-BD06-E5D8668EFEAB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -20,5 +20,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(Performance) = preSolution
+		HasPerformanceSessions = true
 	EndGlobalSection
 EndGlobal

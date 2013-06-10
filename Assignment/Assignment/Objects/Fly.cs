@@ -91,7 +91,7 @@ namespace Assignment
 
             }
         }
-        public virtual void Draw(SpriteBatch batch, GameTime gameTime)
+        public void Draw(SpriteBatch batch, GameTime gameTime)
         {
             FlyAnimationController.Draw(gameTime, batch, position, scale, SpriteEffects.None, Color.DarkOliveGreen, 0, Vector2.Zero);
             //batch.Draw(texture, position, null, Color.White, 0, Vector2.Zero, scale, SpriteEffects.None, 0f);

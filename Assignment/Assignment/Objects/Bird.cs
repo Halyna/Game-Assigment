@@ -33,9 +33,6 @@ namespace Assignment
 
         bool isFlyingAway = false;
 
-        bool isSpawned = false;
-        int timeBeforeSpawn = 0;
-
         float scale;
         public Rectangle boxCollider;
 
@@ -81,9 +78,6 @@ namespace Assignment
             position.Y = 0;
             startPosition = position;
 
-            isSpawned = false;
-            timeBeforeSpawn = 0;
-
             game.birdSpawnedSound.Play();
             isFlyingAway = false;
         }
@@ -127,7 +121,7 @@ namespace Assignment
             }
         }
 
-        public virtual void Draw(GameTime gameTime, SpriteBatch batch)
+        public void Draw(GameTime gameTime, SpriteBatch batch)
         {
             if (target.X < 0)
             {

@@ -85,7 +85,7 @@ namespace Assignment
             }
         }
 
-        public virtual void Draw(SpriteBatch batch, GameTime gameTime)
+        public void Draw(SpriteBatch batch, GameTime gameTime)
         {
             if (isAnimating)
                 SmallMeteorAnimationController.Draw(gameTime, batch, position, scale, SpriteEffects.None, Color.DarkOliveGreen, 0, Vector2.Zero);

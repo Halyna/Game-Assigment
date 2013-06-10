@@ -22,7 +22,7 @@ namespace Assignment
         Game1 game;
         Vector2 position;
         public Vector2 origin;
-        float rotationAngle;
+        //float rotationAngle;
         public float scale = 6f;
         public float radius;
         double lowestH;
@@ -191,7 +191,7 @@ namespace Assignment
         }
 
 
-        public virtual void Draw(SpriteBatch batch, GameTime gameTime)
+        public void Draw(SpriteBatch batch, GameTime gameTime)
         {
             batch.Draw(texture, position, null, Color.White, 3, origin, scale, SpriteEffects.None, 0f);
             foreach (var terrain in this.terrains)

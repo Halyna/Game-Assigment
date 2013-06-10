@@ -62,7 +62,7 @@ namespace Assignment
             // need stopping conditions && link to time elapsed
         }
 
-        public virtual void Draw(SpriteBatch batch, GameTime gameTime)
+        public void Draw(SpriteBatch batch, GameTime gameTime)
         {
             BigMeteorAnimationController.Draw(gameTime, batch, position, scale, SpriteEffects.None, Color.White, rotationAngle, origin);
            

@@ -201,7 +201,7 @@ namespace Assignment
 
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        public virtual void Draw(GameTime gameTime, SpriteBatch batch)
+        public void Draw(GameTime gameTime, SpriteBatch batch)
         {
 
             PlayerAnimationController.Draw(gameTime, batch, position, scale, SpriteEffects.None, Color.DarkOliveGreen, 0, Vector2.Zero);
