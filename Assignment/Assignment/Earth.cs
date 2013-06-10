@@ -36,7 +36,7 @@ namespace Assignment
             : base(game)
         {
             this.game = game;
-            this.position = new Vector2(game.screenWidth * 0.5f, game.screenHeight * 7f);
+            this.position = new Vector2(game.screenWidth * 0.5f, game.screenHeight * 6.97f);
             // earth center
             texture = game.Content.Load<Texture2D>(@"Earth");
             origin.X = texture.Width / 2;
@@ -123,7 +123,7 @@ namespace Assignment
 
             // volcanos get too high..
             double volcanoHeight = lastTerrain.tHeight == topH || lastTerrain.tHeight == thirdH ? secondH : lastTerrain.tHeight;
-            Console.WriteLine("volcano height " + volcanoHeight);
+            //Console.WriteLine("volcano height " + volcanoHeight);
             allTerrains[6] = new VolcanoTerrain(game, angle, volcanoHeight, fly);
 
             Terrain nextTerrain = allTerrains[rand.Next(0, 7)];
@@ -193,7 +193,7 @@ namespace Assignment
 
         public virtual void Draw(SpriteBatch batch, GameTime gameTime)
         {
-            batch.Draw(texture, position, null, Color.White, 0, origin, scale, SpriteEffects.None, 0f);
+            batch.Draw(texture, position, null, Color.White, 3, origin, scale, SpriteEffects.None, 0f);
             foreach (var terrain in this.terrains)
             {
                 if (terrain.isOnScreen)

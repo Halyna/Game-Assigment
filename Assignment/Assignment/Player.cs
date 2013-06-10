@@ -176,7 +176,7 @@ namespace Assignment
             // are we too small to continue?
             if (scale < 0.2f) 
             {
-                gameOver("Your poor lizard died of hunger...");
+                gameOver("Crouch to avoid birds and meteors");
             }
             if (angle < MIN_ANGLE - 0.02)
             {

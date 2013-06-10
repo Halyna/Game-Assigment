@@ -248,7 +248,7 @@ namespace Assignment
             if (gameState == GameState.GameComplete)
             {
                 whiteScreenAlpha += 0.01f;
-                Console.WriteLine("alpha " + whiteScreenAlpha);
+                //Console.WriteLine("alpha " + whiteScreenAlpha);
                 meteorBig.Update(gameTime);
             }
             // check for completion
